@@ -64,7 +64,7 @@ public class CreateGrid : MonoBehaviour
                 Instantiate(bp, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 1;
             }
-            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
         }
         if (Input.GetMouseButtonDown(1))
@@ -73,7 +73,7 @@ public class CreateGrid : MonoBehaviour
                 Instantiate(wp, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 2;
             }
-            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(2);
         }
     }
@@ -126,6 +126,7 @@ public class CreateGrid : MonoBehaviour
     private void CheckForWin(int player){
         for(int row = 0; row < 15; row++){
             for(int col = 0; col < 15; col++){
+                if(grinfo[row,col] == player){
                 if(col < 12){
                     if(grinfo[row, col + 1] == player && grinfo[row, col + 2] == player && grinfo[row, col + 3] == player && grinfo[row, col + 4] == player){
                         Debug.Log(player + "win");
@@ -146,6 +147,7 @@ public class CreateGrid : MonoBehaviour
                         Debug.Log(player + "win");
                     }
                 }
+            }
             }
         }
     }
