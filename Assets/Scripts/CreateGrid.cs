@@ -61,7 +61,7 @@ public class CreateGrid : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             if(grinfo[currentHover.x , currentHover.y] == 0){
-                Instantiate(bp, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
+                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 1;
             }
             //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
@@ -70,7 +70,7 @@ public class CreateGrid : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             if(grinfo[currentHover.x , currentHover.y] == 0){
-                Instantiate(wp, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
+                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(2, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 2;
             }
             //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
