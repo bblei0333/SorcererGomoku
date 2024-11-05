@@ -19,6 +19,9 @@ public class GomokuControl : MonoBehaviour
     [SerializeField] private float tileSize = 0.05f;
     [SerializeField] private float yOffset = 0.2f;
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f);
+    void PiecePlaced(){
+        //teehee
+    }
 
     private void Awake(){
         GenerateAlltiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
@@ -63,8 +66,9 @@ public class GomokuControl : MonoBehaviour
             if(grinfo[currentHover.x , currentHover.y] == 0){
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 1;
+                BroadcastMessage("PiecePlaced");
             }
-            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
         }
         if (Input.GetMouseButtonDown(1))
@@ -73,7 +77,7 @@ public class GomokuControl : MonoBehaviour
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(2, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 2;
             }
-            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(2);
         }
     }

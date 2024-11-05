@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Normal;
 
 public class Spawner : MonoBehaviour
 {
@@ -14,7 +15,6 @@ public class Spawner : MonoBehaviour
     }
     void Start()
     {
-        
     }
 
     // Update is called once per frame
