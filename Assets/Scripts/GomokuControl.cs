@@ -23,6 +23,12 @@ public class GomokuControl : MonoBehaviour
         //teehee
     }
 
+    private int clientID {get;}
+
+    void Start(){
+        Debug.Log(clientID);
+    }
+
     private void Awake(){
         GenerateAlltiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
     }
@@ -68,7 +74,7 @@ public class GomokuControl : MonoBehaviour
                 grinfo[currentHover.x , currentHover.y] = 1;
                 BroadcastMessage("PiecePlaced");
             }
-            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
         }
         if (Input.GetMouseButtonDown(1))
@@ -77,7 +83,7 @@ public class GomokuControl : MonoBehaviour
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(2, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 2;
             }
-            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(2);
         }
     }
