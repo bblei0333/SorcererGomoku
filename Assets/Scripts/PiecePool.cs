@@ -26,7 +26,8 @@ public class PiecePool : MonoBehaviour
             }
         }
         for(int x=0; x<40; x++){
-        Debug.Log(pool[x]);}
+        //Debug.Log(pool[x]);
+        }
         slotView(0);
     }
     public GameObject setSlot(int num){
