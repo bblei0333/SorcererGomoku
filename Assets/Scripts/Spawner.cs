@@ -8,10 +8,10 @@ public class Spawner : MonoBehaviour
 {
     // Start is called before the first frame update
     public void doSpawn(int num, Vector3 spot, Quaternion rot){
-        if(num == 1){
-        Realtime.Instantiate("Pfabbp", spot, rot);}
+        if(Realtime.Instantiate("BpNorm", spot, rot).GetComponent<RealtimeView>().ownerIDSelf == 0){
+        Realtime.Instantiate("BpNorm", spot, rot);}
         else{
-        Realtime.Instantiate("Pfabwp", spot, rot);}
+        Realtime.Instantiate("WpNorm", spot, rot);}
     }
     void Start()
     {

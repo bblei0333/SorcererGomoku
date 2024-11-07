@@ -7,8 +7,8 @@ public class IntSync : RealtimeComponent<IntSyncModel>{
     private int syncedint;
     void Update(){
     if (Input.GetMouseButtonDown(0)){
-        syncedint++;
-        Debug.Log(syncedint);
+        SetValue(model._testnum + 1);
+        Debug.Log(model._testnum);
     }
     }
     protected override void OnRealtimeModelReplaced(IntSyncModel previousModel, IntSyncModel currentModel){
@@ -39,7 +39,7 @@ public class IntSync : RealtimeComponent<IntSyncModel>{
     public void SetValue(int num) {
         // Set the color on the model
         // This will fire the colorChanged event on the model, which will update the renderer for both the local player and all remote players.
-        model._testnum = num;
+        model.SetTestNum(num);
     }
 
     
