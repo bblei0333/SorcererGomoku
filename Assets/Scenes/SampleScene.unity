@@ -480,6 +480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bp: {fileID: 244399482}
   wp: {fileID: 1870641491}
+  ID: 0
   tileMaterial: {fileID: 2100000, guid: d29334704c3d047109f6b57196dfb210, type: 2}
   hoverMaterial: {fileID: 2100000, guid: e1e8538ac53bc41d098e6c90e687e2b5, type: 2}
   tileSize: 0.715
@@ -634,7 +635,7 @@ GameObject:
   - component: {fileID: 778070131}
   - component: {fileID: 778070133}
   - component: {fileID: 778070135}
-  - component: {fileID: 778070134}
+  - component: {fileID: 778070136}
   m_Layer: 0
   m_Name: Normy
   m_TagString: Untagged
@@ -687,18 +688,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bdcde3745f52472b94c10cabb3da4b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &778070134
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778070130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 213a30c80ffbc4b15978b755eedb01d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  turner: 0
+  ding: 0
 --- !u!114 &778070135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -720,8 +711,24 @@ MonoBehaviour:
   _sceneViewDestroyWhenLastClientLeaves: 1
   _components:
   - componentID: 1
-    component: {fileID: 778070134}
+    component: {fileID: 0}
+  - componentID: 2
+    component: {fileID: 0}
+  - componentID: 3
+    component: {fileID: 778070136}
   _childViews: []
+--- !u!114 &778070136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778070130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 213a30c80ffbc4b15978b755eedb01d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &802072423
 GameObject:
   m_ObjectHideFlags: 0
