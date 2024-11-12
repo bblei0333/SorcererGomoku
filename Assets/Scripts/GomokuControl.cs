@@ -63,22 +63,13 @@ public class GomokuControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if(grinfo[currentHover.x , currentHover.y] == 0){
+            if(grinfo[currentHover.x , currentHover.y] == 0 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 grinfo[currentHover.x , currentHover.y] = 1;
                 BroadcastMessage("PiecePlaced");
             }
             //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            if(grinfo[currentHover.x , currentHover.y] == 0){
-                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(2, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
-                grinfo[currentHover.x , currentHover.y] = 2;
-            }
-            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
-            CheckForWin(2);
         }
     }
     private void GenerateAlltiles(float tileSize, int tileCountX, int tileCountY){

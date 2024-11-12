@@ -157,7 +157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4173662480760461736, guid: c175b1c995e084244b06d520b94cae0f, type: 3}
       propertyPath: m_Name
-      value: Pfabwp
+      value: WpNorm
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
