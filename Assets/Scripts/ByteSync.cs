@@ -14,9 +14,7 @@ public class ByteSync : RealtimeComponent{
             _model = value;
         }
     }
-    private void Update(){
-        byte[] bytes = model.bytes;
-        _model.bytes = bytes;
+    private void manualUpdate(){
     }
     public bool checkEmpty(int x, int y){
         int oned = ((y*15) + x);
@@ -31,8 +29,10 @@ public class ByteSync : RealtimeComponent{
     }
     public void doPlace(int x, int y, int bID){
         int oned = ((y*15) + x);
-        _model.bytes[oned] = (byte)bID;
-        Debug.Log("Set at: " + oned);
+        byte[] bytes = model.bytes;
+        model.bytes[oned] = (byte)bID;
+        Debug.Log("Set at: " + oned + " equals " + model.bytes[oned]);
+        model.bytes = bytes;
     }
     
 

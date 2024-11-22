@@ -72,7 +72,15 @@ public class GomokuControl : MonoBehaviour
             if(grinfo[currentHover.x , currentHover.y] == 0 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 //grinfo[currentHover.x , currentHover.y] = 1;
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 0){
                 GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                }
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 1){
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                }
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2){
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 3);
+                }
                 Debug.Log("Sending it");
                 Debug.Log("X: " + currentHover.x + "Y: " + currentHover.y);
                 BroadcastMessage("PiecePlaced");
