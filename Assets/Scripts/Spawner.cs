@@ -7,19 +7,19 @@ using Normal;
 public class Spawner : MonoBehaviour
 {
     public int ding = 0;
-    public int ID;
+    public int ID = 0;
     // Start is called before the first frame update
     private int ownerIDSelf {get;}
     public void doSpawn(int num, Vector3 spot, Quaternion rot){
         GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-        if(ID == 0){
-        Realtime.Instantiate("BpNorm", spot, rot);;
-
-        Debug.Log("Black placed");
+        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 0){
+        Realtime.Instantiate("BpNorm", spot, rot);
         }
-        else{
+        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 1){
         Realtime.Instantiate("WpNorm", spot, rot);
-        Debug.Log("White placed");;
+        }
+        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2){
+        Realtime.Instantiate("BoNorm", spot, rot);
         }
     }
     void Connecter()
@@ -27,9 +27,8 @@ public class Spawner : MonoBehaviour
         ding++;
         if(GetComponent<Realtime>().connected){
         ID = Realtime.Instantiate("BpNorm", new Vector3(123123,124124,13434), Quaternion.identity).GetComponent<RealtimeView>().ownerIDSelf;
+        GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID = ID;
         Debug.Log("ID " + ID);}
-    }
-    void Awake(){
     }
 
     void Awake()

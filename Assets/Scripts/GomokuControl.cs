@@ -33,7 +33,7 @@ public class GomokuControl : MonoBehaviour
         GenerateAlltiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
     }
     private Vector3 GetTileCenter(int x, int y){
-        return new Vector3(x * tileSize, 0.0f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
+        return new Vector3(x * tileSize, 0.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
     }
     private void Update(){
         if(!currentCamera){
@@ -71,11 +71,22 @@ public class GomokuControl : MonoBehaviour
         {
             if(grinfo[currentHover.x , currentHover.y] == 0 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
                 GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
-                grinfo[currentHover.x , currentHover.y] = 1;
+                //grinfo[currentHover.x , currentHover.y] = 1;
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                Debug.Log("Sending it");
+                Debug.Log("X: " + currentHover.x + "Y: " + currentHover.y);
                 BroadcastMessage("PiecePlaced");
             }
-            Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
+            //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
+        }
+        if(Input.GetMouseButtonDown(1)){
+            if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y)){
+                Debug.Log("Empty");
+            }
+            else{
+                Debug.Log("Filled");
+            }
         }
     }
     private void GenerateAlltiles(float tileSize, int tileCountX, int tileCountY){

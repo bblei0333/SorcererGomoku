@@ -9,14 +9,19 @@ public class PiecePool : MonoBehaviour
 
     public GameObject bp;
     public GameObject wp;
+    public GameObject bomb;
     private GameObject slot1;
     private GameObject slot2;
     private GameObject slot3;
+    public int nextPieceID;
     private int pcount = 0;
+    private int funnynum;
+    public int PID;
+    private int bing;
     public int[] pool = new int[40];
     Random rnd = new Random();
     
-    void Start()
+    private void realStart()
     {
         for(int x=0; x<8;){
             int r = rnd.Next(0, 40);
@@ -29,18 +34,25 @@ public class PiecePool : MonoBehaviour
         //Debug.Log(pool[x]);
         }
         slotView(0);
+        setID();
     }
     public GameObject setSlot(int num){
         if(pool[num] == 0){
-            return bp;
+            if(PID == 1){
+                return wp;
+            }
+            else{
+                return bp;
+            }
         }
         else{
-            return wp;
+            return bomb;
         }
     }
     void PiecePlaced(){
         pcount++;
         slotView(pcount);
+        setID();
     }
     public void slotView(int num){
         if(!slot1){
@@ -53,17 +65,32 @@ public class PiecePool : MonoBehaviour
         }
         for(int x=(0+num);x<(3+num);x++){
             if(x - num == 0){
-            slot1 = Instantiate(setSlot(x), new Vector3(6,0,(- 4 + (x-num))), Quaternion.identity);}
+            slot1 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);
+            funnynum = x;}
             if(x - num == 1){
-            slot2 = Instantiate(setSlot(x), new Vector3(6,0,(- 4 + (x-num))), Quaternion.identity);}
+            slot2 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);}
             if(x - num == 2){
-            slot3 = Instantiate(setSlot(x), new Vector3(6,0,(- 4 + (x-num))), Quaternion.identity);}
+            slot3 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);}
+        }
+    }
+    public void setID(){
+        if(setSlot(funnynum) == bp){
+            nextPieceID = 0;
+        }
+        if(setSlot(funnynum) == wp){
+            nextPieceID = 1;
+        }
+        if(setSlot(funnynum) == bomb){
+            nextPieceID = 2;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(GameObject.Find("Normy").GetComponent<Spawner>().ding != 0 && bing == 0){
+            bing++;
+            realStart();
+        }
     }
 }

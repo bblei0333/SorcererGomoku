@@ -5,7 +5,7 @@ using Normal.Realtime;
 
 public class IntSync : RealtimeComponent{
     //private int syncedint;
-    private IntSyncModel _model;
+    public IntSyncModel _model;
     public int gaga;
     private IntSyncModel model{
         set{
