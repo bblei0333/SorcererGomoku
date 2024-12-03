@@ -17,11 +17,11 @@ public class ByteSync : RealtimeComponent{
     public bool checkEmpty(int x, int y){
         int oned = ((y*15) + x);
         if(_model.bytes[oned] == (byte)0){
-            Debug.Log(oned + " empty");
+            //Debug.Log(oned + " empty");
             return true;
         }
         else{
-            Debug.Log(oned + " filled");
+            //Debug.Log(oned + " filled");
             return false;
         }
     }

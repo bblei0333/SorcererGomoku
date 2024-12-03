@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoNorm
       objectReference: {fileID: 0}
+    - target: {fileID: 5036364573926557325, guid: 5b3d3d8ddbc3842deae83baae0e69abb, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7482131706776998367, guid: 5b3d3d8ddbc3842deae83baae0e69abb, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

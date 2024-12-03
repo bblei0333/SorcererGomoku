@@ -478,6 +478,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 155c1cc0577824032ae2c5c40bd6f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offblack: {fileID: 1070268025}
+  offwhite: {fileID: 265525832}
+  offbomb: {fileID: 1964332241}
   bp: {fileID: 244399482}
   wp: {fileID: 1870641491}
   tileMaterial: {fileID: 2100000, guid: d29334704c3d047109f6b57196dfb210, type: 2}
@@ -529,6 +532,10 @@ PrefabInstance:
     - target: {fileID: 5036364573926557325, guid: 5b3d3d8ddbc3842deae83baae0e69abb, type: 3}
       propertyPath: m_Name
       value: OfflineBombpiece
+      objectReference: {fileID: 0}
+    - target: {fileID: 5036364573926557325, guid: 5b3d3d8ddbc3842deae83baae0e69abb, type: 3}
+      propertyPath: m_TagString
+      value: PiecesToKill
       objectReference: {fileID: 0}
     - target: {fileID: 7482131706776998367, guid: 5b3d3d8ddbc3842deae83baae0e69abb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -589,6 +596,7 @@ GameObject:
   - component: {fileID: 778070135}
   - component: {fileID: 778070136}
   - component: {fileID: 778070137}
+  - component: {fileID: 778070138}
   m_Layer: 0
   m_Name: Normy
   m_TagString: Untagged
@@ -685,6 +693,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gaga: 0
+  frame: 0
+  hold: 0
 --- !u!114 &778070137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,7 +707,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d777d619baae8470d8b267edeab283d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gaga: 0
+--- !u!114 &778070138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778070130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35a2f662768614a829f190ff1d1282f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  checkRadius: 0.1
 --- !u!1 &802072423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,6 +1140,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OfflineWhite
       objectReference: {fileID: 0}
+    - target: {fileID: 8202379022473767512, guid: 48193cd7b2afc45f494c4cf50fd0d07c, type: 3}
+      propertyPath: m_TagString
+      value: PiecesToKill
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7137836470249980859, guid: 48193cd7b2afc45f494c4cf50fd0d07c, type: 3}
     - {fileID: 6447440748245162257, guid: 48193cd7b2afc45f494c4cf50fd0d07c, type: 3}
@@ -1188,6 +1214,10 @@ PrefabInstance:
     - target: {fileID: 7528025628734582452, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
       propertyPath: m_Name
       value: OfflineBlack
+      objectReference: {fileID: 0}
+    - target: {fileID: 7528025628734582452, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
+      propertyPath: m_TagString
+      value: PiecesToKill
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2526412424093160091, guid: d5d19000d462a44f082bc9383502a69a, type: 3}

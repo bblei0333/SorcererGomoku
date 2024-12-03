@@ -11,8 +11,6 @@ public class Spawner : MonoBehaviour
     // Start is called before the first frame update
     private int ownerIDSelf {get;}
     public void doSpawn(string name, Vector3 spot, Quaternion rot){
-        Debug.Log("Calling");
-        GameObject.Find("Normy").GetComponent<IntSync>().Turn();
         Realtime.Instantiate(name, spot, rot);
     }
     void Connecter()

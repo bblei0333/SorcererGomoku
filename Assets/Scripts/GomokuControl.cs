@@ -6,6 +6,9 @@ public class GomokuControl : MonoBehaviour
 {
     private const int TILE_COUNT_X = 15;
     private const int TILE_COUNT_Y = 15;
+    public GameObject offblack;
+    public GameObject offwhite;
+    public GameObject offbomb;
 
     public GameObject bp;
     public GameObject wp;
@@ -36,20 +39,27 @@ public class GomokuControl : MonoBehaviour
         return new Vector3(x * tileSize, 0.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
     }
     public void SyncGrid(){
+        GameObject[] killList = GameObject.FindGameObjectsWithTag("PiecesToKill");
+        foreach (GameObject obj in killList){
+            Destroy(obj);
+        }
         for(int x = 0; x<225; x++){
             int xcord = x % 15;
             int ycord = x / 15;
             if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)1){
-                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("BpNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Instantiate(offblack, GetTileCenter(xcord, ycord), Quaternion.identity);
                 Debug.Log("black");
             }
             if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)2){
-                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("WpNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Instantiate(offwhite, GetTileCenter(xcord, ycord), Quaternion.identity);
                 Debug.Log("white");
             }
             if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)3){
-                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("BoNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
                 Debug.Log("bomb");
+            }
+            else{
+                Debug.Log(xcord + " " + ycord + "is full");
             }
         }
     }
@@ -104,6 +114,7 @@ public class GomokuControl : MonoBehaviour
                 Debug.Log("Sending it");
                 Debug.Log("X: " + currentHover.x + "Y: " + currentHover.y);
                 BroadcastMessage("PiecePlaced");
+                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                 SyncGrid();
             }
             //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
