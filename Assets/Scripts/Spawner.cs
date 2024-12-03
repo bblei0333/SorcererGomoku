@@ -10,17 +10,10 @@ public class Spawner : MonoBehaviour
     public int ID = 0;
     // Start is called before the first frame update
     private int ownerIDSelf {get;}
-    public void doSpawn(int num, Vector3 spot, Quaternion rot){
+    public void doSpawn(string name, Vector3 spot, Quaternion rot){
+        Debug.Log("Calling");
         GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 0){
-        Realtime.Instantiate("BpNorm", spot, rot);
-        }
-        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 1){
-        Realtime.Instantiate("WpNorm", spot, rot);
-        }
-        if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2){
-        Realtime.Instantiate("BoNorm", spot, rot);
-        }
+        Realtime.Instantiate(name, spot, rot);
     }
     void Connecter()
     {

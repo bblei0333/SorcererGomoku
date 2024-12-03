@@ -35,6 +35,24 @@ public class GomokuControl : MonoBehaviour
     private Vector3 GetTileCenter(int x, int y){
         return new Vector3(x * tileSize, 0.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
     }
+    public void SyncGrid(){
+        for(int x = 0; x<225; x++){
+            int xcord = x % 15;
+            int ycord = x / 15;
+            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)1){
+                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("BpNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Debug.Log("black");
+            }
+            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)2){
+                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("WpNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Debug.Log("white");
+            }
+            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[x] == (byte)3){
+                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn("BoNorm", GetTileCenter(xcord, ycord), Quaternion.identity);
+                Debug.Log("bomb");
+            }
+        }
+    }
     private void Update(){
         if(!currentCamera){
             currentCamera = Camera.main;
@@ -69,8 +87,10 @@ public class GomokuControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if(grinfo[currentHover.x , currentHover.y] == 0 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
-                GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
+            Debug.Log(GameObject.Find("Normy").GetComponent<Spawner>().ID);
+            Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
+            if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                //GameObject.Find("Normy").GetComponent<Spawner>().doSpawn(1, GetTileCenter(currentHover.x, currentHover.y), Quaternion.identity);
                 //grinfo[currentHover.x , currentHover.y] = 1;
                 if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 0){
                 GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
@@ -84,6 +104,7 @@ public class GomokuControl : MonoBehaviour
                 Debug.Log("Sending it");
                 Debug.Log("X: " + currentHover.x + "Y: " + currentHover.y);
                 BroadcastMessage("PiecePlaced");
+                SyncGrid();
             }
             //Debug.Log(currentHover + " " + grinfo[currentHover.x , currentHover.y]);
             CheckForWin(1);
@@ -91,6 +112,7 @@ public class GomokuControl : MonoBehaviour
         if(Input.GetMouseButtonDown(1)){
             if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y)){
                 Debug.Log("Empty");
+                Debug.Log(currentHover);
             }
             else{
                 Debug.Log("Filled");

@@ -6,15 +6,13 @@ using Normal.Realtime;
 public class ByteSync : RealtimeComponent{
     //private int syncedint;
     public ByteSyncModel _model;
-    private ByteSyncModel model{
+    public ByteSyncModel model{
         get{
             return _model;
         }
         set{
             _model = value;
         }
-    }
-    private void manualUpdate(){
     }
     public bool checkEmpty(int x, int y){
         int oned = ((y*15) + x);
