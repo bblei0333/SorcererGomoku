@@ -20,7 +20,7 @@ public class GomokuControl : MonoBehaviour
     [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
 
-        private int clientID {get;}
+    private int clientID {get;}
     void Start(){
         // Debugging and initialization of components
         Debug.Log("Client ID: " + clientID);
@@ -55,7 +55,17 @@ public class GomokuControl : MonoBehaviour
             } else if (state == 2){
                 Instantiate(offwhite, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 3){
-                Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
+                GameObject thingToDie = Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord -1 , ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord +1, ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord + 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord - 1, ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + 1, ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord - 1, ycord + 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + 1, ycord + 1, 0);
+                SyncGrid();
             }
         }
     }
@@ -76,16 +86,24 @@ public class GomokuControl : MonoBehaviour
             // Handle tile hover
             if (currentHover == -Vector2Int.one){
                 currentHover = hitPosition;
+                if(PiecePool.nextPieceID =! 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
+                else{
+                    
+                }
             }
             else{
                 // Revert the old hover tile and apply hover to the new tile
                 tiles[currentHover.x, currentHover.y].layer = LayerMask.NameToLayer("Tile");
                 tiles[currentHover.x, currentHover.y].GetComponent<MeshRenderer>().material = tileMaterial;
                 currentHover = hitPosition;
+                if(PiecePool.nextPieceID =! 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
+                else{
+
+                }
             }
         }
         else{
