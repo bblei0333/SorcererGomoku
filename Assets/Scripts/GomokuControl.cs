@@ -178,8 +178,14 @@ public class GomokuControl : MonoBehaviour
         return -Vector2Int.one; // Return invalid position if not found
     }
 
+    
+    private int coordToInt(int x, int y){
+        return y*15+x;
+    }
+
     private void CheckForWin(int player){
         // Check for a winning condition for the given player (1 = player 1, 2 = player 2)
+        /*
         for (int row = 0; row < 15; row++){
             for (int col = 0; col < 15; col++){
                 if (grinfo[row, col] == player){
@@ -200,6 +206,18 @@ public class GomokuControl : MonoBehaviour
                         grinfo[row + 3, col - 3] == player && grinfo[row + 4, col - 4] == player){
                         Debug.Log(player + " wins!");
                     }
+                }
+            }
+        }
+    }
+    */
+        for (int spaceInt = 0; spaceInt < 225; spaceInt++)
+        {
+            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[spaceInt] == (byte)player){
+                int xCoord = spaceInt % 15;
+                int yCoord = spaceInt / 15;
+                if (yCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+4)] == (byte)player){
+                    
                 }
             }
         }
