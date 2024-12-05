@@ -5,92 +5,109 @@ using Random = System.Random;
 
 public class PiecePool : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public GameObject bp; // Black piece prefab
+    public GameObject wp; // White piece prefab
+    public GameObject bomb; // Bomb piece prefab
+    private GameObject slot1; // Slot for the first piece
+    private GameObject slot2; // Slot for the second piece
+    private GameObject slot3; // Slot for the third piece
+    public int nextPieceID; // ID of the next piece to place
+    private int pcount = 0; // Piece count (how many pieces have been placed)
+    private int funnynum; // The index of the current piece being displayed
+    public int PID; // Player ID (used for determining which piece to use)
+    private int bing; // A flag to ensure `realStart` is only called once
+    public int[] pool = new int[40]; // Pool that determines which pieces are available
+    Random rnd = new Random(); // Random number generator
 
-    public GameObject bp;
-    public GameObject wp;
-    public GameObject bomb;
-    private GameObject slot1;
-    private GameObject slot2;
-    private GameObject slot3;
-    public int nextPieceID;
-    private int pcount = 0;
-    private int funnynum;
-    public int PID;
-    private int bing;
-    public int[] pool = new int[40];
-    Random rnd = new Random();
-    
+    // Called at the start of the game or when setting up the pool
     private void realStart()
     {
-        for(int x=0; x<8;){
-            int r = rnd.Next(0, 40);
-            if(pool[r] == 0){
-                pool[r] = 3;
-                x++;
+        // Randomly assign bombs to 8 positions in the pool
+        for (int x = 0; x < 8;)
+        {
+            int r = rnd.Next(0, 40); // Randomly choose an index
+            if (pool[r] == 0) // If the slot is empty
+            {
+                pool[r] = 3; // Assign a bomb
+                x++; // Increment the count of bombs
             }
         }
-        for(int x=0; x<40; x++){
-        //Debug.Log(pool[x]);
-        }
-        slotView(0);
-        setID();
+        // Optionally log pool values for debugging
+        // for (int x = 0; x < 40; x++) { Debug.Log(pool[x]); }
+
+        slotView(0); // Display the first set of pieces
+        setID(); // Set the ID of the next piece
     }
-    public GameObject setSlot(int num){
-        if(pool[num] == 0){
-            if(PID == 1){
-                return wp;
-            }
-            else{
-                return bp;
-            }
+
+    // Sets the slot for a given piece index, returns a prefab based on piece type
+    public GameObject setSlot(int num)
+    {
+        if (pool[num] == 0) // If the slot is empty, return the appropriate piece (based on player ID)
+        {
+            return PID == 1 ? wp : bp; // If player 1, return white piece; otherwise, black piece
         }
-        else{
-            return bomb;
+        else
+        {
+            return bomb; // Otherwise, return a bomb piece
         }
     }
-    void PiecePlaced(){
-        pcount++;
-        slotView(pcount);
-        setID();
+
+    // Called when a piece is placed, increments piece count and updates the slots
+    void PiecePlaced()
+    {
+        pcount++; // Increment the piece count
+        slotView(pcount); // Update the slots with the new piece
+        setID(); // Update the next piece ID based on the current piece
     }
-    public void slotView(int num){
-        if(!slot1){
-            //teehee
-        }
-        else{
+
+    // Updates the visible slots based on the current piece count
+    public void slotView(int num)
+    {
+        // If the slots are already instantiated, destroy them before creating new ones
+        if (slot1) 
+        {
             Destroy(slot1);
             Destroy(slot2);
             Destroy(slot3);
         }
-        for(int x=(0+num);x<(3+num);x++){
-            if(x - num == 0){
-            slot1 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);
-            funnynum = x;}
-            if(x - num == 1){
-            slot2 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);}
-            if(x - num == 2){
-            slot3 = Instantiate(setSlot(x), new Vector3(6,0.6f,(- 4 + (x-num))), Quaternion.identity);}
+
+        // Instantiate the next 3 slots (based on the current piece count)
+        for (int x = num; x < num + 3; x++)
+        {
+            Vector3 position = new Vector3(6, 0.6f, -4 + (x - num)); // Set position for each slot
+            if (x - num == 0)
+            {
+                slot1 = Instantiate(setSlot(x), position, Quaternion.identity);
+                funnynum = x; // Save the current piece index for future reference
+            }
+            else if (x - num == 1)
+            {
+                slot2 = Instantiate(setSlot(x), position, Quaternion.identity);
+            }
+            else if (x - num == 2)
+            {
+                slot3 = Instantiate(setSlot(x), position, Quaternion.identity);
+            }
         }
     }
-    public void setID(){
-        if(setSlot(funnynum) == bp){
-            nextPieceID = 0;
-        }
-        if(setSlot(funnynum) == wp){
-            nextPieceID = 1;
-        }
-        if(setSlot(funnynum) == bomb){
-            nextPieceID = 2;
-        }
+
+    // Set the ID of the next piece to place based on the current piece type
+    public void setID()
+    {
+        // Determine the next piece ID based on the current piece's type
+        if (setSlot(funnynum) == bp) nextPieceID = 0; // Black piece
+        if (setSlot(funnynum) == wp) nextPieceID = 1; // White piece
+        if (setSlot(funnynum) == bomb) nextPieceID = 2; // Bomb piece
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(GameObject.Find("Normy").GetComponent<Spawner>().ding != 0 && bing == 0){
-            bing++;
-            realStart();
+        // Ensure the pool setup is done only once after the client connects
+        if (GameObject.Find("Normy").GetComponent<Spawner>().ding != 0 && bing == 0)
+        {
+            bing++; // Flag that the setup is done
+            realStart(); // Set up the pool and slots
         }
     }
 }
