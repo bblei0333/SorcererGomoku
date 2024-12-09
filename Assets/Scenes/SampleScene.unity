@@ -473,6 +473,7 @@ MonoBehaviour:
   offbomb: {fileID: 3881926693229515779, guid: 616eb8cf131b5493f91dbb183a66164c, type: 3}
   tileMaterial: {fileID: 2100000, guid: d29334704c3d047109f6b57196dfb210, type: 2}
   hoverMaterial: {fileID: 2100000, guid: e1e8538ac53bc41d098e6c90e687e2b5, type: 2}
+  BombHover: {fileID: 2100000, guid: cfc91f44ca4884ea486c7bbacd70ebec, type: 2}
   tileSize: 0.715
   yOffset: 1
   boardCenter: {x: 0, y: 0, z: 0}
@@ -603,10 +604,16 @@ MonoBehaviour:
   - componentID: 2
     component: {fileID: 0}
   - componentID: 3
-    component: {fileID: 778070136}
+    component: {fileID: 0}
   - componentID: 4
-    component: {fileID: 778070137}
+    component: {fileID: 0}
   - componentID: 5
+    component: {fileID: 0}
+  - componentID: 6
+    component: {fileID: 778070136}
+  - componentID: 7
+    component: {fileID: 778070137}
+  - componentID: 8
     component: {fileID: 778070139}
   _childViews: []
 --- !u!114 &778070136

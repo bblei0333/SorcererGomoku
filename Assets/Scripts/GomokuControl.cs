@@ -16,6 +16,7 @@ public class GomokuControl : MonoBehaviour
     private Vector3 bounds; // Grid bounds for positioning tiles
     [SerializeField] private Material tileMaterial; // Material for normal tiles
     [SerializeField] private Material hoverMaterial; // Material for hovered tiles
+    [SerializeField] private Material BombHover; // Material for hovered tiles
     [SerializeField] private float tileSize = 0.05f; // Size of each tile
     [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
@@ -90,6 +91,8 @@ public class GomokuControl : MonoBehaviour
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
+                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = BombHover;
                     
                 }
             }
@@ -102,7 +105,9 @@ public class GomokuControl : MonoBehaviour
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
-
+                tiles[hitPosition.x, hitPosition.y].transform.localScale = new Vector3(3f, 1f, 3f);
+                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = BombHover;
                 }
             }
         }
