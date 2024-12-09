@@ -133,6 +133,7 @@ public class GomokuControl : MonoBehaviour
                 SyncGrid(); // Sync the grid after placing a piece
             }
             CheckForWin(1); // Check for a win condition for player 1 (black)
+            CheckForWin(2);
         }
 
         // Right-click to check if a tile is filled or empty
@@ -196,8 +197,14 @@ public class GomokuControl : MonoBehaviour
         return -Vector2Int.one; // Return invalid position if not found
     }
 
-    private void CheckForWin(int player){
+    
+    private int coordToInt(int x, int y){
+        return y*15+x;
+    }
+
+    public void CheckForWin(int player){
         // Check for a winning condition for the given player (1 = player 1, 2 = player 2)
+        /*
         for (int row = 0; row < 15; row++){
             for (int col = 0; col < 15; col++){
                 if (grinfo[row, col] == player){
@@ -219,6 +226,28 @@ public class GomokuControl : MonoBehaviour
                         Debug.Log(player + " wins!");
                     }
                 }
+            }
+        }
+    }
+    */
+        for (int spaceInt = 0; spaceInt < 225; spaceInt++)
+        {
+            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[spaceInt] == (byte)player){
+                int xCoord = spaceInt % 15;
+                int yCoord = spaceInt / 15;
+                if (yCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+4)] == (byte)player){
+                    Debug.Log(player + "wins");
+                }
+                if (xCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord)] == (byte)player){
+                    Debug.Log(player + "wins");
+                }
+                if (xCoord < 11 && yCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord+1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord+2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord+3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord+4)] == (byte)player){
+                    Debug.Log(player + "wins");
+                }
+                if (xCoord < 11 && yCoord > 3 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord-1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord-2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord-3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord-4)] == (byte)player){
+                    Debug.Log(player + "wins");
+                }
+                
             }
         }
     }

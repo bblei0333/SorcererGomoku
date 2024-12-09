@@ -25,7 +25,7 @@ public class ByteSync : RealtimeComponent{
         }
     }
     public void doPlace(int x, int y, int bID){
-        int oned = ((y*15) + x);
+        int oned = y*15 + x;
         byte[] bytes = model.bytes;
         model.bytes[oned] = (byte)bID;
         Debug.Log("Set at: " + oned + " equals " + model.bytes[oned]);
