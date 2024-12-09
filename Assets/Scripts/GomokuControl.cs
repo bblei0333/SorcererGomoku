@@ -9,6 +9,9 @@ public class GomokuControl : MonoBehaviour
     public GameObject offblack; // Black piece prefab
     public GameObject offwhite; // White piece prefab
     public GameObject offbomb;  // Bomb piece prefab
+
+    public GameObject stone; 
+
     public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
     private GameObject[,] tiles; // Array to store tile objects
     private Camera currentCamera; // Camera reference for raycasting
@@ -56,6 +59,8 @@ public class GomokuControl : MonoBehaviour
                 Instantiate(offwhite, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 3){
                 Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 4){
+                Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
             }
         }
     }
@@ -114,8 +119,8 @@ public class GomokuControl : MonoBehaviour
                 GameObject.Find("Normy").GetComponent<PlaySync>().Play();
                 SyncGrid(); // Sync the grid after placing a piece
             }
-            CheckForWin(1); // Check for a win condition for player 1 (black)
-            CheckForWin(2);
+            CheckForWin(1); // Check for a win condition for player 1 (black) on client side
+            CheckForWin(2); // Check for a win condition for player 2 (white) on client side
         }
 
         // Right-click to check if a tile is filled or empty

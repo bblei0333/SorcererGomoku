@@ -8,6 +8,7 @@ public class PiecePool : MonoBehaviour
     public GameObject bp; // Black piece prefab
     public GameObject wp; // White piece prefab
     public GameObject bomb; // Bomb piece prefab
+    public GameObject stone;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -22,14 +23,21 @@ public class PiecePool : MonoBehaviour
     // Called at the start of the game or when setting up the pool
     private void realStart()
     {
-        // Randomly assign bombs to 8 positions in the pool
+        // Randomly assign powerups to 8 positions in the pool
         for (int x = 0; x < 8;)
         {
             int r = rnd.Next(0, 40); // Randomly choose an index
             if (pool[r] == 0) // If the slot is empty
             {
-                pool[r] = 3; // Assign a bomb
-                x++; // Increment the count of bombs
+                int randPowerUp = rnd.Next(0,2);
+                if(randPowerUp == 0){
+                    pool[r] = 3; // Assign a bomb
+                }
+                else{
+                    pool[r] = 4; // Assign a stone
+                }
+                
+                x++; // Increment the count of powerups
             }
         }
         // Optionally log pool values for debugging
@@ -48,7 +56,13 @@ public class PiecePool : MonoBehaviour
         }
         else
         {
-            return bomb; // Otherwise, return a bomb piece
+            if(pool[num] == 3){
+                return bomb;
+            }
+            else{
+                return stone;
+            }
+            
         }
     }
 
@@ -98,6 +112,7 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == bp) nextPieceID = 0; // Black piece
         if (setSlot(funnynum) == wp) nextPieceID = 1; // White piece
         if (setSlot(funnynum) == bomb) nextPieceID = 2; // Bomb piece
+        if (setSlot(funnynum) == stone) nextPieceID = 3; //Stone piece
     }
 
     // Update is called once per frame

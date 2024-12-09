@@ -18,6 +18,7 @@ public class PlaySync : RealtimeComponent{
         if(papa != _model.play){
             papa = _model.play;
             GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().SyncGrid();
+            //check for win for both pieces when opponent goes. 
             GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().CheckForWin(1);
             GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().CheckForWin(2);
         }
