@@ -86,7 +86,7 @@ public class GomokuControl : MonoBehaviour
             // Handle tile hover
             if (currentHover == -Vector2Int.one){
                 currentHover = hitPosition;
-                if(PiecePool.nextPieceID =! 2){
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
@@ -98,7 +98,7 @@ public class GomokuControl : MonoBehaviour
                 tiles[currentHover.x, currentHover.y].layer = LayerMask.NameToLayer("Tile");
                 tiles[currentHover.x, currentHover.y].GetComponent<MeshRenderer>().material = tileMaterial;
                 currentHover = hitPosition;
-                if(PiecePool.nextPieceID =! 2){
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
