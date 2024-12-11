@@ -9,6 +9,8 @@ public class GomokuControl : MonoBehaviour
     public GameObject offblack; // Black piece prefab
     public GameObject offwhite; // White piece prefab
     public GameObject offbomb;  // Bomb piece prefab
+    private GameObject bomby;
+    public GameObject bombhover;
     public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
     private GameObject[,] tiles; // Array to store tile objects
     private Camera currentCamera; // Camera reference for raycasting
@@ -16,7 +18,6 @@ public class GomokuControl : MonoBehaviour
     private Vector3 bounds; // Grid bounds for positioning tiles
     [SerializeField] private Material tileMaterial; // Material for normal tiles
     [SerializeField] private Material hoverMaterial; // Material for hovered tiles
-    [SerializeField] private Material BombHover; // Material for hovered tiles
     [SerializeField] private float tileSize = 0.05f; // Size of each tile
     [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
@@ -92,12 +93,15 @@ public class GomokuControl : MonoBehaviour
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = BombHover;
+                if(bomby == null){
+                bomby = Instantiate(bombhover, GetTileCenter(hitPosition.x, hitPosition.y), Quaternion.identity);
+                }
                     
                 }
             }
             else{
                 // Revert the old hover tile and apply hover to the new tile
+                Destroy(bomby);
                 tiles[currentHover.x, currentHover.y].layer = LayerMask.NameToLayer("Tile");
                 tiles[currentHover.x, currentHover.y].GetComponent<MeshRenderer>().material = tileMaterial;
                 currentHover = hitPosition;
@@ -105,9 +109,8 @@ public class GomokuControl : MonoBehaviour
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
                 tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
                 else{
-                tiles[hitPosition.x, hitPosition.y].transform.localScale = new Vector3(3f, 1f, 3f);
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = BombHover;
+                bomby = Instantiate(bombhover, GetTileCenter(hitPosition.x, hitPosition.y), Quaternion.identity);
                 }
             }
         }
@@ -123,8 +126,19 @@ public class GomokuControl : MonoBehaviour
         // Handle piece placement logic when left-click is pressed
         if (Input.GetMouseButtonDown(0)){
             Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                // Handle piece placement based on the next piece ID (black, white, bomb)
+                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
 
-            if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
+                Debug.Log("Sending piece placement at: " + currentHover);
+                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                SyncGrid(); // Sync the grid after placing a piece
+            }
+
+            else if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
                GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
 
                 // Handle piece placement based on the next piece ID (black, white, bomb)
