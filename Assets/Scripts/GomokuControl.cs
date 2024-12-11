@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Random = System.Random;
 public class GomokuControl : MonoBehaviour
 {
     private const int TILE_COUNT_X = 15;
@@ -22,6 +22,8 @@ public class GomokuControl : MonoBehaviour
     [SerializeField] private float tileSize = 0.05f; // Size of each tile
     [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
+
+    Random rnd = new Random();
 
         private int clientID {get;}
     void Start(){
@@ -105,13 +107,27 @@ public class GomokuControl : MonoBehaviour
         // Handle piece placement logic when left-click is pressed
         if (Input.GetMouseButtonDown(0)){
             Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                int stonesPlaced = 0;
+                while(stonesPlaced != 2){
+                    int rndSpot = rnd.Next(0, 225);
+                    int rndXCoord = rndSpot % 15;
+                    int rndYCoord = rndSpot / 15;
+                    if(!GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(rndXCoord, rndYCoord)){
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(rndXCoord, rndYCoord, 4);
+                        stonesPlaced++;
+                    }
+                }
+            }
 
             if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
                GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
 
                 // Handle piece placement based on the next piece ID (black, white, bomb)
                 int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+                if(pieceID != 3){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+                }
 
                 Debug.Log("Sending piece placement at: " + currentHover);
                 BroadcastMessage("PiecePlaced"); // Notify that a piece was placed

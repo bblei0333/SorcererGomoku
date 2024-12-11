@@ -35,6 +35,7 @@ public class PiecePool : MonoBehaviour
                 }
                 else{
                     pool[r] = 4; // Assign a stone
+                    Debug.Log("Stone added. pool[r] = 4");
                 }
                 
                 x++; // Increment the count of powerups
@@ -60,6 +61,7 @@ public class PiecePool : MonoBehaviour
                 return bomb;
             }
             else{
+                Debug.Log("Returning stone");
                 return stone;
             }
             
@@ -91,15 +93,24 @@ public class PiecePool : MonoBehaviour
             Vector3 position = new Vector3(6, 0.6f, -4 + (x - num)); // Set position for each slot
             if (x - num == 0)
             {
+                if(setSlot(x) == stone){
+                    Debug.Log("setSlot(x) == stone");
+                }
                 slot1 = Instantiate(setSlot(x), position, Quaternion.identity);
                 funnynum = x; // Save the current piece index for future reference
             }
             else if (x - num == 1)
             {
+                if(setSlot(x) == stone){
+                    Debug.Log("setSlot(x) == stone");
+                }
                 slot2 = Instantiate(setSlot(x), position, Quaternion.identity);
             }
             else if (x - num == 2)
             {
+                if(setSlot(x) == stone){
+                    Debug.Log("setSlot(x) == stone");
+                }
                 slot3 = Instantiate(setSlot(x), position, Quaternion.identity);
             }
         }
