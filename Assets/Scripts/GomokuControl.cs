@@ -12,6 +12,8 @@ public class GomokuControl : MonoBehaviour
 
     public GameObject stone; 
 
+    public GameObject share;
+
     public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
     private GameObject[,] tiles; // Array to store tile objects
     private Camera currentCamera; // Camera reference for raycasting
@@ -63,6 +65,8 @@ public class GomokuControl : MonoBehaviour
                 Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 4){
                 Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 5){
+                Instantiate(share, GetTileCenter(xcord, ycord), Quaternion.identity);
             }
         }
     }
@@ -205,34 +209,9 @@ public class GomokuControl : MonoBehaviour
         return y*15+x;
     }
 
+    /*
     public void CheckForWin(int player){
-        // Check for a winning condition for the given player (1 = player 1, 2 = player 2)
-        /*
-        for (int row = 0; row < 15; row++){
-            for (int col = 0; col < 15; col++){
-                if (grinfo[row, col] == player){
-                    // Check horizontal, vertical, and diagonal lines for 5 consecutive pieces
-                    if (col < 11 && grinfo[row, col + 1] == player && grinfo[row, col + 2] == player &&
-                        grinfo[row, col + 3] == player && grinfo[row, col + 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && grinfo[row + 1, col] == player && grinfo[row + 2, col] == player &&
-                        grinfo[row + 3, col] == player && grinfo[row + 4, col] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && col < 11 && grinfo[row + 1, col + 1] == player && grinfo[row + 2, col + 2] == player &&
-                        grinfo[row + 3, col + 3] == player && grinfo[row + 4, col + 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && col > 3 && grinfo[row + 1, col - 1] == player && grinfo[row + 2, col - 2] == player &&
-                        grinfo[row + 3, col - 3] == player && grinfo[row + 4, col - 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                }
-            }
-        }
-    }
-    */
+    
         for (int spaceInt = 0; spaceInt < 225; spaceInt++)
         {
             if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[spaceInt] == (byte)player){
@@ -254,4 +233,49 @@ public class GomokuControl : MonoBehaviour
             }
         }
     }
+    */
+  
+    public void CheckForWin(int player)
+    {
+        var byteSync = GameObject.Find("Normy").GetComponent<ByteSync>();
+        var bytes = byteSync._model.bytes;
+
+        // Helper function to check for a win in a specific direction
+        bool CheckDirection(int x, int y, int dx, int dy)
+        {
+            for (int i = 1; i <= 4; i++)
+            {
+                int nx = x + i * dx;
+                int ny = y + i * dy;
+                if (nx < 0 || nx >= 15 || ny < 0 || ny >= 15 || 
+                    (bytes[coordToInt(nx, ny)] != (byte)player && bytes[coordToInt(nx, ny)] != (byte)5))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        for (int spaceInt = 0; spaceInt < 225; spaceInt++)
+        {
+            if (bytes[spaceInt] == (byte)player || bytes[spaceInt] == (byte)5)
+            {
+                int xCoord = spaceInt % 15;
+                int yCoord = spaceInt / 15;
+
+                // Check in all directions: vertical, horizontal, diagonal-down, diagonal-up
+                if ((yCoord < 11 && CheckDirection(xCoord, yCoord, 0, 1)) ||       // Vertical
+                    (xCoord < 11 && CheckDirection(xCoord, yCoord, 1, 0)) ||       // Horizontal
+                    (xCoord < 11 && yCoord < 11 && CheckDirection(xCoord, yCoord, 1, 1)) || // Diagonal-down
+                    (xCoord < 11 && yCoord > 3 && CheckDirection(xCoord, yCoord, 1, -1)))   // Diagonal-up
+                {
+                    Debug.Log(player + " wins");
+                    return; // Exit early after finding a win
+                }
+            }
+        }
+    }
+
 }
+
+

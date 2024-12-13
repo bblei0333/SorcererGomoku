@@ -9,6 +9,7 @@ public class PiecePool : MonoBehaviour
     public GameObject wp; // White piece prefab
     public GameObject bomb; // Bomb piece prefab
     public GameObject stone;
+    public GameObject share;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -29,13 +30,17 @@ public class PiecePool : MonoBehaviour
             int r = rnd.Next(0, 40); // Randomly choose an index
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = rnd.Next(0,2);
+                int randPowerUp = rnd.Next(0,3);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
                 }
-                else{
+                if(randPowerUp == 1){
                     pool[r] = 4; // Assign a stone
                     Debug.Log("Stone added. pool[r] = 4");
+                }
+                if(randPowerUp == 2){
+                    pool[r] = 5; // Assign a share
+                    Debug.Log("Share added. pool[r] = 5");
                 }
                 
                 x++; // Increment the count of powerups
@@ -60,9 +65,13 @@ public class PiecePool : MonoBehaviour
             if(pool[num] == 3){
                 return bomb;
             }
-            else{
+            if(pool[num] == 4){
                 Debug.Log("Returning stone");
                 return stone;
+            }
+            else{
+                Debug.Log("Returning share");
+                return share;
             }
             
         }
@@ -124,6 +133,7 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == wp) nextPieceID = 1; // White piece
         if (setSlot(funnynum) == bomb) nextPieceID = 2; // Bomb piece
         if (setSlot(funnynum) == stone) nextPieceID = 3; //Stone piece
+        if (setSlot(funnynum) == share) nextPieceID = 4; //Share piece
     }
 
     // Update is called once per frame
