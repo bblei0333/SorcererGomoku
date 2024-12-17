@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
 public class PiecePool : MonoBehaviour
 {
     public GameObject bp; // Black piece prefab
+    public Canvas canvas;
     public GameObject wp; // White piece prefab
     public GameObject bomb; // Bomb piece prefab
     private GameObject slot1; // Slot for the first piece
@@ -74,19 +76,25 @@ public class PiecePool : MonoBehaviour
         // Instantiate the next 3 slots (based on the current piece count)
         for (int x = num; x < num + 3; x++)
         {
-            Vector3 position = new Vector3(6, 0.6f, -4 + (x - num)); // Set position for each slot
+            Vector2 position = new Vector2(630, (400 - (85 * (x - num)))); // Set position for each slot
             if (x - num == 0)
             {
-                slot1 = Instantiate(setSlot(x), position, Quaternion.identity);
+                slot1 = Instantiate(setSlot(x), canvas.transform);
+                RectTransform rectTransform = slot1.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = position;
                 funnynum = x; // Save the current piece index for future reference
             }
             else if (x - num == 1)
             {
-                slot2 = Instantiate(setSlot(x), position, Quaternion.identity);
+                slot2 = Instantiate(setSlot(x), canvas.transform);
+                RectTransform rectTransform = slot2.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = position;
             }
             else if (x - num == 2)
             {
-                slot3 = Instantiate(setSlot(x), position, Quaternion.identity);
+                slot3 = Instantiate(setSlot(x), canvas.transform);
+                RectTransform rectTransform = slot3.GetComponent<RectTransform>();
+                rectTransform.anchoredPosition = position;
             }
         }
     }
