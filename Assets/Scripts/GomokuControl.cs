@@ -9,11 +9,9 @@ public class GomokuControl : MonoBehaviour
     public GameObject offblack; // Black piece prefab
     public GameObject offwhite; // White piece prefab
     public GameObject offbomb;  // Bomb piece prefab
-
     public GameObject stone; 
-
     public GameObject share;
-
+    public GameObject doubleAgent;
     public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
     private GameObject[,] tiles; // Array to store tile objects
     private Camera currentCamera; // Camera reference for raycasting
@@ -67,6 +65,8 @@ public class GomokuControl : MonoBehaviour
                 Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 5){
                 Instantiate(share, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 6){
+                Instantiate(doubleAgent, GetTileCenter(xcord, ycord), Quaternion.identity);
             }
         }
     }
@@ -117,11 +117,26 @@ public class GomokuControl : MonoBehaviour
                     int rndSpot = rnd.Next(0, 225);
                     int rndXCoord = rndSpot % 15;
                     int rndYCoord = rndSpot / 15;
-                    if(!GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(rndXCoord, rndYCoord)){
+                    if(!GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(rndXCoord, rndYCoord) && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[rndSpot] != (byte)4){
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(rndXCoord, rndYCoord, 4);
                         stonesPlaced++;
                     }
                 }
+            }
+            int agentTriggered = 0;
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                //checks if clicked space == black or share and client == white
+                
+                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                    agentTriggered = 1;
+                } 
+                //checks if clicked space == white or share and client == black
+                else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                    agentTriggered = 1;
+                }
+                
             }
 
             if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
@@ -129,14 +144,24 @@ public class GomokuControl : MonoBehaviour
 
                 // Handle piece placement based on the next piece ID (black, white, bomb)
                 int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-                if(pieceID != 3){
+                if(pieceID != 3 && pieceID != 5){
                     GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
                 }
 
-                Debug.Log("Sending piece placement at: " + currentHover);
-                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
-                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                
+                if(pieceID != 5){
+                    Debug.Log("Sending piece placement at: " + currentHover);
+                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+                    GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                    GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                } else if(agentTriggered == 1){
+                    GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                    GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                    Debug.Log("Sending piece placement at: " + currentHover);
+                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+                }
+                
+        
                 SyncGrid(); // Sync the grid after placing a piece
             }
             CheckForWin(1); // Check for a win condition for player 1 (black) on client side
