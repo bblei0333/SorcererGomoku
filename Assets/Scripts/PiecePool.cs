@@ -11,6 +11,7 @@ public class PiecePool : MonoBehaviour
     public GameObject stone;
     public GameObject share;
     public GameObject doubleAgent;
+    public GameObject sniper;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -31,23 +32,27 @@ public class PiecePool : MonoBehaviour
             int r = rnd.Next(0, 40); // Randomly choose an index
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = rnd.Next(0,4);
+                int randPowerUp = rnd.Next(0,5);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
                 }
                 if(randPowerUp == 1){
                     if(r > 3){
                         pool[r] = 4; // Assign a stone
-                        Debug.Log("Stone added. pool[r] = 4");
+                        Debug.Log("Stone added");
                     }
                 }
                 if(randPowerUp == 2){
                     pool[r] = 5; // Assign a share
-                    Debug.Log("Share added. pool[r] = 5");
+                    Debug.Log("Share added");
                 }
                 if(randPowerUp == 3){
                     pool[r] = 6; // Assign a doubleAgent
-                    Debug.Log("DoubleAgent added. pool[r] = 6");
+                    Debug.Log("DoubleAgent added");
+                }
+                if(randPowerUp == 4){
+                    pool[r] = 7; // Assign a sniper
+                    Debug.Log("Sniper added");
                 }
                 x++; // Increment the count of powerups
             }
@@ -72,16 +77,20 @@ public class PiecePool : MonoBehaviour
                 return bomb;
             }
             if(pool[num] == 4){
-                Debug.Log("Returning stone");
+                //Debug.Log("Returning stone");
                 return stone;
             }
             if(pool[num] == 5){
-                Debug.Log("Returning share");
+                //Debug.Log("Returning share");
                 return share;
             }
-            else{
-                Debug.Log("Returning doubleAgent");
+            if(pool[num] == 6){
+                //Debug.Log("Returning doubleAgent");
                 return doubleAgent;
+            }
+            else{
+                //Debug.Log("Returning sniper");
+                return sniper;
             }
             
         }
@@ -112,18 +121,24 @@ public class PiecePool : MonoBehaviour
             Vector3 position = new Vector3(6, 0.6f, -4 + (x - num)); // Set position for each slot
             if (x - num == 0)
             {
-                
+                if(setSlot(x) == sniper){
+                    Debug.Log("setting Sniper");
+                }
                 slot1 = Instantiate(setSlot(x), position, Quaternion.identity);
                 funnynum = x; // Save the current piece index for future reference
             }
             else if (x - num == 1)
             {
-                
+                if(setSlot(x) == sniper){
+                    Debug.Log("setting Sniper");
+                }
                 slot2 = Instantiate(setSlot(x), position, Quaternion.identity);
             }
             else if (x - num == 2)
             {
-                
+                if(setSlot(x) == sniper){
+                    Debug.Log("setting Sniper");
+                }
                 slot3 = Instantiate(setSlot(x), position, Quaternion.identity);
             }
         }
@@ -139,6 +154,7 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == stone) nextPieceID = 3; //Stone piece
         if (setSlot(funnynum) == share) nextPieceID = 4; //Share piece
         if (setSlot(funnynum) == doubleAgent) nextPieceID = 5; //DoubleAgent piece
+        if (setSlot(funnynum) == sniper) nextPieceID = 6; //Sniper piece
     }
 
     // Update is called once per frame
