@@ -13,6 +13,7 @@ public class PiecePool : MonoBehaviour
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
+    private GameObject hold;
     public int nextPieceID; // ID of the next piece to place
     private int pcount = 0; // Piece count (how many pieces have been placed)
     private int funnynum; // The index of the current piece being displayed
@@ -39,6 +40,30 @@ public class PiecePool : MonoBehaviour
 
         slotView(0); // Display the first set of pieces
         setID(); // Set the ID of the next piece
+    }
+    public void doHold(){
+        if(!hold){
+            hold = Instantiate(setSlot(pcount), canvas.transform);
+            RectTransform rectTransform3 = hold.GetComponent<RectTransform>();
+            rectTransform3.anchoredPosition = new Vector2(-630, 400);
+            PiecePlaced();
+        }
+        else{
+            GameObject swap1 = hold;
+            GameObject swap2 = slot1;
+            Destroy(hold);
+            Destroy(slot1);
+            slot1 = Instantiate(swap1, canvas.transform);
+            RectTransform rectTransform1 = slot1.GetComponent<RectTransform>();
+            rectTransform1.anchoredPosition = new Vector2(630,400);
+            hold = Instantiate(swap2, canvas.transform);
+            RectTransform rectTransform2 = hold.GetComponent<RectTransform>();
+            rectTransform2.anchoredPosition = new Vector2(-630,400);
+            // Determine the next piece ID based on the current piece's type
+            if (swap1 == bp) nextPieceID = 0; // Black piece
+            if (swap1 == wp) nextPieceID = 1; // White piece
+            if (swap1 == bomb) nextPieceID = 2;
+        }
     }
 
     // Sets the slot for a given piece index, returns a prefab based on piece type

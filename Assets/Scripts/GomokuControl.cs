@@ -122,7 +122,9 @@ public class GomokuControl : MonoBehaviour
                 currentHover = -Vector2Int.one;
             }
         }
-
+        if (Input.GetKeyDown(KeyCode.Space)){
+            GameObject.Find("GomokuBoard").GetComponent<PiecePool>().doHold();
+        }
         // Handle piece placement logic when left-click is pressed
         if (Input.GetMouseButtonDown(0)){
             Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
