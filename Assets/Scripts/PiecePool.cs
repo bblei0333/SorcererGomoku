@@ -13,6 +13,8 @@ public class PiecePool : MonoBehaviour
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
+    private GameObject swap1;
+    private GameObject swap2;
     private GameObject hold;
     public int nextPieceID; // ID of the next piece to place
     private int pcount = 0; // Piece count (how many pieces have been placed)
@@ -49,8 +51,8 @@ public class PiecePool : MonoBehaviour
             PiecePlaced();
         }
         else{
-            GameObject swap1 = hold;
-            GameObject swap2 = slot1;
+            swap1 = hold;
+            swap2 = slot1;
             Destroy(hold);
             Destroy(slot1);
             slot1 = Instantiate(swap1, canvas.transform);
@@ -60,9 +62,12 @@ public class PiecePool : MonoBehaviour
             RectTransform rectTransform2 = hold.GetComponent<RectTransform>();
             rectTransform2.anchoredPosition = new Vector2(-630,400);
             // Determine the next piece ID based on the current piece's type
-            if (swap1 == bp) nextPieceID = 0; // Black piece
-            if (swap1 == wp) nextPieceID = 1; // White piece
-            if (swap1 == bomb) nextPieceID = 2;
+            if (slot1.tag == "MenuBlack") nextPieceID = 0; // Black piece
+            if (slot1.tag == "MenuWhite") nextPieceID = 1; // White piece
+            if (slot1.tag == "MenuBomb") nextPieceID = 2; // White piece
+            Debug.Log("NID = " + nextPieceID);
+            Debug.Log(slot1);
+            Debug.Log(slot1.tag);
         }
     }
 

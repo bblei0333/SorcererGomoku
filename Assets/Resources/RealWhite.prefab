@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4272485475657575665}
   m_Layer: 0
   m_Name: RealWhite
-  m_TagString: Untagged
+  m_TagString: MenuWhite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

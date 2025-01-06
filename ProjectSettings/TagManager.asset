@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - PiecesToKill
+  - MenuBomb
+  - MenuBlack
+  - MenuWhite
   layers:
   - Default
   - TransparentFX
