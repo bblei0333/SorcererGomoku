@@ -9,6 +9,8 @@ public class GomokuControl : MonoBehaviour
     public GameObject offblack; // Black piece prefab
     public GameObject offwhite; // White piece prefab
     public GameObject offbomb;  // Bomb piece prefab
+    private GameObject bomby;
+    public GameObject bombhover;
     public GameObject stone; 
     public GameObject share;
     public GameObject doubleAgent;
@@ -61,6 +63,17 @@ public class GomokuControl : MonoBehaviour
             } else if (state == 2){
                 Instantiate(offwhite, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 3){
+                GameObject thingToDie = Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord -1 , ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord +1, ycord, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord + 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord , ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord - 1, ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + 1, ycord - 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord - 1, ycord + 1, 0);
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + 1, ycord + 1, 0);
+                SyncGrid();
                 Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
             } else if (state == 4){
                 Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
@@ -90,16 +103,30 @@ public class GomokuControl : MonoBehaviour
             // Handle tile hover
             if (currentHover == -Vector2Int.one){
                 currentHover = hitPosition;
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
+                else{
+                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+                if(bomby == null){
+                bomby = Instantiate(bombhover, GetTileCenter(hitPosition.x, hitPosition.y), Quaternion.identity);
+                }
+                    
+                }
             }
             else{
                 // Revert the old hover tile and apply hover to the new tile
+                Destroy(bomby);
                 tiles[currentHover.x, currentHover.y].layer = LayerMask.NameToLayer("Tile");
                 tiles[currentHover.x, currentHover.y].GetComponent<MeshRenderer>().material = tileMaterial;
                 currentHover = hitPosition;
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2){
                 tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
-                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;
+                tiles[hitPosition.x, hitPosition.y].GetComponent<MeshRenderer>().material = hoverMaterial;}
+                else{
+                tiles[hitPosition.x, hitPosition.y].layer = LayerMask.NameToLayer("Hover");
+                bomby = Instantiate(bombhover, GetTileCenter(hitPosition.x, hitPosition.y), Quaternion.identity);
+                }
             }
         }
         else{
@@ -110,10 +137,16 @@ public class GomokuControl : MonoBehaviour
                 currentHover = -Vector2Int.one;
             }
         }
-
+        if (Input.GetKeyDown(KeyCode.Space)){
+            GameObject.Find("GomokuBoard").GetComponent<PiecePool>().doHold();
+        }
         // Handle piece placement logic when left-click is pressed
         if (Input.GetMouseButtonDown(0)){
             Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                // Handle piece placement based on the next piece ID (black, white, bomb)
+                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
             //if next piece is a stone and it is clients turn
             if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
                 int stonesPlaced = 0;
