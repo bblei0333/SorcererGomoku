@@ -10,6 +10,10 @@ public class PiecePool : MonoBehaviour
     public Canvas canvas;
     public GameObject wp; // White piece prefab
     public GameObject bomb; // Bomb piece prefab
+    public GameObject stone;
+    public GameObject share;
+    public GameObject doubleAgent;
+    public GameObject sniper;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -27,14 +31,35 @@ public class PiecePool : MonoBehaviour
     // Called at the start of the game or when setting up the pool
     private void realStart()
     {
-        // Randomly assign bombs to 8 positions in the pool
-        for (int x = 0; x < 8;)
+        // Randomly assign powerups to 8 positions in the pool
+        for (int x = 0; x < 20;) //change number to add more pieces to pool
         {
             int r = rnd.Next(0, 40); // Randomly choose an index
             if (pool[r] == 0) // If the slot is empty
             {
-                pool[r] = 3; // Assign a bomb
-                x++; // Increment the count of bombs
+                int randPowerUp = rnd.Next(0,5);
+                if(randPowerUp == 0){
+                    pool[r] = 3; // Assign a bomb
+                }
+                if(randPowerUp == 1){
+                    if(r > 3){
+                        pool[r] = 4; // Assign a stone
+                        Debug.Log("Stone added");
+                    }
+                }
+                if(randPowerUp == 2){
+                    pool[r] = 5; // Assign a share
+                    Debug.Log("Share added");
+                }
+                if(randPowerUp == 3){
+                    pool[r] = 6; // Assign a doubleAgent
+                    Debug.Log("DoubleAgent added");
+                }
+                if(randPowerUp == 4){
+                    pool[r] = 7; // Assign a sniper
+                    Debug.Log("Sniper added");
+                }
+                x++; // Increment the count of powerups
             }
         }
         // Optionally log pool values for debugging
@@ -80,7 +105,26 @@ public class PiecePool : MonoBehaviour
         }
         else
         {
-            return bomb; // Otherwise, return a bomb piece
+            if(pool[num] == 3){
+                return bomb;
+            }
+            if(pool[num] == 4){
+                //Debug.Log("Returning stone");
+                return stone;
+            }
+            if(pool[num] == 5){
+                //Debug.Log("Returning share");
+                return share;
+            }
+            if(pool[num] == 6){
+                //Debug.Log("Returning doubleAgent");
+                return doubleAgent;
+            }
+            else{
+                //Debug.Log("Returning sniper");
+                return sniper;
+            }
+            
         }
     }
 
@@ -136,6 +180,10 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == bp) nextPieceID = 0; // Black piece
         if (setSlot(funnynum) == wp) nextPieceID = 1; // White piece
         if (setSlot(funnynum) == bomb) nextPieceID = 2; // Bomb piece
+        if (setSlot(funnynum) == stone) nextPieceID = 3; //Stone piece
+        if (setSlot(funnynum) == share) nextPieceID = 4; //Share piece
+        if (setSlot(funnynum) == doubleAgent) nextPieceID = 5; //DoubleAgent piece
+        if (setSlot(funnynum) == sniper) nextPieceID = 6; //Sniper piece
     }
 
     // Update is called once per frame

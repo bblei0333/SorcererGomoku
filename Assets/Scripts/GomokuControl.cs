@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Random = System.Random;
 public class GomokuControl : MonoBehaviour
 {
     private const int TILE_COUNT_X = 15;
@@ -11,6 +11,10 @@ public class GomokuControl : MonoBehaviour
     public GameObject offbomb;  // Bomb piece prefab
     private GameObject bomby;
     public GameObject bombhover;
+    public GameObject stone; 
+    public GameObject share;
+    public GameObject doubleAgent;
+    public GameObject sniper;
     public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
     private GameObject[,] tiles; // Array to store tile objects
     private Camera currentCamera; // Camera reference for raycasting
@@ -22,7 +26,9 @@ public class GomokuControl : MonoBehaviour
     [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
     [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
 
-    private int clientID {get;}
+    Random rnd = new Random();
+
+        private int clientID {get;}
     void Start(){
         // Debugging and initialization of components
         Debug.Log("Client ID: " + clientID);
@@ -68,6 +74,15 @@ public class GomokuControl : MonoBehaviour
                 GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord - 1, ycord + 1, 0);
                 GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + 1, ycord + 1, 0);
                 SyncGrid();
+                Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 4){
+                Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 5){
+                Instantiate(share, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 6){
+                Instantiate(doubleAgent, GetTileCenter(xcord, ycord), Quaternion.identity);
+            } else if (state == 7){
+                Instantiate(sniper, GetTileCenter(xcord, ycord), Quaternion.identity);
             }
         }
     }
@@ -132,29 +147,85 @@ public class GomokuControl : MonoBehaviour
                 // Handle piece placement based on the next piece ID (black, white, bomb)
                 int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
                 GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
-
-                Debug.Log("Sending piece placement at: " + currentHover);
-                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
-                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
-                SyncGrid(); // Sync the grid after placing a piece
+            //if next piece is a stone and it is clients turn
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                int stonesPlaced = 0;
+                while(stonesPlaced != 2){
+                    int rndSpot = rnd.Next(0, 225);
+                    int rndXCoord = rndSpot % 15;
+                    int rndYCoord = rndSpot / 15;
+                    if(!GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(rndXCoord, rndYCoord) && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[rndSpot] != (byte)4){
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(rndXCoord, rndYCoord, 4);
+                        stonesPlaced++;
+                    }
+                }
             }
+            int agentTriggered = 0;
+            int sniperTriggered = 0;
+            //if next piece is a doubleAgent and it is the clients turn
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                //checks if clicked space == black or share and client == white
+                
+                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                    agentTriggered = 1;
+                } 
+                //checks if clicked space == white or share and client == black
+                else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                    agentTriggered = 1;
+                }
+                
+            }
+            //if next piece is a sniper and it is the clients turn
+            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 6 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    sniperTriggered = 1;
+                } 
+                //checks if clicked space == white or share and client == black
+                else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    sniperTriggered = 1;
+                }
 
-            else if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
+            }
+            //if clicked space is empty and it is clients turn 
+            if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) && 
                GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
 
                 // Handle piece placement based on the next piece ID (black, white, bomb)
                 int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+                if(pieceID != 3 && pieceID != 5 && pieceID != 6){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+                }
 
-                Debug.Log("Sending piece placement at: " + currentHover);
-                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
-                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                
+                if(pieceID != 5 && pieceID != 6){
+                    Debug.Log("Sending piece placement at: " + currentHover);
+                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+                    GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                    GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                } 
+        
                 SyncGrid(); // Sync the grid after placing a piece
             }
-            CheckForWin(1); // Check for a win condition for player 1 (black)
-            CheckForWin(2);
+            if(agentTriggered == 1){
+                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                Debug.Log("Sending piece placement at: " + currentHover);
+                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+            }
+            if(sniperTriggered == 1){
+                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
+                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
+                
+                Debug.Log("Sending piece placement at: " + currentHover);
+                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
+            }
+            SyncGrid();
+            CheckForWin(1); // Check for a win condition for player 1 (black) on client side
+            CheckForWin(2); // Check for a win condition for player 2 (white) on client side
         }
 
         // Right-click to check if a tile is filled or empty
@@ -223,53 +294,49 @@ public class GomokuControl : MonoBehaviour
         return y*15+x;
     }
 
-    public void CheckForWin(int player){
-        // Check for a winning condition for the given player (1 = player 1, 2 = player 2)
-        /*
-        for (int row = 0; row < 15; row++){
-            for (int col = 0; col < 15; col++){
-                if (grinfo[row, col] == player){
-                    // Check horizontal, vertical, and diagonal lines for 5 consecutive pieces
-                    if (col < 11 && grinfo[row, col + 1] == player && grinfo[row, col + 2] == player &&
-                        grinfo[row, col + 3] == player && grinfo[row, col + 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && grinfo[row + 1, col] == player && grinfo[row + 2, col] == player &&
-                        grinfo[row + 3, col] == player && grinfo[row + 4, col] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && col < 11 && grinfo[row + 1, col + 1] == player && grinfo[row + 2, col + 2] == player &&
-                        grinfo[row + 3, col + 3] == player && grinfo[row + 4, col + 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
-                    if (row < 11 && col > 3 && grinfo[row + 1, col - 1] == player && grinfo[row + 2, col - 2] == player &&
-                        grinfo[row + 3, col - 3] == player && grinfo[row + 4, col - 4] == player){
-                        Debug.Log(player + " wins!");
-                    }
+    
+  
+    public void CheckForWin(int player)
+    {
+        var byteSync = GameObject.Find("Normy").GetComponent<ByteSync>();
+        var bytes = byteSync._model.bytes;
+
+        // Helper function to check for a win in a specific direction
+        bool CheckDirection(int x, int y, int dx, int dy)
+        {
+            for (int i = 1; i <= 4; i++)
+            {
+                int nx = x + i * dx;
+                int ny = y + i * dy;
+                if (nx < 0 || nx >= 15 || ny < 0 || ny >= 15 || 
+                    (bytes[coordToInt(nx, ny)] != (byte)player && bytes[coordToInt(nx, ny)] != (byte)5))
+                {
+                    return false;
                 }
             }
+            return true;
         }
-    }
-    */
+
         for (int spaceInt = 0; spaceInt < 225; spaceInt++)
         {
-            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[spaceInt] == (byte)player){
+            if (bytes[spaceInt] == (byte)player || bytes[spaceInt] == (byte)5)
+            {
                 int xCoord = spaceInt % 15;
                 int yCoord = spaceInt / 15;
-                if (yCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord, yCoord+4)] == (byte)player){
-                    Debug.Log(player + "wins");
+
+                // Check in all directions: vertical, horizontal, diagonal-down, diagonal-up
+                if ((yCoord < 11 && CheckDirection(xCoord, yCoord, 0, 1)) ||       // Vertical
+                    (xCoord < 11 && CheckDirection(xCoord, yCoord, 1, 0)) ||       // Horizontal
+                    (xCoord < 11 && yCoord < 11 && CheckDirection(xCoord, yCoord, 1, 1)) || // Diagonal-down
+                    (xCoord < 11 && yCoord > 3 && CheckDirection(xCoord, yCoord, 1, -1)))   // Diagonal-up
+                {
+                    Debug.Log(player + " wins");
+                    return; // Exit early after finding a win
                 }
-                if (xCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord)] == (byte)player){
-                    Debug.Log(player + "wins");
-                }
-                if (xCoord < 11 && yCoord < 11 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord+1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord+2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord+3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord+4)] == (byte)player){
-                    Debug.Log(player + "wins");
-                }
-                if (xCoord < 11 && yCoord > 3 && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+1, yCoord-1)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+2, yCoord-2)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+3, yCoord-3)] == (byte)player && GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xCoord+4, yCoord-4)] == (byte)player){
-                    Debug.Log(player + "wins");
-                }
-                
             }
         }
     }
+
 }
+
+
