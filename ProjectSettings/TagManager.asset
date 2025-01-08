@@ -8,6 +8,10 @@ TagManager:
   - MenuBomb
   - MenuBlack
   - MenuWhite
+  - MenuStone
+  - MenuShare
+  - MenuDA
+  - MenuSniper
   layers:
   - Default
   - TransparentFX

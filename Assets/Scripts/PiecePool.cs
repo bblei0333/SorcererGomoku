@@ -90,6 +90,10 @@ public class PiecePool : MonoBehaviour
             if (slot1.tag == "MenuBlack") nextPieceID = 0; // Black piece
             if (slot1.tag == "MenuWhite") nextPieceID = 1; // White piece
             if (slot1.tag == "MenuBomb") nextPieceID = 2; // White piece
+            if (slot1.tag == "MenuStone") nextPieceID = 3; // White piece
+            if (slot1.tag == "MenuShare") nextPieceID = 4; // White piece
+            if (slot1.tag == "MenuDA") nextPieceID = 5; // White piece
+            if (slot1.tag == "MenuSniper") nextPieceID = 6; // White piece
             Debug.Log("NID = " + nextPieceID);
             Debug.Log(slot1);
             Debug.Log(slot1.tag);
