@@ -20,8 +20,6 @@ public class GomokuControl : MonoBehaviour
 
 
    Random rnd = new Random();
-
-
        private int clientID {get;}
    void Start(){
        // Debugging and initialization of components
@@ -212,7 +210,7 @@ public class GomokuControl : MonoBehaviour
                }
 
 
-              
+            
                if(pieceID != 5 && pieceID != 6){
                    Debug.Log("Sending piece placement at: " + currentHover);
                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed

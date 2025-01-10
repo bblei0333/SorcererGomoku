@@ -31,10 +31,16 @@ public class PiecePool : MonoBehaviour
     // Called at the start of the game or when setting up the pool
     private void realStart()
     {
-        // Randomly assign powerups to 8 positions in the pool
-        for (int x = 0; x < 20;) //change number to add more pieces to pool
+        
+        int t1 = 0;
+        int t2 = 0;
+        int t3 = 0;
+        bool testingMode = false;
+        for (int x = 0; x < 9;) //9: change number to add more pieces to pool
         {
             int r = rnd.Next(0, 40); // Randomly choose an index
+            if(testingMode){
+            
             if (pool[r] == 0) // If the slot is empty
             {
                 int randPowerUp = rnd.Next(0,5);
@@ -61,6 +67,53 @@ public class PiecePool : MonoBehaviour
                 }
                 x++; // Increment the count of powerups
             }
+            
+            }
+            else{
+            if (pool[r] == 0 && r > 3){ //checks if slot is empty and not in the first 3 pieces
+                int randTier = rnd.Next(0,3);//random powerup tier
+                if(randTier == 0 && t1 < 4){
+                    int randPiece = rnd.Next(0,2); //random powerup within chosen tier
+                    if(randPiece == 0){
+                        pool[r] = 5; //Adding Share
+                        x++;  //incrementing total # of powerups in pool
+                        t1++; //incrementing # of powerups of each tier
+                    }
+                    else if(randPiece == 1){
+                        pool[r] = 7; //Adding Sniper
+                        x++;
+                        t1++;
+                    }
+                    Debug.Log("t1 added");
+
+                }
+                if(randTier == 1 && t2 < 3){
+                    int randPiece = rnd.Next(0,2);
+                    if(randPiece == 0){
+                        pool[r] = 6; //Adding Double Agent
+                        x++;
+                        t2++;
+                    }
+                    else if(randPiece == 1){
+                        pool[r] = 4; //Adding Stone
+                        x++;
+                        t2++;
+                    }
+                    Debug.Log("t2 added");
+                }
+                if(randTier == 2 && t3 < 2){
+                    int randPiece = rnd.Next(0,2);
+                    if(randPiece == 0){
+                        pool[r] = 3; //Adding Bomb
+                        x++;
+                        t3++;
+                    }
+                    Debug.Log("t3 added");
+                }
+
+            }
+
+        }
         }
         // Optionally log pool values for debugging
         // for (int x = 0; x < 40; x++) { Debug.Log(pool[x]); }
