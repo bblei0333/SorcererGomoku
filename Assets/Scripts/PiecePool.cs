@@ -14,6 +14,7 @@ public class PiecePool : MonoBehaviour
     public GameObject share;
     public GameObject doubleAgent;
     public GameObject sniper;
+    public GameObject mystery;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -35,15 +36,15 @@ public class PiecePool : MonoBehaviour
         int t1 = 0;
         int t2 = 0;
         int t3 = 0;
-        bool testingMode = false;
-        for (int x = 0; x < 9;) //9: change number to add more pieces to pool
+        bool testingMode = true;
+        for (int x = 0; x < 25;) //9: change number to add more pieces to pool
         {
             int r = rnd.Next(0, 40); // Randomly choose an index
             if(testingMode){
             
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = rnd.Next(0,5);
+                int randPowerUp = rnd.Next(0,6);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
                 }
@@ -64,6 +65,10 @@ public class PiecePool : MonoBehaviour
                 if(randPowerUp == 4){
                     pool[r] = 7; // Assign a sniper
                     Debug.Log("Sniper added");
+                }
+                if(randPowerUp == 5){
+                    pool[r] = 8; // Assign a mystery
+                    Debug.Log("Mystery added");
                 }
                 x++; // Increment the count of powerups
             }
@@ -108,6 +113,11 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t3++;
                     }
+                    else if(randPiece == 1){
+                        pool[r] = 8; //Adding Mystery
+                        x++;
+                        t3++;
+                    }
                     Debug.Log("t3 added");
                 }
 
@@ -142,11 +152,12 @@ public class PiecePool : MonoBehaviour
             // Determine the next piece ID based on the current piece's type
             if (slot1.tag == "MenuBlack") nextPieceID = 0; // Black piece
             if (slot1.tag == "MenuWhite") nextPieceID = 1; // White piece
-            if (slot1.tag == "MenuBomb") nextPieceID = 2; // White piece
-            if (slot1.tag == "MenuStone") nextPieceID = 3; // White piece
-            if (slot1.tag == "MenuShare") nextPieceID = 4; // White piece
-            if (slot1.tag == "MenuDA") nextPieceID = 5; // White piece
-            if (slot1.tag == "MenuSniper") nextPieceID = 6; // White piece
+            if (slot1.tag == "MenuBomb") nextPieceID = 2; // Bomb piece
+            if (slot1.tag == "MenuStone") nextPieceID = 3; // Stone piece
+            if (slot1.tag == "MenuShare") nextPieceID = 4; // Share piece
+            if (slot1.tag == "MenuDA") nextPieceID = 5; // Double Agent piece
+            if (slot1.tag == "MenuSniper") nextPieceID = 6; // Sniper piece
+            if (slot1.tag == "MenuMystery") nextPieceID = 7; // Mystery piece
             Debug.Log("NID = " + nextPieceID);
             Debug.Log(slot1);
             Debug.Log(slot1.tag);
@@ -177,9 +188,12 @@ public class PiecePool : MonoBehaviour
                 //Debug.Log("Returning doubleAgent");
                 return doubleAgent;
             }
-            else{
+            if(pool[num] == 7){
                 //Debug.Log("Returning sniper");
                 return sniper;
+            }
+            else{
+                return mystery;
             }
             
         }
@@ -241,6 +255,7 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == share) nextPieceID = 4; //Share piece
         if (setSlot(funnynum) == doubleAgent) nextPieceID = 5; //DoubleAgent piece
         if (setSlot(funnynum) == sniper) nextPieceID = 6; //Sniper piece
+        if (setSlot(funnynum) == mystery) nextPieceID = 7; //Mystery piece
     }
 
     // Update is called once per frame
