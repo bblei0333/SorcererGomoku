@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,8 @@ public class PiecePool : MonoBehaviour
     private GameObject swap2;
     private GameObject hold;
     public int nextPieceID; // ID of the next piece to place
+    public int powercount;
+    public bool gamermode;
     private int pcount = 0; // Piece count (how many pieces have been placed)
     private int funnynum; // The index of the current piece being displayed
     public int PID; // Player ID (used for determining which piece to use)
@@ -29,10 +32,20 @@ public class PiecePool : MonoBehaviour
     Random rnd = new Random(); // Random number generator
 
     // Called at the start of the game or when setting up the pool
-    private void realStart()
+    public void realStart()
     {
+        pcount = 0;
+        if(gamermode){
+            powercount = 0;
+        }
+        else{
+            powercount = 9;
+        }
+        Array.Clear(pool, 0, pool.Length);
+
+        Destroy(hold);
         // Randomly assign powerups to 8 positions in the pool
-        for (int x = 0; x < 20;) //change number to add more pieces to pool
+        for (int x = 0; x < powercount;) //change number to add more pieces to pool
         {
             int r = rnd.Next(0, 40); // Randomly choose an index
             if (pool[r] == 0) // If the slot is empty

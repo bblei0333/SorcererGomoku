@@ -6,12 +6,15 @@ public class GomokuControl : MonoBehaviour
 {
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby;
+   private int frameCounter;
+   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
    private Vector2Int currentHover; // Current tile under mouse cursor
    private Vector3 bounds; // Grid bounds for positioning tiles
+   public Color endColor = Color.red;
    [SerializeField] private Material tileMaterial; // Material for normal tiles
    [SerializeField] private Material hoverMaterial; // Material for hovered tiles
    [SerializeField] private float tileSize = 0.05f; // Size of each tile
@@ -25,7 +28,25 @@ public class GomokuControl : MonoBehaviour
        private int clientID {get;}
    void Start(){
        // Debugging and initialization of components
+       MeshRenderer renderer = GameMat.GetComponent<MeshRenderer>();
        Debug.Log("Client ID: " + clientID);
+   }
+
+   IEnumerator BlackWinScreen(){
+    disabledplay = true;
+    GameObject yayeey = Instantiate(bw, new Vector3(0, 1, 0), Quaternion.Euler(new Vector3(90, 0, 0)));
+    GameObject.Find("GomokuBoard").GetComponent<PiecePool>().realStart();
+    yield return new WaitForSeconds(4f);
+    Destroy(yayeey);
+    disabledplay = false;
+   }
+   IEnumerator WhiteWinScreen(){
+    disabledplay = true;
+    GameObject yayeey = Instantiate(ww, new Vector3(0, 1, 0), Quaternion.Euler(new Vector3(90, 0, 0)));
+    GameObject.Find("GomokuBoard").GetComponent<PiecePool>().realStart();
+    yield return new WaitForSeconds(4f);
+    Destroy(yayeey);
+    disabledplay = false;
    }
 
 
@@ -38,6 +59,60 @@ public class GomokuControl : MonoBehaviour
    private Vector3 GetTileCenter(int x, int y){
        // Calculate and return the center position of a tile
        return new Vector3(x * tileSize, 0.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
+   }
+
+   public void SyncWin(){
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 1 && !blackwin1done){
+        Instantiate(bt, new Vector3(-2.87f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        blackwin1done = true;
+        Debug.Log("1 Black win");
+        StartCoroutine(BlackWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !blackwin2done){
+        Instantiate(bt, new Vector3(-1.42f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        blackwin2done = true;
+        StartCoroutine(BlackWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 3 && !blackwin3done){
+        Instantiate(bt, new Vector3(-.008f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        blackwin3done = true;
+        StartCoroutine(BlackWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 1 && !whitewin1done){
+        Instantiate(wt, new Vector3(2.87f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        whitewin1done = true;
+        StartCoroutine(WhiteWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && !whitewin2done){
+        Instantiate(wt, new Vector3(1.42f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        whitewin2done = true;
+        StartCoroutine(WhiteWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 3 && !whitewin3done){
+        Instantiate(wt, new Vector3(-.008f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        whitewin3done = true;
+        StartCoroutine(WhiteWinScreen());
+    }
+    if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !gamertime){
+        Debug.Log("muhmuhmuh");
+        gamertime = true;
+        GameObject.Find("GomokuBoard").GetComponent<PiecePool>().gamermode = true;
+       if(GameMat.GetComponent<Renderer>() != null){
+        GameMat.GetComponent<Renderer>().material.color = endColor;
+       }
+     }
+   }
+   
+   public void ClearBoard(){
+    for (int x = 0; x < 15; x++){
+        for(int y = 0; y < 15; y++){
+            byte state = GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[(y * 15 + x)];
+            if(state != 4){
+                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(x, y, 0);
+            }
+        }
+    }
+    SyncGrid();
    }
 
 
@@ -82,12 +157,25 @@ public class GomokuControl : MonoBehaviour
            } else if (state == 7){
                //Instantiate(sniper, GetTileCenter(xcord, ycord), Quaternion.identity);
            }
+           SyncWin();
        }
    }
    
 
    private void Update(){
        // Ensure the camera reference is set up
+       frameCounter++;
+
+        // Check if the counter is divisible by 30
+        if (frameCounter >= 30)
+        {
+            // Trigger your action here
+            SyncGrid();
+            SyncWin();
+
+            // Reset the frame counter to 0 after the action is triggered
+            frameCounter = 0;
+        }
        if (!currentCamera){
            currentCamera = Camera.main;
            return;
@@ -145,7 +233,7 @@ public class GomokuControl : MonoBehaviour
        if (Input.GetMouseButtonDown(0)){
            int bombTriggered = 0;
            Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
-           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                // Handle piece placement based on the next piece ID (black, white, bomb)
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
@@ -154,7 +242,7 @@ public class GomokuControl : MonoBehaviour
               
            }
            //if next piece is a stone and it is clients turn
-           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                int stonesPlaced = 0;
                while(stonesPlaced != 2){
                    int rndSpot = rnd.Next(0, 225);
@@ -169,7 +257,7 @@ public class GomokuControl : MonoBehaviour
            int agentTriggered = 0;
            int sniperTriggered = 0;
            //if next piece is a doubleAgent and it is the clients turn
-           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                //checks if clicked space == black or share and client == white
                Debug.Log("Double clicked");
                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
@@ -187,7 +275,7 @@ public class GomokuControl : MonoBehaviour
               
            }
            //if next piece is a sniper and it is the clients turn
-           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 6 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 6 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
                    sniperTriggered = 1;
@@ -202,7 +290,7 @@ public class GomokuControl : MonoBehaviour
            }
            //if clicked space is empty and it is clients turn
            if(GameObject.Find("Normy").GetComponent<ByteSync>().checkEmpty(currentHover.x , currentHover.y) &&
-              GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+              GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
 
 
                // Handle piece placement based on the next piece ID (black, white, bomb)
@@ -362,7 +450,16 @@ public class GomokuControl : MonoBehaviour
                    (xCoord < 11 && yCoord < 11 && CheckDirection(xCoord, yCoord, 1, 1)) || // Diagonal-down
                    (xCoord < 11 && yCoord > 3 && CheckDirection(xCoord, yCoord, 1, -1)))   // Diagonal-up
                {
+                   if(player == 1){
+                        GameObject.Find("Normy").GetComponent<IntSync>().BlackWin();    
+                   }
+                   if(player == 2){
+
+                        GameObject.Find("Normy").GetComponent<IntSync>().WhiteWin();
+                   }
                    Debug.Log(player + " wins");
+                   SyncGrid();
+                   ClearBoard();
                    return; // Exit early after finding a win
                }
            }
