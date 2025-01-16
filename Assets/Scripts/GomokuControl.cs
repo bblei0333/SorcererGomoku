@@ -23,8 +23,6 @@ public class GomokuControl : MonoBehaviour
 
 
    Random rnd = new Random();
-
-
        private int clientID {get;}
    void Start(){
        // Debugging and initialization of components
@@ -156,6 +154,9 @@ public class GomokuControl : MonoBehaviour
                //Instantiate(doubleAgent, GetTileCenter(xcord, ycord), Quaternion.identity);
            } else if (state == 7){
                //Instantiate(sniper, GetTileCenter(xcord, ycord), Quaternion.identity);
+           } else if (state == 8){
+            //Mystery
+            
            }
            SyncWin();
        }
@@ -295,12 +296,28 @@ public class GomokuControl : MonoBehaviour
 
                // Handle piece placement based on the next piece ID (black, white, bomb)
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-               if(pieceID != 3 && pieceID != 5 && pieceID != 6){
+               if(pieceID != 3 && pieceID != 5 && pieceID != 6 && pieceID != 7){
                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
                }
 
+               if(pieceID == 7){
+                    int randMystery = rnd.Next(0,4);
+                    if(randMystery == 0){
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                    }
+                    else if(randMystery == 1){
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                    }
+                    else if(randMystery == 2){
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
+                    }
+                    else{
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 5);
+                    }
+            
 
-              
+               }
+
                if(pieceID != 5 && pieceID != 6){
                    Debug.Log("Sending piece placement at: " + currentHover);
                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
