@@ -51,7 +51,7 @@ public class PiecePool : MonoBehaviour
         int t2 = 0;
         int t3 = 0;
         bool testingMode = false;
-        pieceNum = 9;
+        pieceNum = 9; //change for more pieces in test mode default 9
         if(gamermode){
             pieceNum = 0;
         }
