@@ -1102,10 +1102,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a6c83ebbb794c99ae4bc1232409e52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bp: {fileID: 1853536324479849003, guid: 3f0a2f2d79127459dbebeb9554e2f4de, type: 3}
+  bp: {fileID: 1853536324479849003, guid: 5487c6a876dee499fbf20e159eeb8cf8, type: 3}
   canvas: {fileID: 200069624}
-  wp: {fileID: 8876270450685385174, guid: 2eb8d8b960fa140f09266d63e3d286c8, type: 3}
-  bomb: {fileID: 2593332696336411934, guid: 40cfd006337284ba085c9f51e339bbdd, type: 3}
+  wp: {fileID: 1853536324479849003, guid: f7d09085a71fe45b2bab715ef17854e7, type: 3}
+  bomb: {fileID: 1853536324479849003, guid: c69cba33c9cb34a5680d888b5c2f0f74, type: 3}
   stone: {fileID: 1853536324479849003, guid: 0b0561a0d982043888474ba3f8b4ba64, type: 3}
   share: {fileID: 1853536324479849003, guid: 035949040292f411794c52212660c370, type: 3}
   doubleAgent: {fileID: 1853536324479849003, guid: 0d46776b7c7af46659d17b78e34f89da, type: 3}
@@ -1996,7 +1996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.7711592}
   m_AnchorMax: {x: 0.892, y: 1}
-  m_AnchoredPosition: {x: -49.543003, y: 37.179993}
+  m_AnchoredPosition: {x: -49.543003, y: 37.179996}
   m_SizeDelta: {x: 130, y: -21.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1270994126

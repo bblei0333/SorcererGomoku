@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2412982889074568431}
   - component: {fileID: 7034927430365984236}
   m_Layer: 0
-  m_Name: RealMystery
-  m_TagString: MenuSniper
+  m_Name: TrueDA
+  m_TagString: MenuDA
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ RectTransform:
   m_GameObject: {fileID: 1853536324479849003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 33.6, y: 33.6, z: 33.6}
+  m_LocalScale: {x: 19.4, y: 19.4, z: 19.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0078f127f1d1a49e88d414476846d076, type: 3}
-  m_Color: {r: 0.8584906, g: 0.3037113, b: 0.80333626, a: 1}
+  m_Sprite: {fileID: 21300000, guid: a2d3a4a37870a4ef1a7ca55f2f4ef51a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

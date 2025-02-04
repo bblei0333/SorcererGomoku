@@ -155,7 +155,7 @@ public class PiecePool : MonoBehaviour
         if(!hold){
             hold = Instantiate(setSlot(pcount), canvas.transform);
             RectTransform rectTransform3 = hold.GetComponent<RectTransform>();
-            rectTransform3.anchoredPosition = new Vector2(-630, 400);
+            rectTransform3.anchoredPosition = new Vector2(-620, 380);
             PiecePlaced();
         }
         else{
@@ -168,7 +168,7 @@ public class PiecePool : MonoBehaviour
             rectTransform1.anchoredPosition = new Vector2(630,400);
             hold = Instantiate(swap2, canvas.transform);
             RectTransform rectTransform2 = hold.GetComponent<RectTransform>();
-            rectTransform2.anchoredPosition = new Vector2(-630,400);
+            rectTransform2.anchoredPosition = new Vector2(-620,380);
             // Determine the next piece ID based on the current piece's type
             if (slot1.tag == "MenuBlack") nextPieceID = 0; // Black piece
             if (slot1.tag == "MenuWhite") nextPieceID = 1; // White piece

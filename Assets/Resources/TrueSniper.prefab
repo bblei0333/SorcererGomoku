@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2412982889074568431}
   - component: {fileID: 7034927430365984236}
   m_Layer: 0
-  m_Name: RealStone
-  m_TagString: MenuStone
+  m_Name: TrueSniper
+  m_TagString: MenuSniper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ RectTransform:
   m_GameObject: {fileID: 1853536324479849003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 33.6, y: 33.6, z: 33.6}
+  m_LocalScale: {x: 19.4, y: 19.4, z: 19.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 478da7c6639404257baeffbf4d6ed744, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0ff27e8eba8cb497c9eda1eed74f4446, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
