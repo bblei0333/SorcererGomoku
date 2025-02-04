@@ -35,16 +35,7 @@ public class PiecePool : MonoBehaviour
     // Called at the start of the game or when setting up the pool
     public void realStart()
     {
-        /*
         pcount = 0;
-        if(gamermode){
-            powercount = 0;
-        }
-        else{
-            powercount = 9;
-        }
-        Array.Clear(pool, 0, pool.Length);
-        */
         Array.Clear(pool, 0, pool.Length);
         Destroy(hold);
         int t1 = 0;
@@ -52,7 +43,8 @@ public class PiecePool : MonoBehaviour
         int t3 = 0;
         bool testingMode = false;
         pieceNum = 9; //change for more pieces in test mode default 9
-        if(gamermode){
+        if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2)
+        {
             pieceNum = 0;
         }
         for (int x = 0; x < pieceNum;){//9: change number to add more pieces to pool

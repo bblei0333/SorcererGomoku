@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7034927430365984236}
   m_Layer: 0
   m_Name: TrueWhite
-  m_TagString: MenuStone
+  m_TagString: MenuWhite
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -94,7 +94,6 @@ public class GomokuControl : MonoBehaviour
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !gamertime){
         Debug.Log("muhmuhmuh");
         gamertime = true;
-        GameObject.Find("GomokuBoard").GetComponent<PiecePool>().gamermode = true;
        if(GameMat.GetComponent<Renderer>() != null){
         GameMat.GetComponent<Renderer>().material.color = endColor;
        }

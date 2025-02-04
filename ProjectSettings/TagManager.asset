@@ -12,6 +12,7 @@ TagManager:
   - MenuShare
   - MenuDA
   - MenuSniper
+  - MenuMystery
   layers:
   - Default
   - TransparentFX
