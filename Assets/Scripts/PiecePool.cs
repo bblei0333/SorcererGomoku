@@ -35,7 +35,9 @@ public class PiecePool : MonoBehaviour
     // Called at the start of the game or when setting up the pool
     public void realStart()
     {
+        
         pcount = 0;
+       
         Array.Clear(pool, 0, pool.Length);
         Destroy(hold);
         int t1 = 0;
