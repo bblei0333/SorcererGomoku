@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 62405584}
   - component: {fileID: 62405583}
   - component: {fileID: 62405582}
+  - component: {fileID: 62405586}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -227,6 +228,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &62405586
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62405581}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0
 --- !u!1 &185427488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1057,8 +1085,8 @@ MonoBehaviour:
   offblack: {fileID: 2373480668462513274, guid: ca489cf04618742659b4cce7f3c358d1, type: 3}
   offwhite: {fileID: 7379817349861936476, guid: 722e37818f4474c85a5e46508a2b943a, type: 3}
   offbomb: {fileID: 3881926693229515779, guid: 616eb8cf131b5493f91dbb183a66164c, type: 3}
-  stone: {fileID: 5498862284405713219, guid: e7590620907fb46e4a1fcbfa894a7dce, type: 3}
-  share: {fileID: 2681767780468886943, guid: 00f7c655dbc704fc0979904261136ca4, type: 3}
+  stone: {fileID: 3872303663329406272, guid: ec5aba7740d9a4ec693cdc49cf3fd940, type: 3}
+  share: {fileID: 7797793538861402572, guid: 378a1a565029b484e9e42540b046c436, type: 3}
   doubleAgent: {fileID: 3100548291847594207, guid: cbdab11a35d954c31a9e09e59fac0fe3, type: 3}
   sniper: {fileID: 6815613990763711932, guid: 7d5f3f646649e444eaedf7ecc2660f37, type: 3}
   bombhover: {fileID: 3307724356375086941, guid: bcec590f03a79435a99444423295722e, type: 3}
@@ -1996,7 +2024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.7711592}
   m_AnchorMax: {x: 0.892, y: 1}
-  m_AnchoredPosition: {x: -49.543003, y: 37.179996}
+  m_AnchoredPosition: {x: -49.543003, y: 37.17999}
   m_SizeDelta: {x: 130, y: -21.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1270994126
