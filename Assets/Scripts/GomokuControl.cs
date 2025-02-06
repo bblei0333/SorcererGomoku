@@ -255,7 +255,7 @@ public class GomokuControl : MonoBehaviour
                }
            }
            int agentTriggered = 0;
-           int sniperTriggered = 0;
+           int petrifyTriggered = 0;
            //if next piece is a doubleAgent and it is the clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                //checks if clicked space == black or share and client == white
@@ -274,17 +274,13 @@ public class GomokuControl : MonoBehaviour
                }
               
            }
-           //if next piece is a sniper and it is the clients turn
+           //if next piece is a petrify and it is the clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 6 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
-               if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
-                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                   sniperTriggered = 1;
+               if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2){
+                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
+                   petrifyTriggered = 1;
                }
-               //checks if clicked space == white or share and client == black
-               else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
-                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                   sniperTriggered = 1;
-               }
+              
 
 
            }
@@ -338,7 +334,7 @@ public class GomokuControl : MonoBehaviour
                Debug.Log("Sending piece placement at: " + currentHover);
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
-           if(sniperTriggered == 1){
+           if(petrifyTriggered == 1){
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
               

@@ -11,8 +11,9 @@ TagManager:
   - MenuStone
   - MenuShare
   - MenuDA
-  - MenuSniper
   - MenuMystery
+  - MenuGrab
+  - MenuPetrify
   layers:
   - Default
   - TransparentFX
