@@ -284,7 +284,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67529656}
   serializedVersion: 4
-  m_Mass: 2
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -396,13 +396,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67529656}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f38f4f3a0728148a58128fd582ebe6cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 100
-  power: 300
+  power: 1000
+  boom: 1
 --- !u!1 &185427488
 GameObject:
   m_ObjectHideFlags: 0
@@ -1285,7 +1286,7 @@ MonoBehaviour:
   stone: {fileID: 1853536324479849003, guid: 0b0561a0d982043888474ba3f8b4ba64, type: 3}
   share: {fileID: 1853536324479849003, guid: 035949040292f411794c52212660c370, type: 3}
   doubleAgent: {fileID: 1853536324479849003, guid: 0d46776b7c7af46659d17b78e34f89da, type: 3}
-  sniper: {fileID: 1853536324479849003, guid: 938f7a57f004645d79af6c77cfec4f85, type: 3}
+  petrify: {fileID: 0}
   mystery: {fileID: 1853536324479849003, guid: d1dbaaa8f9e1d43ef9463f55001b3598, type: 3}
   nextPieceID: 0
   gamermode: 0
@@ -1329,7 +1330,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.91510224}
   m_AnchorMax: {x: 0.8795974, y: 0.91510224}
-  m_AnchoredPosition: {x: -1275.4999, y: -60}
+  m_AnchoredPosition: {x: -1275.5001, y: -60}
   m_SizeDelta: {x: -8.95, y: 153.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &716598544
@@ -1399,7 +1400,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 765268707}
   serializedVersion: 4
-  m_Mass: 2
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1498,7 +1499,7 @@ Transform:
   m_GameObject: {fileID: 765268707}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.43, y: 1.66, z: -0.12}
+  m_LocalPosition: {x: -1.13, y: 1.66, z: -0.12}
   m_LocalScale: {x: 0.52, y: 0.52, z: 0.52}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1517,7 +1518,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 100
-  power: 300
+  power: 1000
+  boom: 1
 --- !u!1 &778070130
 GameObject:
   m_ObjectHideFlags: 0
