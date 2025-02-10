@@ -13,4 +13,10 @@ public int _wwin;
 
 [RealtimeProperty(5, true, true)] 
 public int _bwin;
+
+[RealtimeProperty(6, true, true)] 
+public int _wgrab;
+
+[RealtimeProperty(7, true, true)] 
+public int _bgrab;
 }
