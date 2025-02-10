@@ -8,7 +8,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_Y = 15;
    private int frameCounter;
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physics;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
@@ -155,7 +155,8 @@ public class GomokuControl : MonoBehaviour
                //Instantiate(sniper, GetTileCenter(xcord, ycord), Quaternion.identity);
            } else if (state == 8){
             //Mystery
-            
+           } else if (state == 20){
+                Instantiate(physics, GetTileCenter(xcord, ycord), Quaternion.identity);
            }
            SyncWin();
        }
@@ -234,9 +235,18 @@ public class GomokuControl : MonoBehaviour
            int bombTriggered = 0;
            Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
-               // Handle piece placement based on the next piece ID (black, white, bomb)
+               // If next piece is bomb and it is clients turn
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+               for (int b = -1; b < 2; b++)
+               {
+                for (int y = -1; y < 2; y++){
+                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)5)){
+                    
+                    Instantiate(physics, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
+                    }
+                }
+               }
              
                bombTriggered = 1;
               
