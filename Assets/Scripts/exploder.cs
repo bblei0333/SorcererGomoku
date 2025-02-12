@@ -4,8 +4,8 @@ using System.Collections;
 // Applies an explosion force to all nearby rigidbodies
 public class ExampleClass : MonoBehaviour
 {
-    public float radius = 5.0F;
-    public float power = 10.0F;
+    public float radius = 100.0F;
+    public float power = 500.0F;
 
     public bool boom = true;
 
@@ -31,18 +31,18 @@ public class ExampleClass : MonoBehaviour
         */
         if(boom){
             boom = false;
-            StartCoroutine(Shit());
+            //StartCoroutine(Shit());
 
         }
     }
     void Start()
     {
-        StartCoroutine(Shit());
+        //StartCoroutine(Shit());
 
         
     }
-    IEnumerator Shit(){
-        yield return new WaitForSeconds(2f);
+    IEnumerator Shit(Vector3 position){
+        yield return new WaitForSeconds(0.5f);
         boom = true;
         Vector3 explosionPos = Input.mousePosition;
         explosionPos.z = 1;
@@ -58,6 +58,11 @@ public class ExampleClass : MonoBehaviour
         }
         
         
+    }
+
+    public void Boomer(Vector3 position){
+        Debug.Log("boomer called");
+        StartCoroutine(Shit(position));
     }
 }
 

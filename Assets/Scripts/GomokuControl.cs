@@ -20,6 +20,8 @@ public class GomokuControl : MonoBehaviour
    [SerializeField] private float tileSize = 0.05f; // Size of each tile
    [SerializeField] private float yOffset = 0.2f; // Y offset for tile height
    [SerializeField] private Vector3 boardCenter = new Vector3(-1.333f, 0, -1.333f); // Board center position
+    public float radius = 5.0F;
+    public float power = 10.0F;
 
 
    Random rnd = new Random();
@@ -244,9 +246,25 @@ public class GomokuControl : MonoBehaviour
                     if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)5)){
                     
                     Instantiate(physics, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
+                    
+
                     }
                 }
                }
+            
+               
+            Vector3 explosionPos = GetTileCenter(currentHover.x, currentHover.y );
+            Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
+            foreach (Collider hit in colliders)
+            {
+                Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+                if (rb != null){
+                    rb.AddExplosionForce(power, explosionPos, radius, 0.5F);
+                }
+            }
+            //GameObject.Find("GomokuBoard").GetComponent<ExampleClass>().Boomer(GetTileCenter(currentHover.x, currentHover.y));
+
              
                bombTriggered = 1;
               
