@@ -8,7 +8,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_Y = 15;
    private int frameCounter;
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
@@ -116,6 +116,7 @@ public class GomokuControl : MonoBehaviour
 
 
    public void SyncGrid(){
+        
        // Sync the grid by destroying old pieces and instantiating new ones based on byte data
        GameObject[] killList = GameObject.FindGameObjectsWithTag("PiecesToKill");
        foreach (GameObject obj in killList){
@@ -249,6 +250,9 @@ public class GomokuControl : MonoBehaviour
                     if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2)){
                         Instantiate(physicsW, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
                     }
+                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)5)){
+                        Instantiate(physicsS, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
+                    }
 
                 }
                }
@@ -270,6 +274,7 @@ public class GomokuControl : MonoBehaviour
                bombTriggered = 1;
               
            }
+           //if next piece is a grab and it is clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 8 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                 if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID == 1){
                     GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(1);
