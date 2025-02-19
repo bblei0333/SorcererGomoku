@@ -8,7 +8,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_Y = 15;
    private int frameCounter;
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physics;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
@@ -158,7 +158,7 @@ public class GomokuControl : MonoBehaviour
            } else if (state == 8){
             //Mystery
            } else if (state == 20){
-                Instantiate(physics, GetTileCenter(xcord, ycord), Quaternion.identity);
+                Instantiate(physicsW, GetTileCenter(xcord, ycord), Quaternion.identity);
            }
            SyncWin();
        }
@@ -243,12 +243,13 @@ public class GomokuControl : MonoBehaviour
                for (int b = -1; b < 2; b++)
                {
                 for (int y = -1; y < 2; y++){
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)5)){
-                    
-                    Instantiate(physics, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
-                    
-
+                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)1)){
+                        Instantiate(physicsB, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
                     }
+                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2)){
+                        Instantiate(physicsW, GetTileCenter(currentHover.x + b, currentHover.y + y), Quaternion.identity);
+                    }
+
                 }
                }
             
