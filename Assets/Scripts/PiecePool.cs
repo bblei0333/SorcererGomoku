@@ -16,6 +16,7 @@ public class PiecePool : MonoBehaviour
     public GameObject doubleAgent;
     public GameObject petrify;
     public GameObject mystery;
+    public GameObject grab;
     private GameObject slot1; // Slot for the first piece
     private GameObject slot2; // Slot for the second piece
     private GameObject slot3; // Slot for the third piece
@@ -112,7 +113,7 @@ public class PiecePool : MonoBehaviour
 
                 }
                 if(randTier == 1 && t2 < 3){
-                    int randPiece = rnd.Next(0,2);
+                    int randPiece = rnd.Next(0,3);
                     if(randPiece == 0){
                         pool[r] = 7; //Adding Sniper
                         x++;
@@ -120,6 +121,11 @@ public class PiecePool : MonoBehaviour
                     }
                     else if(randPiece == 1){
                         pool[r] = 4; //Adding Stone
+                        x++;
+                        t2++;
+                    }
+                    else if(randPiece == 2){
+                        pool[r] = 9;
                         x++;
                         t2++;
                     }
@@ -177,6 +183,7 @@ public class PiecePool : MonoBehaviour
             if (slot1.tag == "MenuDA") nextPieceID = 5; // Double Agent piece
             if (slot1.tag == "MenuPetrify") nextPieceID = 6; // Sniper piece
             if (slot1.tag == "MenuMystery") nextPieceID = 7; // Mystery piece
+            if (slot1.tag == "MenuGrab") nextPieceID = 8; // Mystery piece
             Debug.Log("NID = " + nextPieceID);
             Debug.Log(slot1);
             Debug.Log(slot1.tag);
@@ -211,8 +218,15 @@ public class PiecePool : MonoBehaviour
                 //Debug.Log("Returning sniper");
                 return petrify;
             }
-            else{
+            if(pool[num] == 8){
                 return mystery;
+            }
+            if(pool[num] == 9){
+                return grab;
+            }
+            else{
+                Debug.Log("Problem");
+                return bp;
             }
             
         }
@@ -275,6 +289,7 @@ public class PiecePool : MonoBehaviour
         if (setSlot(funnynum) == doubleAgent) nextPieceID = 5; //DoubleAgent piece
         if (setSlot(funnynum) == petrify) nextPieceID = 6; //Petrify piece
         if (setSlot(funnynum) == mystery) nextPieceID = 7; //Mystery piece
+        if (setSlot(funnynum) == grab) nextPieceID = 8; //Mystery piece
     }
 
     // Update is called once per frame
@@ -285,6 +300,14 @@ public class PiecePool : MonoBehaviour
         {
             bing++; // Flag that the setup is done
             realStart(); // Set up the pool and slots
+        }
+        if(GameObject.Find("Normy").GetComponent<IntSync>().pbgrab > 0 && PID == 1){
+            Destroy(hold);
+            GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(0);
+        }
+        else if(GameObject.Find("Normy").GetComponent<IntSync>().pwgrab > 0 && PID == 0){
+            Destroy(hold);
+            GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(0);
         }
     }
 }

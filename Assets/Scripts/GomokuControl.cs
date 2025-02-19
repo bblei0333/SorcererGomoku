@@ -229,7 +229,7 @@ public class GomokuControl : MonoBehaviour
                currentHover = -Vector2Int.one;
            }
        }
-       if (Input.GetKeyDown(KeyCode.Space)){
+       if (Input.GetKeyDown(KeyCode.Space) && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
            GameObject.Find("GomokuBoard").GetComponent<PiecePool>().doHold();
        }
        // Handle piece placement logic when left-click is pressed
@@ -269,6 +269,14 @@ public class GomokuControl : MonoBehaviour
              
                bombTriggered = 1;
               
+           }
+           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 8 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID == 1){
+                    GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(1);
+                }
+                else{
+                    GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(1);
+                }
            }
            //if next piece is a stone and it is clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){

@@ -1293,6 +1293,7 @@ MonoBehaviour:
   doubleAgent: {fileID: 1853536324479849003, guid: 0d46776b7c7af46659d17b78e34f89da, type: 3}
   petrify: {fileID: 1853536324479849003, guid: 938f7a57f004645d79af6c77cfec4f85, type: 3}
   mystery: {fileID: 1853536324479849003, guid: d1dbaaa8f9e1d43ef9463f55001b3598, type: 3}
+  grab: {fileID: 1853536324479849003, guid: e17e92968b2fb4c30a3d0c7427d0d5a5, type: 3}
   nextPieceID: 0
   gamermode: 0
   pieceNum: 0
@@ -1646,10 +1647,16 @@ MonoBehaviour:
   - componentID: 8
     component: {fileID: 0}
   - componentID: 9
-    component: {fileID: 778070136}
+    component: {fileID: 0}
   - componentID: 10
-    component: {fileID: 778070137}
+    component: {fileID: 0}
   - componentID: 11
+    component: {fileID: 0}
+  - componentID: 12
+    component: {fileID: 778070136}
+  - componentID: 13
+    component: {fileID: 778070137}
+  - componentID: 14
     component: {fileID: 778070139}
   _childViews: []
 --- !u!114 &778070136
@@ -1667,6 +1674,8 @@ MonoBehaviour:
   gaga: 0
   pwwin: 0
   pbwin: 0
+  pbgrab: 0
+  pwgrab: 0
 --- !u!114 &778070137
 MonoBehaviour:
   m_ObjectHideFlags: 0
