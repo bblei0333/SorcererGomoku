@@ -1257,7 +1257,7 @@ MonoBehaviour:
   yOffset: 1
   boardCenter: {x: 0, y: 0, z: 0}
   radius: 75
-  power: 500
+  power: 600
 --- !u!4 &508114087
 Transform:
   m_ObjectHideFlags: 0
@@ -1352,7 +1352,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.91510224}
   m_AnchorMax: {x: 0.8795974, y: 0.91510224}
-  m_AnchoredPosition: {x: -1275.5005, y: -60}
+  m_AnchoredPosition: {x: -1275.5006, y: -60}
   m_SizeDelta: {x: -8.95, y: 153.21}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &716598544
@@ -2361,7 +2361,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.7711592}
   m_AnchorMax: {x: 0.892, y: 1}
-  m_AnchoredPosition: {x: -49.543007, y: 37.179985}
+  m_AnchoredPosition: {x: -49.543015, y: 37.179985}
   m_SizeDelta: {x: 130, y: -21.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1270994126

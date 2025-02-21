@@ -25,7 +25,7 @@ public class PlaySync : RealtimeComponent{
     }
 
     public void Play(){
-        Debug.Log("Play");
+         //Debug.Log("Play");
         _model.play++;
         papa = _model.play;
     }

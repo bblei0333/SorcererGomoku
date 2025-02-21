@@ -34,11 +34,11 @@ public class IntSync : RealtimeComponent{
     }
     public void Turn(){
     if(_model.turner == 0){
-        Debug.Log("Turner++");
+        //Debug.Log("Turner++");
         _model.turner++;
     }
     else{
-        Debug.Log("Turner--");
+        //Debug.Log("Turner--");
         _model.turner--;
     }
     }

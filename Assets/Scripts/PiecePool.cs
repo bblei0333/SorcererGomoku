@@ -44,8 +44,8 @@ public class PiecePool : MonoBehaviour
         int t1 = 0;
         int t2 = 0;
         int t3 = 0;
-        bool testingMode = false;
-        pieceNum = 9; //change for more pieces in test mode default 9
+        bool testingMode = true;
+        pieceNum = 20; //change for more pieces in test mode default 9
         if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2)
         {
             pieceNum = 0;
