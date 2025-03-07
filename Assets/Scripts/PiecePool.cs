@@ -109,7 +109,7 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t1++;
                     }
-                    Debug.Log("t1 added");
+                    
 
                 }
                 if(randTier == 1 && t2 < 3){
@@ -129,7 +129,7 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t2++;
                     }
-                    Debug.Log("t2 added");
+                    
                 }
                 if(randTier == 2 && t3 < 2){
                     int randPiece = rnd.Next(0,2);
@@ -143,7 +143,7 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t3++;
                     }
-                    Debug.Log("t3 added");
+                   
                 }
 
             }
@@ -184,7 +184,7 @@ public class PiecePool : MonoBehaviour
             if (slot1.tag == "MenuPetrify") nextPieceID = 6; // Sniper piece
             if (slot1.tag == "MenuMystery") nextPieceID = 7; // Mystery piece
             if (slot1.tag == "MenuGrab") nextPieceID = 8; // Mystery piece
-            Debug.Log("NID = " + nextPieceID);
+           
             Debug.Log(slot1);
             Debug.Log(slot1.tag);
         }
