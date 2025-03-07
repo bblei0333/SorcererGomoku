@@ -28,6 +28,18 @@ public class IntSync : RealtimeComponent{
         f2 = _model.pflip2;
     }
 
+    public void SetBombGrid(int id1, int id2, int id3, int id4, int id5, int id6, int id7, int id8, int id9 ){
+        _model.bombGrid1 = id1;
+        _model.bombGrid2 = id2;
+        _model.bombGrid3 = id3;
+        _model.bombGrid4 = id4;
+        _model.bombGrid5 = id5;
+        _model.bombGrid6 = id6;
+        _model.bombGrid7 = id7;
+        _model.bombGrid8 = id8;
+        _model.bombGrid9 = id9;
+    }
+
     public void SetAnimation(int num){
         _model.AnimatingP = num;
     }
