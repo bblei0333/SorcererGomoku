@@ -44,8 +44,8 @@ public class PiecePool : MonoBehaviour
         int t1 = 0;
         int t2 = 0;
         int t3 = 0;
-        bool testingMode = true;
-        pieceNum = 20; //change for more pieces in test mode default 9
+        bool testingMode = false;
+        pieceNum = 9; //change for more pieces in test mode default 9
         if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2)
         {
             pieceNum = 0;
@@ -61,7 +61,8 @@ public class PiecePool : MonoBehaviour
 
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = rnd.Next(0,6);
+                int randPowerUp = 3;
+                //rnd.Next(0,6);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
                 }
@@ -109,7 +110,6 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t1++;
                     }
-                    Debug.Log("t1 added");
 
                 }
                 if(randTier == 1 && t2 < 3){
@@ -129,7 +129,6 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t2++;
                     }
-                    Debug.Log("t2 added");
                 }
                 if(randTier == 2 && t3 < 2){
                     int randPiece = rnd.Next(0,2);
@@ -143,7 +142,6 @@ public class PiecePool : MonoBehaviour
                         x++;
                         t3++;
                     }
-                    Debug.Log("t3 added");
                 }
 
             }
@@ -181,12 +179,9 @@ public class PiecePool : MonoBehaviour
             if (slot1.tag == "MenuStone") nextPieceID = 3; // Stone piece
             if (slot1.tag == "MenuShare") nextPieceID = 4; // Share piece
             if (slot1.tag == "MenuDA") nextPieceID = 5; // Double Agent piece
-            if (slot1.tag == "MenuPetrify") nextPieceID = 6; // Sniper piece
+            if (slot1.tag == "MenuPetrify") nextPieceID = 6; // Petrify
             if (slot1.tag == "MenuMystery") nextPieceID = 7; // Mystery piece
-            if (slot1.tag == "MenuGrab") nextPieceID = 8; // Mystery piece
-            Debug.Log("NID = " + nextPieceID);
-            Debug.Log(slot1);
-            Debug.Log(slot1.tag);
+            if (slot1.tag == "MenuGrab") nextPieceID = 8; // Grab
         }
     }
 

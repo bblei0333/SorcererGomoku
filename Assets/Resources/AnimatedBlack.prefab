@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7528025628734582452, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
       propertyPath: m_TagString
-      value: PiecesToKill
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2526412424093160091, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
@@ -73,6 +73,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7528025628734582452, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7465361126790070462}
+    - targetCorrespondingSourceObject: {fileID: 7528025628734582452, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5302337511141926077}
   m_SourcePrefab: {fileID: 100100000, guid: d5d19000d462a44f082bc9383502a69a, type: 3}
 --- !u!1 &162255389718920620 stripped
 GameObject:
@@ -91,7 +94,20 @@ Animation:
   m_Animation: {fileID: 7400000, guid: 075455d537ea34115973e3b5b6c32c1f, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 075455d537ea34115973e3b5b6c32c1f, type: 2}
+  - {fileID: 7400000, guid: 1551cf3bd196b4891915c63e35ca7244, type: 2}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &-5302337511141926077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 162255389718920620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a6ba202179c4c4c9f72671e96d56f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -19,4 +19,21 @@ public int _wgrab;
 
 [RealtimeProperty(7, true, true)] 
 public int _bgrab;
+
+[RealtimeProperty(8, true, true)] 
+public int _p1LPP;
+
+[RealtimeProperty(9, true, true)] 
+public int _p2LPP;
+
+[RealtimeProperty(13, true, true)] 
+public int _p3LPP;
+
+[RealtimeProperty(10, true, true)] 
+public int _pflip1;
+
+[RealtimeProperty(11, true, true)] 
+public int _pflip2;
+[RealtimeProperty(12, true, true)] 
+public int _AnimatingP;
 }

@@ -1257,6 +1257,11 @@ MonoBehaviour:
   boardCenter: {x: 0, y: 0, z: 0}
   radius: 75
   power: 500
+  LPPID: 0
+  LPPx: 0
+  LPPy: 0
+  OngoingAnimation: 0
+  OncomingAnimation: 0
 --- !u!4 &508114087
 Transform:
   m_ObjectHideFlags: 0
@@ -1556,6 +1561,7 @@ GameObject:
   - component: {fileID: 778070136}
   - component: {fileID: 778070137}
   - component: {fileID: 778070139}
+  - component: {fileID: 778070140}
   m_Layer: 0
   m_Name: Normy
   m_TagString: Untagged
@@ -1653,10 +1659,16 @@ MonoBehaviour:
   - componentID: 11
     component: {fileID: 0}
   - componentID: 12
-    component: {fileID: 778070136}
+    component: {fileID: 0}
   - componentID: 13
-    component: {fileID: 778070137}
+    component: {fileID: 0}
   - componentID: 14
+    component: {fileID: 0}
+  - componentID: 15
+    component: {fileID: 778070136}
+  - componentID: 16
+    component: {fileID: 778070137}
+  - componentID: 17
     component: {fileID: 778070139}
   _childViews: []
 --- !u!114 &778070136
@@ -1676,6 +1688,11 @@ MonoBehaviour:
   pbwin: 0
   pbgrab: 0
   pwgrab: 0
+  LPPID: 0
+  LPPx: 0
+  LPPy: 0
+  f1: 0
+  f2: 0
 --- !u!114 &778070137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1701,6 +1718,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   papa: 0
+--- !u!114 &778070140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 778070130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e2e44a288bc4e4ea7416ed409b5ee8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bp: {fileID: 162255389718920620, guid: 364b278f724fc48b49764d1a1de777bf, type: 3}
+  wp: {fileID: 1917799509726185740, guid: c1cc283c15d9b4f818b8723ae3380c47, type: 3}
+  sp: {fileID: 2681767780468886943, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
+  flip1: {fileID: 0}
+  flip2: {fileID: 0}
+  tempthing: {fileID: 0}
 --- !u!1 &802072423
 GameObject:
   m_ObjectHideFlags: 0

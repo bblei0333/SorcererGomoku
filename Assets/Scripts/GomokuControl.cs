@@ -6,7 +6,7 @@ public class GomokuControl : MonoBehaviour
 {
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
-   private int frameCounter;
+   private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
    public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
@@ -23,13 +23,18 @@ public class GomokuControl : MonoBehaviour
     public float radius = 5.0F;
     public float power = 10.0F;
 
+    public int LPPID;
+    public int LPPx;
+    public int LPPy;
+    public bool OngoingAnimation = false;
+    public bool OncomingAnimation = false;
+
 
    Random rnd = new Random();
        private int clientID {get;}
    void Start(){
        // Debugging and initialization of components
        MeshRenderer renderer = GameMat.GetComponent<MeshRenderer>();
-       Debug.Log("Client ID: " + clientID);
    }
 
    IEnumerator BlackWinScreen(){
@@ -55,10 +60,21 @@ public class GomokuControl : MonoBehaviour
        GenerateAlltiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
    }
 
+   public void AnimationOver(int AID){
+    disabledplay = false;
+    if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
+        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
+    }
+   }
+
 
    private Vector3 GetTileCenter(int x, int y){
        // Calculate and return the center position of a tile
        return new Vector3(x * tileSize, 0.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
+   }
+   private Vector3 GetTileCenterButDifferent(int x, int y){
+       // Calculate and return the center position of a tile
+       return new Vector3(x * tileSize, 2.55f, y * tileSize) - bounds + new Vector3(tileSize / 2, 0, tileSize / 2);
    }
 
    public void SyncWin(){
@@ -94,7 +110,6 @@ public class GomokuControl : MonoBehaviour
         StartCoroutine(WhiteWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !gamertime){
-        Debug.Log("muhmuhmuh");
         gamertime = true;
        if(GameMat.GetComponent<Renderer>() != null){
         GameMat.GetComponent<Renderer>().material.color = endColor;
@@ -116,6 +131,7 @@ public class GomokuControl : MonoBehaviour
 
 
    public void SyncGrid(){
+    if(!OngoingAnimation){
        // Sync the grid by destroying old pieces and instantiating new ones based on byte data
        GameObject[] killList = GameObject.FindGameObjectsWithTag("PiecesToKill");
        foreach (GameObject obj in killList){
@@ -162,6 +178,7 @@ public class GomokuControl : MonoBehaviour
            }
            SyncWin();
        }
+    }
    }
    
 
@@ -169,12 +186,28 @@ public class GomokuControl : MonoBehaviour
        // Ensure the camera reference is set up
        frameCounter++;
 
+        if(GameObject.Find("Normy").GetComponent<IntSync>().Animating == 1 && !OngoingAnimation){
+            OncomingAnimation = true;
+        }
         // Check if the counter is divisible by 30
         if (frameCounter >= 30)
         {
             // Trigger your action here
+            if(OngoingAnimation){
+                disabledplay = true;
+            }
             SyncGrid();
             SyncWin();
+            LastPlayerID = GameObject.Find("Normy").GetComponent<IntSync>().LPlayer;
+            LPPID = GameObject.Find("Normy").GetComponent<IntSync>().LPPID;
+            LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
+            LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
+            Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 5){
+                OngoingAnimation = true;
+                OncomingAnimation = false;
+                GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
+            }
 
             // Reset the frame counter to 0 after the action is triggered
             frameCounter = 0;
@@ -233,7 +266,7 @@ public class GomokuControl : MonoBehaviour
            GameObject.Find("GomokuBoard").GetComponent<PiecePool>().doHold();
        }
        // Handle piece placement logic when left-click is pressed
-       if (Input.GetMouseButtonDown(0)){
+       if (Input.GetMouseButtonDown(0) && !OngoingAnimation){
            int bombTriggered = 0;
            Debug.Log("Turn: " + GameObject.Find("Normy").GetComponent<IntSync>().gaga);
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
@@ -271,6 +304,7 @@ public class GomokuControl : MonoBehaviour
               
            }
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 8 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
+                GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 9, currentHover.x, currentHover.y);
                 if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID == 1){
                     GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(1);
                 }
@@ -278,9 +312,10 @@ public class GomokuControl : MonoBehaviour
                     GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(1);
                 }
            }
-           //if next piece is a stone and it is clients turn
+           //BOMB IS HERE!!
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 3 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                int stonesPlaced = 0;
+               GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 4, currentHover.x, currentHover.y);
                while(stonesPlaced != 2){
                    int rndSpot = rnd.Next(0, 225);
                    int rndXCoord = rndSpot % 15;
@@ -293,21 +328,46 @@ public class GomokuControl : MonoBehaviour
            }
            int agentTriggered = 0;
            int petrifyTriggered = 0;
-           //if next piece is a doubleAgent and it is the clients turn
+           //DOUBLE AGENT HERE!!
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                //checks if clicked space == black or share and client == white
-               Debug.Log("Double clicked");
+               GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 6, currentHover.x, currentHover.y);
                if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
-                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                   TempCoordx = currentHover.x;
+                   TempCoordy = currentHover.y;
+                   TempID = 2;
+                   SyncGrid();
                    agentTriggered = 1;
-                   Debug.Log("Double placed");
+                   
+                   if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(2,1);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+                   }
+                   else{
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3,1);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+                   }
                   
                }
                //checks if clicked space == white or share and client == black
                else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
-                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                   TempCoordx = currentHover.x;
+                   TempCoordy = currentHover.y;
+                   TempID = 1;
+                   SyncGrid();
                    agentTriggered = 1;
-                   Debug.Log("Double placed");
+                   if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2){
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(1,2);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+                   }
+                   else{
+                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3,2);
+                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+                   }
                }
               
            }
@@ -316,6 +376,7 @@ public class GomokuControl : MonoBehaviour
                if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2){
                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
                    petrifyTriggered = 1;
+                   GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 7, currentHover.x, currentHover.y);
                }
               
 
@@ -326,32 +387,36 @@ public class GomokuControl : MonoBehaviour
               GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
 
 
-               // Handle piece placement based on the next piece ID (black, white, bomb)
+               // BLACK WHITE SHARE HERE!!!
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-               if(pieceID != 3 && pieceID != 5 && pieceID != 6 && pieceID != 7){
+               if(pieceID == 0 || pieceID == 1 || pieceID == 4){ 
                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
+                   GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, (pieceID + 1), currentHover.x, currentHover.y);
                }
 
                if(pieceID == 7){
                     int randMystery = rnd.Next(0,4);
                     if(randMystery == 0){
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                        GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 1, currentHover.x, currentHover.y);
                     }
                     else if(randMystery == 1){
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                        GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 2, currentHover.x, currentHover.y);
                     }
                     else if(randMystery == 2){
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
+                        GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 4, currentHover.x, currentHover.y);
                     }
                     else{
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 5);
+                        GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 5, currentHover.x, currentHover.y);
                     }
             
 
                }
 
                if(pieceID != 5 && pieceID != 6){
-                   Debug.Log("Sending piece placement at: " + currentHover);
                    BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
                    GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                    GameObject.Find("Normy").GetComponent<PlaySync>().Play();
@@ -362,20 +427,16 @@ public class GomokuControl : MonoBehaviour
            if(bombTriggered == 1){
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
-               Debug.Log("Sending piece placement at: " + currentHover);
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
            if(agentTriggered == 1){
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
-               Debug.Log("Sending piece placement at: " + currentHover);
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
            if(petrifyTriggered == 1){
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
-              
-               Debug.Log("Sending piece placement at: " + currentHover);
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
            SyncGrid();

@@ -323,6 +323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bp: {fileID: 162255389718920620, guid: 364b278f724fc48b49764d1a1de777bf, type: 3}
   wp: {fileID: 1917799509726185740, guid: c1cc283c15d9b4f818b8723ae3380c47, type: 3}
+  sp: {fileID: 2681767780468886943, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
   flip1: {fileID: 0}
   flip2: {fileID: 0}
   tempthing: {fileID: 0}

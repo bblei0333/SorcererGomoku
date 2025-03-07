@@ -34,7 +34,6 @@ public class Spawner : MonoBehaviour
     void Awake()
     {
         // Log the initial client ID when the object is awake
-        Debug.Log("Client ID: " + ownerIDSelf);
     }
 
     // Update is called once per frame
