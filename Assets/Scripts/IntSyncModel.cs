@@ -37,22 +37,6 @@ public int _pflip2;
 [RealtimeProperty(12, true, true)] 
 public int _AnimatingP;
 
-[RealtimeProperty(14, true, true)] 
-public int _bombGrid1;
-[RealtimeProperty(15, true, true)] 
-public int _bombGrid2;
-[RealtimeProperty(16, true, true)] 
-public int _bombGrid3;
-[RealtimeProperty(17, true, true)] 
-public int _bombGrid4;
-[RealtimeProperty(18, true, true)] 
-public int _bombGrid5;
-[RealtimeProperty(19, true, true)] 
-public int _bombGrid6;
-[RealtimeProperty(20, true, true)] 
-public int _bombGrid7;
-[RealtimeProperty(21, true, true)] 
-public int _bombGrid8;
-[RealtimeProperty(22, true, true)] 
-public int _bombGrid9;
+[RealtimeProperty(14, true, true)]
+public byte[] _bombGrid = new byte[9];
 }
