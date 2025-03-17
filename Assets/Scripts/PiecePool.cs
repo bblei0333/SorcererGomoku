@@ -44,8 +44,8 @@ public class PiecePool : MonoBehaviour
         int t1 = 0;
         int t2 = 0;
         int t3 = 0;
-        bool testingMode = false;
-        pieceNum = 9; //change for more pieces in test mode default 9
+        bool testingMode = true;
+        pieceNum = 20; //change for more pieces in test mode default 9
         if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2)
         {
             pieceNum = 0;
@@ -87,6 +87,9 @@ public class PiecePool : MonoBehaviour
                 if(randPowerUp == 5){
                     pool[r] = 8; // Assign a mystery
                     Debug.Log("Mystery added");
+                }
+                if(randPowerUp == 8){
+                    pool[r] = 9;
                 }
                 x++; // Increment the count of powerups
             }
@@ -297,12 +300,21 @@ public class PiecePool : MonoBehaviour
             realStart(); // Set up the pool and slots
         }
         if(GameObject.Find("Normy").GetComponent<IntSync>().pbgrab > 0 && PID == 1){
-            Destroy(hold);
-            GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(0);
+            StartCoroutine(Bgrab());
         }
         else if(GameObject.Find("Normy").GetComponent<IntSync>().pwgrab > 0 && PID == 0){
-            Destroy(hold);
-            GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(0);
+            StartCoroutine(Wgrab());
         }
+    }
+
+    IEnumerator Bgrab(){
+        yield return new WaitForSeconds(2);
+        Destroy(hold);
+        GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(0);
+    }
+    IEnumerator Wgrab(){
+        yield return new WaitForSeconds(2);
+        Destroy(hold);
+        GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(0);
     }
 }

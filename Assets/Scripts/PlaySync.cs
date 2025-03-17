@@ -26,6 +26,8 @@ public class PlaySync : RealtimeComponent{
 
     public void Play(){
          //Debug.Log("Play");
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().FlippedTurn = false;
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().ItIsThere = false;
         _model.play++;
         papa = _model.play;
     }

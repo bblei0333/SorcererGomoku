@@ -8,7 +8,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
    private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
-   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime;
+   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, ItIsThere, FlippedTurn;
    public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
@@ -55,6 +55,11 @@ public class GomokuControl : MonoBehaviour
     disabledplay = false;
    }
 
+   IEnumerator DelayedEnding(){
+    yield return new WaitForSeconds(1f);
+    AnimationOver(2);
+   }
+
 
    private void Awake(){
        // Set up the grid on game start
@@ -62,10 +67,14 @@ public class GomokuControl : MonoBehaviour
    }
 
    public void AnimationOver(int AID){
+    Debug.Log("Play resuming");
+    OngoingAnimation = false;
+    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(0);
     disabledplay = false;
-    if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
+    if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID ){
         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
     }
+    ItIsThere = true;
    }
 
 
@@ -249,7 +258,7 @@ public class GomokuControl : MonoBehaviour
        // Ensure the camera reference is set up
        frameCounter++;
 
-        if(GameObject.Find("Normy").GetComponent<IntSync>().Animating == 1 && !OngoingAnimation){
+        if(GameObject.Find("Normy").GetComponent<IntSync>().Animating != 0 && !OngoingAnimation){
             OncomingAnimation = true;
         }
         // Check if the counter is divisible by 30
@@ -266,10 +275,20 @@ public class GomokuControl : MonoBehaviour
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
             Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
-            if(OncomingAnimation && !OngoingAnimation && LPPID == 5){
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !FlippedTurn){
                 OngoingAnimation = true;
                 OncomingAnimation = false;
                 GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
+            }
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 9){
+                OngoingAnimation = true;
+                OncomingAnimation = false;
+                if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID != LastPlayerID){
+                    GameObject.Find("Normy").GetComponent<AnimationController>().Grabbed();
+                }
+                else{
+                    StartCoroutine(DelayedEnding());
+                }
             }
 
             // Reset the frame counter to 0 after the action is triggered
@@ -335,64 +354,8 @@ public class GomokuControl : MonoBehaviour
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 2 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                // If next piece is bomb and it is clients turn
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
-               GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
-               /*
-               Quaternion rotation = Quaternion.Euler(15,15, 15);
-               for (int b = -1; b < 2; b++)
-               {
-                for (int y = -1; y < 2; y++){
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)1)){
-                        int rndXrot = rnd.Next(0,30);
-                        int rndYrot = rnd.Next(0,30);
-                        int rndZrot = rnd.Next(0,30);
-                        rotation.x = rndXrot;
-                        rotation.y = rndYrot;
-                        rotation.z = rndZrot;
-                        
-                        Vector3 physicsPos = GetTileCenter(currentHover.x + b, currentHover.y + y);
-                        physicsPos.y += 0.5f;
-                        Instantiate(physicsB, physicsPos, rotation);
-                    }
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)2)){
-                        int rndXrot = rnd.Next(0,30);
-                        int rndYrot = rnd.Next(0,30);
-                        int rndZrot = rnd.Next(0,30);
-                        rotation.x = rndXrot;
-                        rotation.y = rndYrot;
-                        rotation.z = rndZrot;
-                        
-                        Vector3 physicsPos = GetTileCenter(currentHover.x + b, currentHover.y + y);
-                        physicsPos.y += 1;
-                        Instantiate(physicsW, physicsPos, rotation);
-                    }
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] != (byte)4 && (GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x + b, currentHover.y + y)] == (byte)5)){
-                        int rndXrot = rnd.Next(0,30);
-                        int rndYrot = rnd.Next(0,30);
-                        int rndZrot = rnd.Next(0,30);
-                        rotation.x = rndXrot;
-                        rotation.y = rndYrot;
-                        rotation.z = rndZrot;
-                        
-                        Vector3 physicsPos = GetTileCenter(currentHover.x + b, currentHover.y + y);
-                        physicsPos.y += 1;
-                        Instantiate(physicsS, physicsPos, rotation);
-                    }
-
-                }
-               }
-            
-               
-            Vector3 explosionPos = GetTileCenter(currentHover.x, currentHover.y );
-            Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
-            foreach (Collider hit in colliders)
-            {
-                Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-                if (rb != null){
-                    rb.AddExplosionForce(power, explosionPos, radius, 0.25F);
-                }
-            }
-            */
+               GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);   
+               GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 3, currentHover.x, currentHover.y);
             bombTriggered = 1;
             //StartCoroutine(physicsKiller());
               
@@ -400,8 +363,10 @@ public class GomokuControl : MonoBehaviour
            //if next piece is a grab and it is clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 8 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                 GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 9, currentHover.x, currentHover.y);
+                GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(2);
                 if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID == 1){
                     GameObject.Find("Normy").GetComponent<IntSync>().WhiteGrab(1);
+                    
                 }
                 else{
                     GameObject.Find("Normy").GetComponent<IntSync>().BlackGrab(1);

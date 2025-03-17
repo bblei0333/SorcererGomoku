@@ -4,12 +4,30 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    public GameObject bp, wp, sp, flip1, flip2, tempthing;
+    public GameObject bp, wp, sp, flip1, flip2, tempthing, h1, h2, fist, palm;
     private Renderer pieceRenderer;
     private Vector3 Posi;
     // Start is called before the first frame update
+
+    public void Grabbed(){
+        palm = Instantiate(h1, Vector3.zero, Quaternion.identity);
+        Animator animator3 = palm.GetComponent<Animator>();
+        animator3.Play("palmgrab");
+        StartCoroutine(Grabber());
+    }
+    IEnumerator Grabber(){
+        yield return new WaitForSeconds(2);
+        fist = Instantiate(h2, palm.transform.position, palm.transform.rotation);
+        Destroy(palm);
+        Animator animator4 = fist.GetComponent<Animator>();
+        animator4.Play("fistgrab");
+        yield return new WaitForSeconds(0.8f);
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(2);
+        Destroy(fist);
+    }
     public void DoAFlip(int p1, int p2, Vector3 pos)
     {
+        if(GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().FlippedTurn == true){return;}
         GameObject b1, b2;
         b1 = null;
         b2 = null;
@@ -20,23 +38,29 @@ public class AnimationController : MonoBehaviour
         if(p2 == 2){b2 = bp;};
         if(p2 == 3){b2 = sp;};
         flip2 = b2;
+        if(flip1 == null){
         flip1 = Instantiate(b1, pos, Quaternion.identity);
+        }
         Animation animator1 = flip1.GetComponent<Animation>();
         animator1.Play("FlipUp");
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().FlippedTurn = true;
         StartCoroutine(Waiter());
     }
 
     IEnumerator Waiter(){
+        yield return new WaitForSeconds(1f);
+        if(flip2 != null && flip1 != null){
         flip2 = Instantiate(flip2,flip1.transform.position, flip1.transform.rotation);
         Destroy(flip1);
+        }
         Animation animator2 = flip2.GetComponent<Animation>();
         animator2.Play("FlipDown");
+        yield return new WaitForSeconds(0.8f);
         if(GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().LPlayer){GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(0);}
-        yield return new WaitForSeconds(0.8f);
-        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().OngoingAnimation = false;
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(1);
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitUntil(() => GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().ItIsThere);
         Destroy(flip2);
+        Debug.Log("Its gone");
     }
    
     //public void OnAnimationEnd(){
