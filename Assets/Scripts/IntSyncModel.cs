@@ -39,4 +39,15 @@ public int _AnimatingP;
 
 [RealtimeProperty(14, true, true)]
 public byte[] _bombGrid = new byte[9];
+
+[RealtimeProperty(15, true, true)]
+public bool _bothBoom = false;
+
+[RealtimeProperty(16, true, true)]
+public bool _player0Boom = false;
+
+[RealtimeProperty(17, true, true)]
+public bool _player1Boom = false;
 }
+
+

@@ -8,6 +8,7 @@ public class IntSync : RealtimeComponent{
     public int pwwin;
     public int pbwin;
     public int pbgrab, pwgrab, LPPID, LPPx, LPPy, f1, f2, Animating, LPlayer;
+    public bool pbothBoom = false;
     public byte[] bombGridPub= new byte[9];
     private IntSyncModel model{
         set{
@@ -28,7 +29,21 @@ public class IntSync : RealtimeComponent{
         f1 = _model.pflip1;
         f2 = _model.pflip2;
         bombGridPub = _model.bombGrid;
-
+        if(_model.player0Boom && _model.player1Boom){
+            _model.bothBoom = true;
+        } else{
+            _model.bothBoom = false;
+        }
+        pbothBoom = _model.bothBoom;
+        
+        
+    }
+    
+    public void setPlayer0Boom(bool isboom){
+        _model.player0Boom = isboom;
+    }
+    public void setPlayer1Boom(bool isboom){
+        _model.player1Boom = isboom;
     }
 
    

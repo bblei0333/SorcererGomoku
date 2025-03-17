@@ -32,6 +32,7 @@ public class GomokuControl : MonoBehaviour
     public bool OncomingAnimation = false;
 
     public bool Booming = false;
+    
 
 
    Random rnd = new Random();
@@ -156,97 +157,7 @@ public class GomokuControl : MonoBehaviour
            } else if (state == 2){
                Instantiate(offwhite, GetTileCenter(xcord, ycord), Quaternion.identity);
            } else if (state == 3){
-            Booming = true;
-            /*
-               GameObject thingToDie = Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
-               Quaternion rotation = Quaternion.Euler(15,15, 15);
-               int gridSpace = -1;
-               int[] gridIDs = new int[9];   
-              
-        
-               for (int b = -1; b < 2; b++)
-               {
-                for (int y = -1; y < 2; y++){
-                    gridSpace++;
-                    
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord + b, ycord + y)] != (byte)4){
-                        if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)1){
-                            gridIDs[gridSpace] = 1;
-                            int rndXrot = rnd.Next(0,30);
-                            int rndYrot = rnd.Next(0,30);
-                            int rndZrot = rnd.Next(0,30);
-                            rotation.x = rndXrot;
-                            rotation.y = rndYrot;
-                            rotation.z = rndZrot;
-                            Vector3 physicsPos = GetTileCenter(xcord + b, ycord + y);
-                            physicsPos.y += 0.5f;
-                            Instantiate(physicsB, physicsPos, rotation);
-
-                        }
-                        else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)2){
-                            gridIDs[gridSpace] = 2;
-                            int rndXrot = rnd.Next(0,30);
-                            int rndYrot = rnd.Next(0,30);
-                            int rndZrot = rnd.Next(0,30);
-                            rotation.x = rndXrot;
-                            rotation.y = rndYrot;
-                            rotation.z = rndZrot;
-                            Vector3 physicsPos = GetTileCenter(xcord + b, ycord + y);
-                            physicsPos.y += 0.5f;
-                            Instantiate(physicsW, physicsPos, rotation);
-
-                        }
-                        else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)5){
-                            gridIDs[gridSpace] = 5;
-                            int rndXrot = rnd.Next(0,30);
-                            int rndYrot = rnd.Next(0,30);
-                            int rndZrot = rnd.Next(0,30);
-                            rotation.x = rndXrot;
-                            rotation.y = rndYrot;
-                            rotation.z = rndZrot;
-                            Vector3 physicsPos = GetTileCenter(xcord + b, ycord + y);
-                            physicsPos.y += 0.5f;
-                            Instantiate(physicsS, physicsPos, rotation);
-
-                        }
-                        else{
-                            gridIDs[gridSpace] = 0;
-                        }
-                    //GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
-                    }
-                }
-               }
-               
-               GameObject.Find("Normy").GetComponent<IntSync>().SetBombGrid(gridIDs);
-               */
-               for (int b = -1; b < 2; b++)
-               {
-                for (int y = -1; y < 2; y++){
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord + b, ycord + y)] != (byte)4){
-                    
-                        //GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
-                        Debug.Log("");
-                    }
-                }
-               }
-               
-               //GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord, ycord, 3);
-               /*
-                Vector3 explosionPos = GetTileCenter(xcord, ycord );
-                Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
-                foreach (Collider hit in colliders)
-                {
-                    Rigidbody rb = hit.GetComponent<Rigidbody>();
-
-                    if (rb != null){
-                        rb.AddExplosionForce(power, explosionPos, radius, 0.25F);
-                    }
-                }
-        
-                StartCoroutine(physicsKiller());
-                SyncGrid();
-                */
-              
+               Booming = true;
            } else if (state == 4){
                Instantiate(stone, GetTileCenter(xcord, ycord), Quaternion.identity);
            } else if (state == 5){
@@ -294,7 +205,7 @@ public class GomokuControl : MonoBehaviour
             }
             if(LPPID == 3 && Booming){
                Debug.Log("Update Booming"); 
-               //Booming = false;
+               Booming = false;
                int xcord = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
                int ycord = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
                GameObject thingToDie = Instantiate(offbomb, GetTileCenter(xcord, ycord), Quaternion.identity);
@@ -303,6 +214,7 @@ public class GomokuControl : MonoBehaviour
                int[] gridIDs = new int[9];  
 
                //
+               /*
                int gridInstantiateSpace = -1;
                for (int b = -1; b < 2; b++)
                {
@@ -339,6 +251,7 @@ public class GomokuControl : MonoBehaviour
                         rb.AddExplosionForce(power, explosionPos, radius, 0.25F);
                     }
                 }
+                */
                 // 
               
                Debug.Log(xcord + ", " + ycord); 
@@ -374,8 +287,8 @@ public class GomokuControl : MonoBehaviour
                    //Debug.Log(id); 
                }
                GameObject.Find("Normy").GetComponent<IntSync>().SetBombGrid(gridIDs);
-               //int gridInstantiateSpace = -1;
-               gridInstantiateSpace = -1;
+               int gridInstantiateSpace = -1;
+               //gridInstantiateSpace = -1;
                for (int b = -1; b < 2; b++)
                {
                 for (int y = -1; y < 2; y++){
@@ -401,10 +314,10 @@ public class GomokuControl : MonoBehaviour
                 }
                }
      
-                //Vector3 explosionPos = GetTileCenter(xcord, ycord );
-                explosionPos = GetTileCenter(xcord, ycord);
-                //Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
-                colliders = Physics.OverlapSphere(explosionPos, radius);
+                Vector3 explosionPos = GetTileCenter(xcord, ycord );
+                //explosionPos = GetTileCenter(xcord, ycord);
+                Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
+                //colliders = Physics.OverlapSphere(explosionPos, radius);
                 foreach (Collider hit in colliders)
                 {
                     Rigidbody rb = hit.GetComponent<Rigidbody>();
