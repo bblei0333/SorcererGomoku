@@ -28,6 +28,7 @@ public class PlaySync : RealtimeComponent{
          //Debug.Log("Play");
         _model.play++;
         papa = _model.play;
+        //GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().Booming = false;
     }
     
 
