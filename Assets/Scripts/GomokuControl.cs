@@ -383,6 +383,8 @@ public class GomokuControl : MonoBehaviour
                Booming = true;
                GameObject.Find("Normy").GetComponent<IntSync>().setPlayer0Boom(false);
                GameObject.Find("Normy").GetComponent<IntSync>().setPlayer1Boom(false); 
+               int[] gridIDs = new int[9]; 
+               GameObject.Find("Normy").GetComponent<IntSync>().SetBombGrid(gridIDs);
            
               
            }
