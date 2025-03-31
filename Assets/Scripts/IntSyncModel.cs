@@ -36,4 +36,6 @@ public int _pflip1;
 public int _pflip2;
 [RealtimeProperty(12, true, true)] 
 public int _AnimatingP;
+[RealtimeProperty(14, true, true)] 
+public int _LastAgentID;
 }

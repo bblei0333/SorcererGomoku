@@ -54,6 +54,11 @@ public class GomokuControl : MonoBehaviour
     Destroy(yayeey);
     disabledplay = false;
    }
+   IEnumerator DelayedFlipReset(){
+    yield return new WaitForSeconds(0.2f);
+    ItIsThere = false;
+    FlippedTurn = false;
+   }
 
    IEnumerator DelayedEnding(){
     yield return new WaitForSeconds(1f);
@@ -261,6 +266,23 @@ public class GomokuControl : MonoBehaviour
         if(GameObject.Find("Normy").GetComponent<IntSync>().Animating != 0 && !OngoingAnimation){
             OncomingAnimation = true;
         }
+
+            LastPlayerID = GameObject.Find("Normy").GetComponent<IntSync>().LPlayer;
+            LPPID = GameObject.Find("Normy").GetComponent<IntSync>().LPPID;
+            LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
+            LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
+            Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
+            if(GameObject.Find("Normy").GetComponent<IntSync>().gaga == GameObject.Find("Normy").GetComponent<Spawner>().ID && FlippedTurn){
+                //ItIsThere = false;
+                //FlippedTurn = false;
+            }
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !FlippedTurn){
+                GameObject.Find("Normy").GetComponent<IntSync>().SetAgent(GameObject.Find("Normy").GetComponent<Spawner>().ID);
+                Debug.Log("Thing happened here");
+                OngoingAnimation = true;
+                OncomingAnimation = false;
+                GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
+            }
         // Check if the counter is divisible by 30
         if (frameCounter >= 30)
         {
@@ -270,16 +292,7 @@ public class GomokuControl : MonoBehaviour
             }
             SyncGrid();
             SyncWin();
-            LastPlayerID = GameObject.Find("Normy").GetComponent<IntSync>().LPlayer;
-            LPPID = GameObject.Find("Normy").GetComponent<IntSync>().LPPID;
-            LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
-            LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
-            Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
-            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !FlippedTurn){
-                OngoingAnimation = true;
-                OncomingAnimation = false;
-                GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
-            }
+            
             if(OncomingAnimation && !OngoingAnimation && LPPID == 9){
                 OngoingAnimation = true;
                 OncomingAnimation = false;
@@ -489,7 +502,14 @@ public class GomokuControl : MonoBehaviour
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
+           if(FlippedTurn && ItIsThere && GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().Lagent){
+                ItIsThere = false;
+                FlippedTurn = false;
+           }
            if(agentTriggered == 1){
+                Debug.Log(GameObject.Find("Normy").GetComponent<IntSync>().gaga + " " + FlippedTurn + " " + ItIsThere + " " + GameObject.Find("Normy").GetComponent<IntSync>().Lagent + " " + GameObject.Find("Normy").GetComponent<Spawner>().ID);
+                ItIsThere = false;
+                FlippedTurn = false;
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                GameObject.Find("Normy").GetComponent<PlaySync>().Play();
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
