@@ -7,14 +7,13 @@ public class IntSync : RealtimeComponent{
     public int gaga;
     public int pwwin;
     public int pbwin;
-    public int pbgrab, pwgrab, LPPID, LPPx, LPPy, f1, f2, Animating, LPlayer, Lagent;
+    public int pbgrab, pwgrab, LPPID, LPPx, LPPy, f1, f2, Animating, LPlayer;
     private IntSyncModel model{
         set{
             _model = value;
         }
     }
     private void Update(){
-        Lagent = _model._LastAgentID;
         Animating = _model.AnimatingP;
         LPlayer = _model.p3LPP;
         gaga = _model.turner;
@@ -32,10 +31,6 @@ public class IntSync : RealtimeComponent{
     public void SetAnimation(int num){
         _model.AnimatingP = num;
     }
-    public void SetAgent(int num){
-        _model.LastAgentID = num;
-    }
-
 
     public void SetFlip(int num, int num2){
         _model.pflip1 = num;

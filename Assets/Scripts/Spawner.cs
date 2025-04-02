@@ -24,7 +24,6 @@ public class Spawner : MonoBehaviour
             // Instantiate the "BpNorm" object and get its owner ID
             ID = Realtime.Instantiate("BpNorm", new Vector3(123123, 124124, 13434), Quaternion.identity)
                 .GetComponent<RealtimeView>().ownerIDSelf;
-            GameObject.Find("Normy").GetComponent<IntSync>().SetAgent(25);
 
             // Set the PiecePool's PID to the assigned ID
             GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID = ID;
