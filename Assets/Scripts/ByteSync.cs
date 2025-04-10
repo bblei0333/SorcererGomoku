@@ -14,9 +14,6 @@ public class ByteSync : RealtimeComponent{
         }
     }
     public bool checkEmpty(int x, int y){
-        if(x > 14 || x < 0 || y < 0 || y > 14){
-            return false;
-        }
         int oned = ((y*15) + x);
         if(_model.bytes[oned] == (byte)0){
             //Debug.Log(oned + " empty");

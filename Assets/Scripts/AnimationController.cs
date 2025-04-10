@@ -61,6 +61,8 @@ public class AnimationController : MonoBehaviour
         yield return new WaitUntil(() => GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().ItIsThere);
         Destroy(flip2);
         Debug.Log("Its gone");
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().CheckForWin(1);
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().CheckForWin(2);
     }
    
     //public void OnAnimationEnd(){

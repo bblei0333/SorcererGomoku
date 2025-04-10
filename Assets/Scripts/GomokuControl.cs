@@ -258,21 +258,23 @@ public class GomokuControl : MonoBehaviour
                     {
                         for (int y = -1; y < 2; y++){
                             gridSpace++;
-                            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)1){
-                                gridIDs[gridSpace] = 1;
-                            }
-                            else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)2){
-                                gridIDs[gridSpace] = 2;
-                            }
-                            else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)5){
-                                gridIDs[gridSpace] = 5;
-                            }
-                            else{
-                                gridIDs[gridSpace] = 0;
-                            }
-                            if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] != (byte)4){
-                                GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
-                            }
+                            if(xcord + b < 15 && xcord + b > -1 && ycord + y < 15 && ycord + y > -1){
+                                if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)1){
+                                    gridIDs[gridSpace] = 1;
+                                }
+                                else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)2){
+                                    gridIDs[gridSpace] = 2;
+                                }
+                                else if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] == (byte)5){
+                                    gridIDs[gridSpace] = 5;
+                                }
+                                else{
+                                    gridIDs[gridSpace] = 0;
+                                }
+                                if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] != (byte)4){
+                                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
+                                }
+                            } else{gridIDs[gridSpace] = 0;}
                             
                         }
                     }
