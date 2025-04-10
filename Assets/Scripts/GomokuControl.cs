@@ -243,6 +243,14 @@ public class GomokuControl : MonoBehaviour
             }    
             if(LPPID == 3 && Booming){
                Debug.Log("Update Booming"); 
+               GameObject[] pKillList = GameObject.FindGameObjectsWithTag("PhysicsToKill");
+                foreach (GameObject obj in pKillList){
+                    Destroy(obj); // Destroy previous pieces
+                }
+                if(pKillList.Length > 0){
+                    Debug.Log("Killing");
+                }
+               SyncGrid();
                Booming = false;
                int xcord = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
                int ycord = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
@@ -274,46 +282,46 @@ public class GomokuControl : MonoBehaviour
                                 if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] != (byte)4){
                                     GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
                                 }
-                            } else{gridIDs[gridSpace] = 0;}
+                            } else{
+                                gridIDs[gridSpace] = 0;
+                            }
                             
                         }
                     }
                     GameObject.Find("Normy").GetComponent<IntSync>().SetBombGrid(gridIDs);
-               }
+               } 
+               
                int gridInstantiateSpace = -1;
                //gridInstantiateSpace = -1;
                for (int b = -1; b < 2; b++)
                {
                 for (int y = -1; y < 2; y++){
-                    if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(xcord+ b, ycord + y)] != (byte)4){
-                                //GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(xcord + b, ycord + y, 0);
-                    }
-                    gridInstantiateSpace++;
-                    int rndXrot = rnd.Next(0,30);
-                    int rndYrot = rnd.Next(0,30);   
-                    int rndZrot = rnd.Next(0,30);
-                    rotation.x = rndXrot;
-                    rotation.y = rndYrot;
-                    rotation.z = rndZrot;
-                    Vector3 physicsPos = GetTileCenter(xcord + b, ycord + y);
-                    physicsPos.y += 0.5f;
-                    byte gridID = GameObject.Find("Normy").GetComponent<IntSync>().bombGridPub[gridInstantiateSpace];
-                    if(gridID == 1){
-                        Instantiate(physicsB, physicsPos, rotation);
-                    } else if(gridID == 2){
-                        Instantiate(physicsW, physicsPos, rotation);
-                    } else if(gridID == 5){
-                        Instantiate(physicsS, physicsPos, rotation);
-                    }
                     
+                        gridInstantiateSpace++;
+                        int rndXrot = rnd.Next(0,30);
+                        int rndYrot = rnd.Next(0,30);   
+                        int rndZrot = rnd.Next(0,30);
+                        rotation.x = rndXrot;
+                        rotation.y = rndYrot;
+                        rotation.z = rndZrot;
+                        Vector3 physicsPos = GetTileCenter(xcord + b, ycord + y);
+                        physicsPos.y += 0.5f;
+                        byte gridID = GameObject.Find("Normy").GetComponent<IntSync>().bombGridPub[gridInstantiateSpace];
+                        if(gridID == 1){
+                            Instantiate(physicsB, physicsPos, rotation);
+                        } else if(gridID == 2){
+                            Instantiate(physicsW, physicsPos, rotation);
+                        } else if(gridID == 5){
+                            Instantiate(physicsS, physicsPos, rotation);
+                        }
+                    
+                    }
 
                 }
-               }
+               
      
                 Vector3 explosionPos = GetTileCenter(xcord, ycord );
-                //explosionPos = GetTileCenter(xcord, ycord);
                 Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
-                //colliders = Physics.OverlapSphere(explosionPos, radius);
                 foreach (Collider hit in colliders)
                 {
                     Rigidbody rb = hit.GetComponent<Rigidbody>();

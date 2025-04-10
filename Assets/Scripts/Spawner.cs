@@ -28,6 +28,9 @@ public class Spawner : MonoBehaviour
             // Set the PiecePool's PID to the assigned ID
             GameObject.Find("GomokuBoard").GetComponent<PiecePool>().PID = ID;
             Debug.Log("ID: " + ID); // Log the assigned ID
+            
+          
+            
         }
     }
 

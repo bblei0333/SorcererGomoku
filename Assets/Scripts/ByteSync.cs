@@ -28,7 +28,7 @@ public class ByteSync : RealtimeComponent{
         int oned = y*15 + x;
         byte[] bytes = model.bytes;
         model.bytes[oned] = (byte)bID;
-        Debug.Log("Set at: " + oned + " equals " + model.bytes[oned]);
+        //Debug.Log("Set at: " + oned + " equals " + model.bytes[oned]);
         model.bytes = bytes;
     }
     
