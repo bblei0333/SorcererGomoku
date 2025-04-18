@@ -45,7 +45,7 @@ public class PiecePool : MonoBehaviour
         int t2 = 0;
         int t3 = 0;
         bool testingMode = true;
-        pieceNum = 15; //change for more pieces in test mode default 9
+        pieceNum = 20; //change for more pieces in test mode default 9
         if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2)
         {
             pieceNum = 0;
@@ -61,7 +61,7 @@ public class PiecePool : MonoBehaviour
 
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = 0;
+                int randPowerUp = 3;
                 //rnd.Next(0,6);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
