@@ -9,7 +9,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
    private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
-   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, ItIsThere, FlippedTurn;
+   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, flipyet;
    public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    public int Delayer;
@@ -62,7 +62,6 @@ public class GomokuControl : MonoBehaviour
 
    public IEnumerator DelayedEnding(){
     yield return new WaitForSeconds(1f);
-    FlippedTurn = false;
     AnimationOver(2);
    }
 
@@ -203,10 +202,6 @@ public class GomokuControl : MonoBehaviour
    private void Update(){
        // Ensure the camera reference is set up
        frameCounter++;
-        if(Delayer == 1){
-            StartCoroutine(DelayedEnding());
-            Delayer = 0;
-        }
         if(GameObject.Find("Normy").GetComponent<IntSync>().Animating != 0 && !OngoingAnimation){
             OncomingAnimation = true;
         }
@@ -224,8 +219,9 @@ public class GomokuControl : MonoBehaviour
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
             Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
-            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !FlippedTurn){
-                FlippedTurn = true;
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !flipyet && GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                flipyet = true;
+                Debug.Log(flipyet);
                 OngoingAnimation = true;
                 OncomingAnimation = false;
                 GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
