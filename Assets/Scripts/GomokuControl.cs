@@ -236,6 +236,7 @@ public class GomokuControl : MonoBehaviour
                     StartCoroutine(DelayedEnding());
                 }
             }
+            /*
             if(GameObject.Find("Normy").GetComponent<Spawner>().ID == 0 && !GameObject.Find("Normy").GetComponent<IntSync>().pPlayer0Boom && GameObject.Find("Normy").GetComponent<IntSync>().pPlayer1Boom){
                     Booming = true;
             }
@@ -474,13 +475,16 @@ public class GomokuControl : MonoBehaviour
                         byte gridID = (byte) gridIDs[gridInstantiateSpace];
                         if(gridID == 1){
                             //Instantiate(physicsB, physicsPos, rotation);
-                            Realtime.Instantiate("PhysicsB", physicsPos, rotation);
+                            GameObject PB = Realtime.Instantiate("PhysicsB", physicsPos, rotation);
+                            PB.tag = "PhysicsToKill";
                         } else if(gridID == 2){
                             //Instantiate(physicsW, physicsPos, rotation);
-                            Realtime.Instantiate("PhysicsW", physicsPos, rotation);
+                            GameObject PW = Realtime.Instantiate("PhysicsW", physicsPos, rotation);
+                            PW.tag = "PhysicsToKill";
                         } else if(gridID == 5){
                             //Instantiate(physicsS, physicsPos, rotation);
-                            Realtime.Instantiate("PhysicsS", physicsPos, rotation);
+                            GameObject PS = Realtime.Instantiate("PhysicsS", physicsPos, rotation);
+                            PS.tag = "PhysicsToKill";
                         }
                     
                     }

@@ -2522,7 +2522,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.7711592}
   m_AnchorMax: {x: 0.892, y: 1}
-  m_AnchoredPosition: {x: -49.54302, y: 37.179985}
+  m_AnchoredPosition: {x: -49.54302, y: 37.17999}
   m_SizeDelta: {x: 130, y: -21.36}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1270994126
@@ -3295,9 +3295,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -851526815334418383, guid: f6a00ff1037d04d82b0c86e560ac64d3, type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 778070131}
+    - target: {fileID: -851526815334418383, guid: f6a00ff1037d04d82b0c86e560ac64d3, type: 3}
+      propertyPath: _viewUUID
+      value: 2005f77b-d5d9-44cf-88e3-602ad505dca6
+      objectReference: {fileID: 0}
     - target: {fileID: 2061458658936216624, guid: f6a00ff1037d04d82b0c86e560ac64d3, type: 3}
       propertyPath: m_Name
       value: PhysicsB
+      objectReference: {fileID: 0}
+    - target: {fileID: 2061458658936216624, guid: f6a00ff1037d04d82b0c86e560ac64d3, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5760279220541994361, guid: f6a00ff1037d04d82b0c86e560ac64d3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3582,6 +3594,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7671976433755343694, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 778070131}
+    - target: {fileID: -7671976433755343694, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
+      propertyPath: _viewUUID
+      value: 2913ed5f-e6eb-4988-867f-39866ffab483
+      objectReference: {fileID: 0}
     - target: {fileID: 3401653632155920399, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3641,6 +3661,10 @@ PrefabInstance:
     - target: {fileID: 8489164022126370508, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
       propertyPath: m_Name
       value: PhysicsW
+      objectReference: {fileID: 0}
+    - target: {fileID: 8489164022126370508, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6649583144761648576, guid: 444c76a6aa6af4a66a4f7423592142a7, type: 3}
@@ -3775,6 +3799,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -3342853898618346148, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
+      propertyPath: _realtime
+      value: 
+      objectReference: {fileID: 778070131}
+    - target: {fileID: -3342853898618346148, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
+      propertyPath: _viewUUID
+      value: 108f2c9c-ecd6-46f9-b389-28e8dab89e84
+      objectReference: {fileID: 0}
     - target: {fileID: 4170331702812183207, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3818,6 +3850,10 @@ PrefabInstance:
     - target: {fileID: 6452823367961756791, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
       propertyPath: m_Name
       value: PhysicsS
+      objectReference: {fileID: 0}
+    - target: {fileID: 6452823367961756791, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2278420878913583404, guid: b3ba5baca3f0641d7a88ca386442d143, type: 3}
