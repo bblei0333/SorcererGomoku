@@ -1,18 +1,23 @@
 using System.Collections;
+using System.Collections.Generic;
 using Normal.Realtime;
 using UnityEngine;
+using Normal.Realtime;
+using Normal.Realtime.Serialization;
 
 public class AnimationController : MonoBehaviour
 {
     public GameObject bp, wp, sp, flip1, flip2, tempthing, h1, h2, fist, palm;
     private string str2;
     public bool flipped;
+    private Renderer pieceRenderer;
+    private Vector3 Posi;
+    // Start is called before the first frame update
     
-    Realtime.InstantiateOptions option = new Realtime.InstantiateOptions {
+Realtime.InstantiateOptions option = new Realtime.InstantiateOptions {
         ownedByClient = true,
         preventOwnershipTakeover = true
     };
-
     public void Grabbed(){
         palm = Instantiate(h1, Vector3.zero, Quaternion.identity);
         Animator animator3 = palm.GetComponent<Animator>();
@@ -30,71 +35,45 @@ public class AnimationController : MonoBehaviour
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(2);
         Destroy(fist);
     }
-
     public void DoAFlip(int p1, int p2, Vector3 pos)
     {
-        if(flipped || flip1 != null) return;
+        if(flipped){return;};
         flipped = true;
-        
-        string b1 = GetPrefabName(p1);
-        str2 = GetPrefabName(p2);
-        
-        Debug.Log($"Instantiating flip at position: {pos}");
-
-        // Instantiate parent container
-        GameObject flipParent1 = new GameObject("FlipParent");
-        flipParent1.transform.position = pos;
-        
-        // Instantiate animated child with offset
-        flip1 = Realtime.Instantiate(b1, Vector3.zero, Quaternion.identity, option);
-        flip1.transform.SetParent(flipParent1.transform);
-        flip1.transform.localPosition = new Vector3(0, 0.2f, 0); // Your original offset
-        
+        string b1, b2;
+        b1 = null;
+        b2 = null;
+        if(p1 == 1){b1 = "AnimatedWhite";};
+        if(p1 == 2){b1 = "AnimatedBlack";};
+        if(p1 == 3){b1 = "AnimatedShare";};
+        if(p2 == 1){b2 = "AnimatedWhite";};
+        if(p2 == 2){b2 = "AnimatedBlack";};
+        if(p2 == 3){b2 = "AnimatedShare";};
+        str2 = b2;
+        Debug.Log(pos);
+        flip1 = Realtime.Instantiate(b1,pos, Quaternion.identity, option);
         Animation animator1 = flip1.GetComponent<Animation>();
         animator1.Play("FlipUp");
-        
-        StartCoroutine(Waiter(flipParent1, pos));
+        StartCoroutine(Waiter());
     }
-
-    IEnumerator Waiter(GameObject parent1, Vector3 pos)
-    {
-        yield return new WaitForSeconds(1f);
-        
-        // Create second parent container
-        GameObject flipParent2 = new GameObject("FlipParent");
-        flipParent2.transform.position = pos;
-        
-        // Instantiate second animated child
-        flip2 = Realtime.Instantiate(str2, Vector3.zero, Quaternion.identity, option);
-        flip2.transform.SetParent(flipParent2.transform);
-        flip2.transform.localPosition = new Vector3(0, 0.2f, 0); // Same offset
-        
-        // Clean up first flip
-        Destroy(parent1);
+    IEnumerator Waiter(){
+        yield return new WaitForSeconds(100f);
+        flip2 = Realtime.Instantiate(str2,flip1.transform.position, flip1.transform.rotation, option);
         Realtime.Destroy(flip1);
-        
         Animation animator2 = flip2.GetComponent<Animation>();
         animator2.Play("FlipDown");
-        
         yield return new WaitForSeconds(0.8f);
-        
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(1);
-        Destroy(flipParent2);
         Realtime.Destroy(flip2);
-        flipped = false;
+    }
+    //public void OnAnimationEnd(){
+    //}
+
+    void Start(){
     }
 
-    private string GetPrefabName(int pieceType)
+    // Update is called once per frame
+    void Update()
     {
-        return pieceType switch
-        {
-            1 => "AnimatedWhite",
-            2 => "AnimatedBlack",
-            3 => "AnimatedShare",
-            _ => null
-        };
+        
     }
-
-    void Start(){}
-    void Update(){}
 }
