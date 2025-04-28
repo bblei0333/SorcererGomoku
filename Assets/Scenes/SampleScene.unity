@@ -1770,6 +1770,9 @@ MonoBehaviour:
   fist: {fileID: 0}
   palm: {fileID: 0}
   flipped: 0
+  blackFlipPrefab: {fileID: 5470525366967581455, guid: 083a8b8f1553c48b0966f4a3b59867ea, type: 3}
+  whiteFlipPrefab: {fileID: 6591488613223306433, guid: 2289c8907df9d4641a544c337db851e0, type: 3}
+  shareFlipPrefab: {fileID: 1572303960772800071, guid: d9ddb369660c9423ab7b095d8a00c0a3, type: 3}
 --- !u!1 &802072423
 GameObject:
   m_ObjectHideFlags: 0
