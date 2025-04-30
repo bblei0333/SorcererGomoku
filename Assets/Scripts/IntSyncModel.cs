@@ -48,6 +48,9 @@ public bool _player0Boom = false;
 
 [RealtimeProperty(17, true, true)]
 public bool _player1Boom = false;
+[RealtimeProperty(18, true, true)]
+public bool _cameraShake = false;
 }
+
 
 

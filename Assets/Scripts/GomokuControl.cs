@@ -12,7 +12,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_Y = 15;
    private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, ItIsThere, FlippedTurn;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight, ExplosionParticle;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
@@ -207,6 +207,12 @@ public class GomokuControl : MonoBehaviour
            
             }
             createdMenu = false;
+        }
+        if(GameObject.Find("Normy").GetComponent<IntSync>().cameraShake == true){
+            StartCoroutine(cameraShake.Shake(.25f, .55f));
+            if(GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                GameObject.Find("Normy").GetComponent<IntSync>().cameraToggle(false);
+            }
         }
         if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 0){
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
@@ -424,7 +430,11 @@ public class GomokuControl : MonoBehaviour
                         rb.AddExplosionForce(power, explosionPos, radius, 0.25F);
                     }
                 }
-                StartCoroutine(cameraShake.Shake(.25f, .55f));
+                //StartCoroutine(cameraShake.Shake(.25f, .55f));
+                GameObject.Find("Normy").GetComponent<IntSync>().cameraToggle(true);
+                Debug.Log("Shake TRUE");
+                Realtime.Instantiate("Explosion", explosionPos, rotation);
+                StartCoroutine(explosionKiller());
 
                 StartCoroutine(physicsKiller());
                 
@@ -597,6 +607,15 @@ public class GomokuControl : MonoBehaviour
            
        }
 
+   }
+
+   IEnumerator explosionKiller(){
+    yield return new WaitForSeconds(1.5f);
+    GameObject[] eKillList = GameObject.FindGameObjectsWithTag("ExplosionKill");
+       foreach (GameObject obj in eKillList){
+           Realtime.Destroy(obj); // Destroy previous pieces
+           
+       }
    }
 
 

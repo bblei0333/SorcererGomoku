@@ -16,6 +16,7 @@ TagManager:
   - MenuPetrify
   - PhysicsToKill
   - HelpKill
+  - ExplosionKill
   layers:
   - Default
   - TransparentFX

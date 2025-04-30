@@ -11,6 +11,7 @@ public class IntSync : RealtimeComponent{
     public bool pbothBoom = false;
     public bool pPlayer0Boom;
     public bool pPlayer1Boom;
+    public bool cameraShake = false;
     public byte[] bombGridPub= new byte[9];
     private IntSyncModel model{
         set{
@@ -39,6 +40,7 @@ public class IntSync : RealtimeComponent{
         pbothBoom = _model.bothBoom;
         pPlayer0Boom = _model.player0Boom;
         pPlayer1Boom = _model.player1Boom;
+        cameraShake = _model.cameraShake;
         
         
     }
@@ -98,6 +100,9 @@ public class IntSync : RealtimeComponent{
         _model.turner--;
     }
     }
-    
+
+    public void cameraToggle(bool state){
+        _model.cameraShake = state;
+    }
 
 }
