@@ -1,20 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using Normal.Realtime;
 using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    public GameObject bp, wp, sp, flip1, flip2, tempthing, h1, h2, fist, palm;
+    public GameObject h1, h2, fist, palm;
     private string str2;
     public bool flipped;
-    private Renderer pieceRenderer;
-    private Vector3 Posi;
     
     // References to complete prefabs
     public GameObject blackFlipPrefab;  // Bc with AnimatedBlack as child
     public GameObject whiteFlipPrefab;  // Wc with AnimatedWhite as child
     public GameObject shareFlipPrefab;  // Sc with AnimatedShare as child
+    
+    private GameObject flip1, flip2;
     
     Realtime.InstantiateOptions option = new Realtime.InstantiateOptions {
         ownedByClient = true,
@@ -112,10 +111,5 @@ public class AnimationController : MonoBehaviour
         if (blackFlipPrefab == null || whiteFlipPrefab == null || shareFlipPrefab == null) {
             Debug.LogError("One or more flip prefabs not assigned in the inspector. Please assign all prefabs.");
         }
-    }
-
-    void Update()
-    {
-        
     }
 }
