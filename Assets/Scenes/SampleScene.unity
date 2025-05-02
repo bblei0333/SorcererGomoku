@@ -1289,6 +1289,7 @@ MonoBehaviour:
   HelpMenu: {fileID: 2832407635073302403, guid: 16cc659402e5d4128aad77f3666680f9, type: 3}
   LPPHighlight: {fileID: 2096160938}
   ExplosionParticle: {fileID: 6730481293093946871, guid: 41927324b97fe4de991f21e8336efe64, type: 3}
+  Delayer: 0
   endColor: {r: 1, g: 0, b: 0, a: 1}
   tileMaterial: {fileID: 2100000, guid: d29334704c3d047109f6b57196dfb210, type: 2}
   hoverMaterial: {fileID: 2100000, guid: e1e8538ac53bc41d098e6c90e687e2b5, type: 2}
@@ -1398,7 +1399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80040264, y: 0.7711592}
   m_AnchorMax: {x: 0.8795974, y: 0.91510224}
-  m_AnchoredPosition: {x: 259.99988, y: -860.1201}
+  m_AnchoredPosition: {x: 259.99985, y: -860.1201}
   m_SizeDelta: {x: -8.95, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &518117427
@@ -1839,6 +1840,7 @@ MonoBehaviour:
   pbothBoom: 0
   pPlayer0Boom: 0
   pPlayer1Boom: 0
+  cameraShake: 0
   bombGridPub: 000000000000000000
 --- !u!114 &778070137
 MonoBehaviour:
@@ -1889,12 +1891,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e2e44a288bc4e4ea7416ed409b5ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bp: {fileID: 162255389718920620, guid: 364b278f724fc48b49764d1a1de777bf, type: 3}
-  wp: {fileID: 1917799509726185740, guid: c1cc283c15d9b4f818b8723ae3380c47, type: 3}
-  sp: {fileID: 2681767780468886943, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
-  flip1: {fileID: 0}
-  flip2: {fileID: 0}
-  tempthing: {fileID: 0}
   h1: {fileID: 4271750485398033446, guid: fe4cb5747e9aa4436abe74af31bed7e0, type: 3}
   h2: {fileID: 482209780007605548, guid: 41ce07bdf08d64d09a3e1f910707dac1, type: 3}
   fist: {fileID: 0}
