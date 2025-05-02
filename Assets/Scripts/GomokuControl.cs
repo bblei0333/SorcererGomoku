@@ -14,6 +14,7 @@ public class GomokuControl : MonoBehaviour
    public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, ItIsThere, FlippedTurn;
    public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight, ExplosionParticle;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
+   public int Delayer;
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
    private Vector2Int currentHover; // Current tile under mouse cursor
@@ -64,7 +65,7 @@ public class GomokuControl : MonoBehaviour
     disabledplay = false;
    }
 
-   IEnumerator DelayedEnding(){
+   public IEnumerator DelayedEnding(){
     yield return new WaitForSeconds(1f);
     AnimationOver(2);
    }
@@ -80,10 +81,13 @@ public class GomokuControl : MonoBehaviour
     OngoingAnimation = false;
     GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(0);
     disabledplay = false;
-    if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID ){
+    if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
+        SyncGrid();
+        CheckForWin(1);
+        CheckForWin(2);
+        SyncWin();
     }
-    ItIsThere = true;
    }
 
 
@@ -240,7 +244,9 @@ public class GomokuControl : MonoBehaviour
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
             Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
-            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !FlippedTurn){
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !flipyet && GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+                flipyet = true;
+                Debug.Log(flipyet);
                 OngoingAnimation = true;
                 OncomingAnimation = false;
                 GameObject.Find("Normy").GetComponent<AnimationController>().DoAFlip(GameObject.Find("Normy").GetComponent<IntSync>().f1, GameObject.Find("Normy").GetComponent<IntSync>().f2, thingfordumbidiotunity);
@@ -473,48 +479,66 @@ public class GomokuControl : MonoBehaviour
            int agentTriggered = 0;
            int petrifyTriggered = 0;
            //DOUBLE AGENT HERE!!
-           if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
-               //checks if clicked space == black or share and client == white
-               GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 6, currentHover.x, currentHover.y);
-               if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1){
-                   TempCoordx = currentHover.x;
-                   TempCoordy = currentHover.y;
-                   TempID = 2;
-                   SyncGrid();
-                   agentTriggered = 1;
-                   
-                   if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1){
-                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(2,1);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
-                   }
-                   else{
-                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3,1);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
-                   }
-                  
-               }
-               //checks if clicked space == white or share and client == black
-               else if((GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0){
-                   TempCoordx = currentHover.x;
-                   TempCoordy = currentHover.y;
-                   TempID = 1;
-                   SyncGrid();
-                   agentTriggered = 1;
-                   if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2){
-                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(1,2);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
-                   }
-                   else{
-                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 0);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3,2);
-                    GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
-                   }
-               }
-              
-           }
+           //DOUBLE AGENT HERE!!
+if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 && 
+   GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && 
+   !disabledplay)
+{
+    // Get the current state of the clicked tile FIRST
+    byte currentState = GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)];
+    
+    // Block action if tile is empty
+    if (currentState == 0)
+    {
+        Debug.Log("Double Agent cannot target empty tiles!");
+        return; // Exit early, no action taken
+    }
+
+    // Proceed only if tile has a valid piece (black/white/share)
+    GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 6, currentHover.x, currentHover.y);
+    
+    if ((currentState == 1 || currentState == 5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 1)
+    {
+        // White player flip logic
+        TempCoordx = currentHover.x;
+        TempCoordy = currentHover.y;
+        TempID = 2;
+        SyncGrid();
+        agentTriggered = 1;
+        
+        if (currentState == 1) {
+            GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 0);
+            GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(2, 1);
+        } else {
+            GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 0);
+            GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3, 1);
+        }
+        GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+    }
+    else if ((currentState == 2 || currentState == 5) && GameObject.Find("Normy").GetComponent<Spawner>().ID == 0)
+    {
+        // Black player flip logic
+        TempCoordx = currentHover.x;
+        TempCoordy = currentHover.y;
+        TempID = 1;
+        SyncGrid();
+        agentTriggered = 1;
+        
+        if (currentState == 2) {
+            GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 0);
+            GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(1, 2);
+        } else {
+            GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 0);
+            GameObject.Find("Normy").GetComponent<IntSync>().SetFlip(3, 2);
+        }
+        GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(1);
+    }
+    else
+    {
+        Debug.LogError("Invalid Double Agent target!");
+        return; // Block invalid actions (e.g., flipping own color)
+    }
+}
            //if next piece is a petrify and it is the clients turn
            if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 6 && GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga && !disabledplay){
                if(GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)1 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)5 || GameObject.Find("Normy").GetComponent<ByteSync>()._model.bytes[coordToInt(currentHover.x, currentHover.y)] == (byte)2){

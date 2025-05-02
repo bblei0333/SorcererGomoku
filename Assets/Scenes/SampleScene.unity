@@ -1266,8 +1266,7 @@ MonoBehaviour:
   whitewin3done: 0
   disabledplay: 0
   gamertime: 0
-  ItIsThere: 0
-  FlippedTurn: 0
+  flipyet: 0
   offblack: {fileID: 2373480668462513274, guid: ca489cf04618742659b4cce7f3c358d1, type: 3}
   offwhite: {fileID: 7379817349861936476, guid: 722e37818f4474c85a5e46508a2b943a, type: 3}
   offbomb: {fileID: 3881926693229515779, guid: 616eb8cf131b5493f91dbb183a66164c, type: 3}
@@ -1801,10 +1800,16 @@ MonoBehaviour:
   - componentID: 14
     component: {fileID: 0}
   - componentID: 15
-    component: {fileID: 778070136}
+    component: {fileID: 0}
   - componentID: 16
-    component: {fileID: 778070137}
+    component: {fileID: 0}
   - componentID: 17
+    component: {fileID: 0}
+  - componentID: 18
+    component: {fileID: 778070136}
+  - componentID: 19
+    component: {fileID: 778070137}
+  - componentID: 20
     component: {fileID: 778070139}
   _childViews: []
 --- !u!114 &778070136
@@ -1894,6 +1899,10 @@ MonoBehaviour:
   h2: {fileID: 482209780007605548, guid: 41ce07bdf08d64d09a3e1f910707dac1, type: 3}
   fist: {fileID: 0}
   palm: {fileID: 0}
+  flipped: 0
+  blackFlipPrefab: {fileID: 5470525366967581455, guid: 083a8b8f1553c48b0966f4a3b59867ea, type: 3}
+  whiteFlipPrefab: {fileID: 6591488613223306433, guid: 2289c8907df9d4641a544c337db851e0, type: 3}
+  shareFlipPrefab: {fileID: 1572303960772800071, guid: d9ddb369660c9423ab7b095d8a00c0a3, type: 3}
 --- !u!1 &802072423
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,8 +27,8 @@ public class IntSync : RealtimeComponent{
         pbgrab = _model.bgrab;
         pwgrab = _model.wgrab;
         LPPID = _model.p1LPP;
-        LPPy = (_model.p2LPP % 100);
-        LPPx = ((_model.p2LPP - LPPy) / 100);
+        LPPy = _model.p2LPP % 100;
+        LPPx = (_model.p2LPP - LPPy) / 100;
         f1 = _model.pflip1;
         f2 = _model.pflip2;
         bombGridPub = _model.bombGrid;
