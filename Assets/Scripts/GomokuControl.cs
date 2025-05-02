@@ -209,11 +209,12 @@ public class GomokuControl : MonoBehaviour
             createdMenu = false;
         }
         if(GameObject.Find("Normy").GetComponent<IntSync>().cameraShake == true){
-            StartCoroutine(cameraShake.Shake(.25f, .55f));
+            StartCoroutine(cameraShake.Shake(.15f, .55f));
             if(GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
                 GameObject.Find("Normy").GetComponent<IntSync>().cameraToggle(false);
             }
         }
+        cameraShake.posReset();
         if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 0){
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
@@ -227,6 +228,7 @@ public class GomokuControl : MonoBehaviour
         // Check if the counter is divisible by 30
         if (frameCounter >= 30)
         {
+
             // Trigger your action here
             if(OngoingAnimation){
                 disabledplay = true;

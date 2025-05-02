@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    Vector3 resetPos;
+    public void Start(){
+        resetPos = transform.localPosition;
+    }
    public IEnumerator Shake (float duration, float magnitude){
     Vector3 originalPos = transform.localPosition;
     float elapsed = 0.0f;
@@ -16,4 +20,8 @@ public class CameraShake : MonoBehaviour
     }
     transform.localPosition = originalPos;
    }
+
+    public void posReset(){
+        transform.localPosition = resetPos;
+    }
 }
