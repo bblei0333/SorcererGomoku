@@ -1695,7 +1695,6 @@ GameObject:
   - component: {fileID: 778070136}
   - component: {fileID: 778070137}
   - component: {fileID: 778070139}
-  - component: {fileID: 778070140}
   - component: {fileID: 778070141}
   m_Layer: 0
   m_Name: Normy
@@ -1865,18 +1864,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   papa: 0
---- !u!114 &778070140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 778070130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18c500c3a5c9f45d995bba75b70b0d49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &778070141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1889,12 +1876,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e2e44a288bc4e4ea7416ed409b5ee8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bp: {fileID: 162255389718920620, guid: 364b278f724fc48b49764d1a1de777bf, type: 3}
-  wp: {fileID: 1917799509726185740, guid: c1cc283c15d9b4f818b8723ae3380c47, type: 3}
-  sp: {fileID: 2681767780468886943, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
-  flip1: {fileID: 0}
-  flip2: {fileID: 0}
-  tempthing: {fileID: 0}
   h1: {fileID: 4271750485398033446, guid: fe4cb5747e9aa4436abe74af31bed7e0, type: 3}
   h2: {fileID: 482209780007605548, guid: 41ce07bdf08d64d09a3e1f910707dac1, type: 3}
   fist: {fileID: 0}
