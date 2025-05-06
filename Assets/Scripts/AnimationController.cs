@@ -6,10 +6,10 @@ public class AnimationController : MonoBehaviour
 {
     public GameObject h1, h2, fist, palm;
     private string str2;
-    public bool flipped;
+    public bool flipped, placed;
     
     // References to complete prefabs
-    public GameObject blackFlipPrefab;  // Bc with AnimatedBlack as child
+    public GameObject blackFlipPrefab, placedpiece;  // Bc with AnimatedBlack as child
     public GameObject whiteFlipPrefab;  // Wc with AnimatedWhite as child
     public GameObject shareFlipPrefab;  // Sc with AnimatedShare as child
     
@@ -36,6 +36,32 @@ public class AnimationController : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(2);
         Destroy(fist);
+    }
+
+    public void PPAP(int AID, Vector3 pos){
+        if(placed) return;
+        placed = true;
+
+        GameObject tempfab = null;
+
+
+        if(AID == 0) tempfab = blackFlipPrefab;
+        if(AID == 1) tempfab = whiteFlipPrefab;
+        if(AID == 4) tempfab = shareFlipPrefab;
+
+        placedpiece = Realtime.Instantiate(tempfab.name, pos, Quaternion.identity, option);
+        AnimationStateSync animSync2 = placedpiece.GetComponent<AnimationStateSync>();
+        if(animSync2 != null){
+            animSync2.PlayPiecePlacement();
+        }
+        StartCoroutine(PlaceEnd());
+
+    }
+    IEnumerator PlaceEnd(){
+        yield return new WaitForSeconds(0.15f);
+        GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(3);
+        Realtime.Destroy(placedpiece);
+        placed = false;
     }
     
     public void DoAFlip(int p1, int p2, Vector3 pos)
@@ -100,7 +126,7 @@ public class AnimationController : MonoBehaviour
         
         Realtime.Destroy(flip1);
         
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.7f);
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(1);
         Realtime.Destroy(flip2);
         flipped = false;

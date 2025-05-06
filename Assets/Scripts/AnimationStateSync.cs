@@ -43,12 +43,18 @@ public class AnimationStateSync : RealtimeComponent<AnimationStateModel>
             case 2:
                 _animation.Play("FlipDown");
                 break;
+            case 3:
+                _animation.Play("Piece Place");
+                break;
             default:
                 // No animation or stop current
                 break;
         }
     }
     
+    public void PlayPiecePlacement(){
+        model.animationState = 3;
+    }
     public void PlayFlipUp()
     {
         model.animationState = 1;

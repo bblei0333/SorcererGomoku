@@ -11,7 +11,7 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
    private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
-   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, flipyet;
+   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, flipyet, placeyet;
    public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight, ExplosionParticle;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    public int Delayer;
@@ -65,9 +65,13 @@ public class GomokuControl : MonoBehaviour
     disabledplay = false;
    }
 
-   public IEnumerator DelayedEnding(){
+   public IEnumerator DelayedEnding(int AID){
     yield return new WaitForSeconds(1f);
-    AnimationOver(2);
+    if(AID == 2){
+        AnimationOver(2);}
+    if(AID == 3){
+        AnimationOver(3);
+    }
    }
 
 
@@ -87,6 +91,10 @@ public class GomokuControl : MonoBehaviour
         CheckForWin(1);
         CheckForWin(2);
         SyncWin();
+    }
+    if(AID == 3 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
+        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
+        SyncGrid();
     }
    }
 
@@ -258,7 +266,7 @@ public class GomokuControl : MonoBehaviour
                     GameObject.Find("Normy").GetComponent<AnimationController>().Grabbed();
                 }
                 else{
-                    StartCoroutine(DelayedEnding());
+                    StartCoroutine(DelayedEnding(2));
                 }
             }
         
@@ -558,8 +566,10 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                // BLACK WHITE SHARE HERE!!!
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
                if(pieceID == 0 || pieceID == 1 || pieceID == 4){ 
-                   GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, pieceID + 1);
-                   GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, pieceID + 1, currentHover.x, currentHover.y);
+                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(pieceID, GetTileCenter(currentHover.x, currentHover.y));
+                    TempCoordx = currentHover.x;
+                    TempCoordy = currentHover.y;
+                    TempID = pieceID + 1;
                }
 
                if(pieceID == 7){
