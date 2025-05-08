@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Normal.Realtime;
+using Random = System.Random;
 public class PlaySync : RealtimeComponent{
     //private int syncedint;
     public PlaySyncModel _model;
     public int papa;
+    Random rnd = new Random();
+
+    public int inkRot;
     private PlaySyncModel model{
         set{
             _model = value;
@@ -32,6 +36,9 @@ public class PlaySync : RealtimeComponent{
         _model.play++;
         papa = _model.play;
         //GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().Booming = false;
+    
+        int rndInkRot = rnd.Next(0,360);
+        inkRot = rndInkRot;
     }
     
 
