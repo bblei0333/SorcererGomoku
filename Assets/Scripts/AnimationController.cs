@@ -125,11 +125,12 @@ public class AnimationController : MonoBehaviour
         }
         
         Realtime.Destroy(flip1);
-        
+        flip1 = null;
+        flipped = false;
         yield return new WaitForSeconds(0.7f);
         GameObject.Find("GomokuBoard").GetComponent<GomokuControl>().AnimationOver(1);
         Realtime.Destroy(flip2);
-        flipped = false;
+        flip2 = null;
     }
 
     void Start(){

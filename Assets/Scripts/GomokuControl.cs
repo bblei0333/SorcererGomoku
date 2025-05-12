@@ -69,9 +69,6 @@ public class GomokuControl : MonoBehaviour
     yield return new WaitForSeconds(1f);
     if(AID == 2){
         AnimationOver(2);}
-    if(AID == 3){
-        AnimationOver(3);
-    }
    }
 
 
@@ -83,6 +80,7 @@ public class GomokuControl : MonoBehaviour
    public void AnimationOver(int AID){
     Debug.Log("Play resuming");
     OngoingAnimation = false;
+    OncomingAnimation = false;
     GameObject.Find("Normy").GetComponent<IntSync>().SetAnimation(0);
     disabledplay = false;
     if(AID == 1 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
@@ -91,8 +89,9 @@ public class GomokuControl : MonoBehaviour
         CheckForWin(1);
         CheckForWin(2);
         SyncWin();
+        GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, TempID, TempCoordx, TempCoordy);
     }
-    if(AID == 3 && LastPlayerID == GameObject.Find("Normy").GetComponent<Spawner>().ID){
+    if(AID == 3){
         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
         SyncGrid();
     }
@@ -252,7 +251,7 @@ public class GomokuControl : MonoBehaviour
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
             Vector3 thingfordumbidiotunity = GetTileCenter(LPPx,LPPy);
-            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !flipyet && GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+            if(OncomingAnimation && !OngoingAnimation && LPPID == 6 && !flipyet && GameObject.Find("Normy").GetComponent<Spawner>().ID != GameObject.Find("Normy").GetComponent<IntSync>().gaga && !GameObject.Find("Normy").GetComponent<AnimationController>().flipped){
                 flipyet = true;
                 Debug.Log(flipyet);
                 OngoingAnimation = true;
@@ -566,24 +565,34 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                // BLACK WHITE SHARE HERE!!!
                int pieceID = GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID;
                if(pieceID == 0 || pieceID == 1 || pieceID == 4){ 
-                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(pieceID, GetTileCenter(currentHover.x, currentHover.y));
                     TempCoordx = currentHover.x;
                     TempCoordy = currentHover.y;
                     TempID = pieceID + 1;
+                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(pieceID, GetTileCenter(currentHover.x, currentHover.y));
                }
 
                if(pieceID == 7){
+                
                     int randMystery = rnd.Next(0,4);
                     if(randMystery == 0){
-                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 1);
+                    TempCoordx = currentHover.x;
+                    TempCoordy = currentHover.y;
+                    TempID = 1;
+                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(0, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 1, currentHover.x, currentHover.y);
                     }
                     else if(randMystery == 1){
-                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 2);
+                    TempCoordx = currentHover.x;
+                    TempCoordy = currentHover.y;
+                    TempID = 2;
+                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(1, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 2, currentHover.x, currentHover.y);
                     }
                     else if(randMystery == 2){
-                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
+                    TempCoordx = currentHover.x;
+                    TempCoordy = currentHover.y;
+                    TempID = 5;
+                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(4, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 4, currentHover.x, currentHover.y);
                     }
                     else{
