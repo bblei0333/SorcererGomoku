@@ -77,6 +77,7 @@ public class IntSync : RealtimeComponent{
         x = x * 100;
         _model.p2LPP = x + y;
         _model.p3LPP = player;
+        
     }
     public void WhiteGrab(int num){
         _model.wgrab = num;

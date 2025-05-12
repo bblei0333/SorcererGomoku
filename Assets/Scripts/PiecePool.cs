@@ -61,8 +61,8 @@ public class PiecePool : MonoBehaviour
 
             if (pool[r] == 0) // If the slot is empty
             {
-                int randPowerUp = 3;
-                //rnd.Next(0,6);
+                //int randPowerUp = 3;
+                int randPowerUp = rnd.Next(0,6);
                 if(randPowerUp == 0){
                     pool[r] = 3; // Assign a bomb
                 }

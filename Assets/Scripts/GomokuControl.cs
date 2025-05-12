@@ -227,10 +227,15 @@ public class GomokuControl : MonoBehaviour
         }
         cameraShake.posReset();
         if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 0){
+            /*
             LPPx = GameObject.Find("Normy").GetComponent<IntSync>().LPPx;
             LPPy = GameObject.Find("Normy").GetComponent<IntSync>().LPPy;
             Vector3 LPPHighlightPos = GetTileCenter(LPPx,LPPy);
+            int inkRot = GameObject.Find("Normy").GetComponent<PlaySync>().inkRot;
             LPPHighlight.transform.position = LPPHighlightPos;
+
+            LPPHighlight.transform.Rotate(0,inkRot,0);
+            */
         }
        
         if(GameObject.Find("Normy").GetComponent<IntSync>().Animating != 0 && !OngoingAnimation){
@@ -552,7 +557,21 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                    GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 4);
                    petrifyTriggered = 1;
                    GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 7, currentHover.x, currentHover.y);
-               }
+                   GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
+                    foreach (GameObject obj in pKillList){
+                        RealtimeView view = obj.GetComponent<RealtimeView>();
+                        if(view != null && view.isOwnedLocallySelf){
+                            Realtime.Destroy(obj); // Destroy previous pieces
+                        }
+                        
+                
+                    }
+                    Vector3 LPPHighlightPos = GetTileCenter(currentHover.x,currentHover.y);
+                    int rndInkYRot = rnd.Next(0,360);
+                    Quaternion InkRot = Quaternion.Euler(0, rndInkYRot, 0);
+                    InkRot = InkRot.normalized;
+                    Realtime.Instantiate("LPPHighlight", LPPHighlightPos, InkRot);
+                }
               
 
 
@@ -627,9 +646,24 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                GameObject.Find("Normy").GetComponent<IntSync>().Turn();
                BroadcastMessage("PiecePlaced"); // Notify that a piece was placed
            }
+           
            SyncGrid();
            CheckForWin(1); // Check for a win condition for player 1 (black) on client side
            CheckForWin(2); // Check for a win condition for player 2 (white) on client side
+           if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 4 && GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 7 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 6 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 6 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 3){
+            GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
+            foreach (GameObject obj in pKillList){
+                RealtimeView view = obj.GetComponent<RealtimeView>();
+                if(view != null && view.isOwnedLocallySelf){
+                    Realtime.Destroy(obj); // Destroy previous pieces
+                }
+            }
+            Vector3 LPPHighlightPos = GetTileCenter(currentHover.x,currentHover.y);
+            int rndInkYRot = rnd.Next(0,360);
+            Quaternion InkRot = Quaternion.Euler(0, rndInkYRot, 0);
+            InkRot = InkRot.normalized;
+            Realtime.Instantiate("LPPHighlight", LPPHighlightPos, InkRot);
+           }
        }
 
 
