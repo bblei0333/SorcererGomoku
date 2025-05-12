@@ -552,12 +552,17 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                    GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 7, currentHover.x, currentHover.y);
                    GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
                     foreach (GameObject obj in pKillList){
-                        Realtime.Destroy(obj); // Destroy previous pieces
+                        RealtimeView view = obj.GetComponent<RealtimeView>();
+                        if(view != null && view.isOwnedLocallySelf){
+                            Realtime.Destroy(obj); // Destroy previous pieces
+                        }
+                        
                 
                     }
                     Vector3 LPPHighlightPos = GetTileCenter(currentHover.x,currentHover.y);
                     int rndInkYRot = rnd.Next(0,360);
                     Quaternion InkRot = Quaternion.Euler(0, rndInkYRot, 0);
+                    InkRot = InkRot.normalized;
                     Realtime.Instantiate("LPPHighlight", LPPHighlightPos, InkRot);
                 }
               
@@ -626,15 +631,18 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
            SyncGrid();
            CheckForWin(1); // Check for a win condition for player 1 (black) on client side
            CheckForWin(2); // Check for a win condition for player 2 (white) on client side
-           if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 4 && GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 7 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 6){
+           if(GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 4 && GameObject.Find("Normy").GetComponent<IntSync>().LPPID != 7 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 6 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 2 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 6 && GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID != 3){
             GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
             foreach (GameObject obj in pKillList){
-                Realtime.Destroy(obj); // Destroy previous pieces
-           
+                RealtimeView view = obj.GetComponent<RealtimeView>();
+                if(view != null && view.isOwnedLocallySelf){
+                    Realtime.Destroy(obj); // Destroy previous pieces
+                }
             }
             Vector3 LPPHighlightPos = GetTileCenter(currentHover.x,currentHover.y);
             int rndInkYRot = rnd.Next(0,360);
             Quaternion InkRot = Quaternion.Euler(0, rndInkYRot, 0);
+            InkRot = InkRot.normalized;
             Realtime.Instantiate("LPPHighlight", LPPHighlightPos, InkRot);
            }
        }
