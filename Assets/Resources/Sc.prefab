@@ -104,10 +104,22 @@ PrefabInstance:
       propertyPath: _viewUUID
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1088789464276465727, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 1606427354729996823, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2681767780468886943, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
       propertyPath: m_Name
       value: AnimatedShare
       objectReference: {fileID: 0}
+    - target: {fileID: 5941228806849557475, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 6441526881971787639, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.2723234
@@ -147,6 +159,10 @@ PrefabInstance:
     - target: {fileID: 6441526881971787639, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9033065835325906919, guid: 69ef3bd78be6e45a0a566dcb31443757, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
