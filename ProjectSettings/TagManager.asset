@@ -18,6 +18,7 @@ TagManager:
   - HelpKill
   - ExplosionKill
   - HighlightKill
+  - ExploLightKill
   layers:
   - Default
   - TransparentFX
