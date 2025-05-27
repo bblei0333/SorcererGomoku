@@ -132,6 +132,7 @@ public class GomokuControl : MonoBehaviour
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 1 && !whitewin1done){
         grey5.SetActive(false);
         white5.SetActive(true);
+        whitewin1done = true;
         StartCoroutine(WhiteWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && !whitewin2done){
@@ -672,8 +673,8 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                     {
                         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 5);
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 5, currentHover.x, currentHover.y);
-                        CheckForWin(0);
-                        CheckForWin(1);
+                        //CheckForWin(0);
+                        //CheckForWin(1);
                     }
                     GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
                     foreach (GameObject obj in pKillList){
