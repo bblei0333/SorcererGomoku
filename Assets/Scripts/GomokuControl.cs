@@ -93,6 +93,8 @@ public class GomokuControl : MonoBehaviour
     }
     if(AID == 3){
         GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(TempCoordx, TempCoordy, TempID);
+        CheckForWin(1);
+        CheckForWin(2);
         SyncGrid();
     }
    }
@@ -196,6 +198,9 @@ public class GomokuControl : MonoBehaviour
            } else if (state == 20){
                 //Instantiate(physicsW, GetTileCenter(xcord, ycord), Quaternion.identity);
            }
+           
+            //CheckForWin(0);
+        //CheckForWin(1);
            SyncWin();
        }
     }
@@ -629,30 +634,36 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                if(pieceID == 7){
                 
                     int randMystery = rnd.Next(0,4);
-                    if(randMystery == 0){
-                    TempCoordx = currentHover.x;
-                    TempCoordy = currentHover.y;
-                    TempID = 1;
-                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(0, GetTileCenter(currentHover.x, currentHover.y));
+                    if (randMystery == 0)
+                    {
+                        TempCoordx = currentHover.x;
+                        TempCoordy = currentHover.y;
+                        TempID = 1;
+                        GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(0, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 1, currentHover.x, currentHover.y);
                     }
-                    else if(randMystery == 1){
-                    TempCoordx = currentHover.x;
-                    TempCoordy = currentHover.y;
-                    TempID = 2;
-                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(1, GetTileCenter(currentHover.x, currentHover.y));
+                    else if (randMystery == 1)
+                    {
+                        TempCoordx = currentHover.x;
+                        TempCoordy = currentHover.y;
+                        TempID = 2;
+                        GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(1, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 2, currentHover.x, currentHover.y);
                     }
-                    else if(randMystery == 2){
-                    TempCoordx = currentHover.x;
-                    TempCoordy = currentHover.y;
-                    TempID = 5;
-                   GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(4, GetTileCenter(currentHover.x, currentHover.y));
+                    else if (randMystery == 2)
+                    {
+                        TempCoordx = currentHover.x;
+                        TempCoordy = currentHover.y;
+                        TempID = 5;
+                        GameObject.Find("Normy").GetComponent<AnimationController>().PPAP(4, GetTileCenter(currentHover.x, currentHover.y));
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 4, currentHover.x, currentHover.y);
                     }
-                    else{
-                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x , currentHover.y, 5);
+                    else
+                    {
+                        GameObject.Find("Normy").GetComponent<ByteSync>().doPlace(currentHover.x, currentHover.y, 5);
                         GameObject.Find("Normy").GetComponent<IntSync>().SetLPP(GameObject.Find("Normy").GetComponent<Spawner>().ID, 5, currentHover.x, currentHover.y);
+                        CheckForWin(0);
+                        CheckForWin(1);
                     }
                     GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
                     foreach (GameObject obj in pKillList){
