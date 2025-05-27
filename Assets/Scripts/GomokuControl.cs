@@ -11,15 +11,15 @@ public class GomokuControl : MonoBehaviour
    private const int TILE_COUNT_X = 15;
    private const int TILE_COUNT_Y = 15;
    private int frameCounter, TempCoordx, TempCoordy, TempID, LastPlayerID;
-   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, flipyet, placeyet;
-   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight, ExplosionParticle, ExplosionLight;
+   public bool blackwin1done,blackwin2done,blackwin3done,whitewin1done,whitewin2done,whitewin3done, disabledplay, gamertime, flipyet, placeyet, shitlin;
+   public GameObject offblack, offwhite, offbomb, stone, share, doubleAgent, sniper, bombhover, bomby, bt, wt, bw, ww, GameMat, mystery, physicsW, physicsB, physicsS, BetterHelpUI, HelpMenu, LPPHighlight, ExplosionParticle, ExplosionLight, grey1, grey2, grey3, grey4, grey5, black1, black2, black3, white3, white4, white5, helper, fire1, fire2, fire3, fire4;
    public int[,] grinfo = new int[15, 15]; // Grid information storing piece states
    public int Delayer;
    private GameObject[,] tiles; // Array to store tile objects
    private Camera currentCamera; // Camera reference for raycasting
    private Vector2Int currentHover; // Current tile under mouse cursor
    private Vector3 bounds; // Grid bounds for positioning tiles
-   public Color endColor = Color.red;
+   public Color endColor = Color.black;
    [SerializeField] private Material tileMaterial; // Material for normal tiles
    [SerializeField] private Material hoverMaterial; // Material for hovered tiles
    [SerializeField] private float tileSize = 0.05f; // Size of each tile
@@ -111,41 +111,43 @@ public class GomokuControl : MonoBehaviour
 
    public void SyncWin(){
     if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 1 && !blackwin1done){
-        Instantiate(bt, new Vector3(-2.87f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        grey1.SetActive(false);
+        black1.SetActive(true);
         blackwin1done = true;
         Debug.Log("1 Black win");
         StartCoroutine(BlackWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !blackwin2done){
-        Instantiate(bt, new Vector3(-1.42f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        grey2.SetActive(false);
+        black2.SetActive(true);
         blackwin2done = true;
         StartCoroutine(BlackWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 3 && !blackwin3done){
-        Instantiate(bt, new Vector3(-.008f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        grey3.SetActive(false);
+        black3.SetActive(true);
         blackwin3done = true;
         StartCoroutine(BlackWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 1 && !whitewin1done){
-        Instantiate(wt, new Vector3(2.87f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
-        whitewin1done = true;
+        grey5.SetActive(false);
+        white5.SetActive(true);
         StartCoroutine(WhiteWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && !whitewin2done){
-        Instantiate(wt, new Vector3(1.42f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        grey4.SetActive(false);
+        white4.SetActive(true);
         whitewin2done = true;
         StartCoroutine(WhiteWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 3 && !whitewin3done){
-        Instantiate(wt, new Vector3(-.008f, 0.29f, -5.13f), Quaternion.Euler(new Vector3(-90, 0, 0)));
+        grey3.SetActive(false);
+        white3.SetActive(true);
         whitewin3done = true;
         StartCoroutine(WhiteWinScreen());
     }
     if(GameObject.Find("Normy").GetComponent<IntSync>().pwwin == 2 && GameObject.Find("Normy").GetComponent<IntSync>().pbwin == 2 && !gamertime){
         gamertime = true;
-       if(GameMat.GetComponent<Renderer>() != null){
-        GameMat.GetComponent<Renderer>().material.color = endColor;
-       }
      }
    }
    
@@ -213,20 +215,28 @@ public class GomokuControl : MonoBehaviour
        
         if(showHelp && !createdMenu){
             Debug.Log("daflkj");
-            GameObject popup = Instantiate(HelpMenu, new Vector3(0, 1, 0), Quaternion.Euler(new Vector3(90, 0, 0)));
+            helper.SetActive(true);
             createdMenu = true;
         }
-        if(!showHelp){
-            GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HelpKill");
-            foreach (GameObject obj in pKillList){
-                Destroy(obj); // Destroy previous pieces
-           
-            }
+            if(!showHelp){
+            helper.SetActive(false);
             createdMenu = false;
         }
-        if(GameObject.Find("Normy").GetComponent<IntSync>().cameraShake == true){
+
+        if (GameMat.GetComponent<Renderer>() != null && gamertime && !shitlin)
+        {
+            GameMat.GetComponent<Renderer>().material.color = endColor;
+            fire1.SetActive(true);
+            fire2.SetActive(true);
+            fire3.SetActive(true);
+            fire4.SetActive(true);
+            shitlin = true;
+       }
+        if (GameObject.Find("Normy").GetComponent<IntSync>().cameraShake == true)
+        {
             StartCoroutine(cameraShake.Shake(.2f, .4f));
-            if(GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga){
+            if (GameObject.Find("Normy").GetComponent<Spawner>().ID == GameObject.Find("Normy").GetComponent<IntSync>().gaga)
+            {
                 GameObject.Find("Normy").GetComponent<IntSync>().cameraToggle(false);
             }
         }
@@ -875,6 +885,10 @@ if(GameObject.Find("GomokuBoard").GetComponent<PiecePool>().nextPieceID == 5 &&
                         GameObject.Find("Normy").GetComponent<IntSync>().WhiteWin();
                    }
                    Debug.Log(player + " wins");
+                    GameObject[] pKillList = GameObject.FindGameObjectsWithTag("HighlightKill");
+                    foreach (GameObject obj in pKillList){
+                        Realtime.Destroy(obj);
+                    }
                    SyncGrid();
                    ClearBoard();
                    return; // Exit early after finding a win

@@ -10,7 +10,7 @@ Material:
   m_Name: InkCircle
   m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 2100000, guid: 20267b3ca8496714d9378afd6e5de4c7, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 18
   m_ValidKeywords:
   - _ALPHATEST_ON
   - _EMISSION
@@ -18,10 +18,10 @@ Material:
   - _NORMALMAP
   - _SPECGLOSSMAP
   m_InvalidKeywords: []
-  m_LightmapFlags: 4
+  m_LightmapFlags: 1
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
   disabledShaderPasses: []
@@ -30,6 +30,8 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
-    m_Colors: []
+    m_Floats:
+    - _Mode: 1
+    m_Colors:
+    - _Color: {r: 0.07924521, g: 0.07924521, b: 0.07924521, a: 1}
   m_BuildTextureStacks: []
