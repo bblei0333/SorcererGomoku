@@ -3,114 +3,77 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraLookAtMouse : MonoBehaviour {
-    [Header("Rotation Speed Settings")]
-    public float maxSmoothSpeed = 7.0f;
-    public float minSmoothSpeed = 0.02f;
-    public float maxMouseDelta = 50f;
+    [Header("Panning Settings")]
+    public float rotationSmoothSpeed = 8f;
+    public float maxYaw = 15f;    // Left-right max angle
+    public float maxPitch = 15f;  // Up-down max angle
 
-    [Header("Rotation Boundaries (degrees)")]
-    public float minX = -3.5f;
-    public float maxX = 3.5f;
-    public float minY = -5.5f;
-    public float maxY = 5.5f;
+    [Header("Rectangular Dead Zone (pixels)")]
+    public float deadZoneWidth = 1200f;  // Width of dead zone rectangle
+    public float deadZoneHeight = 500f; // Height of dead zone rectangle
 
-    [Header("Easing Settings")]
-    public float slowdownDelay = 0.8f;
-    public float easingPowerIn = 3f;
-    public float easingPowerOut = 4f;
+    [Header("Axis Inversion")]
+    public bool invertX = false;
+    public bool invertY = false;
 
-    [Header("Stop Threshold & Fade")]
-    public float stopThreshold = 0.01f;
-    public float fadeOutDuration = 3.0f;
-
-    [Header("Ease-Out Multiplier (Not Used Here)")]
-    public float maxEaseOutMultiplier = 1.0f; // No scaling beyond boundaries
-
-    private Camera mainCamera;
     private Quaternion originalRotation;
-
-    private Vector3 prevMousePos;
-    private float lastMoveTime;
-
-    private float fadeOutTimer = 0f;
-    private bool isFadingOut = false;
-    private float lerpSpeedBeforeFade = 0f;
+    private Vector2 currentRotationOffset;
 
     void Start() {
-        mainCamera = Camera.main;
         originalRotation = Quaternion.Euler(58f, 0f, 0f);
         transform.rotation = originalRotation;
-
-        prevMousePos = Input.mousePosition;
-        lastMoveTime = Time.time;
+        currentRotationOffset = Vector2.zero;
     }
 
-    void Update() {
-        Vector3 currMousePos = Input.mousePosition;
-        Vector3 mouseDelta = currMousePos - prevMousePos;
-        float mouseMoveDist = mouseDelta.magnitude;
+    void LateUpdate() {
+    Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+    Vector2 mouseOffset = (Vector2)Input.mousePosition - screenCenter;
 
-        bool isMoving = mouseMoveDist > 0f;
-        if (isMoving) {
-            lastMoveTime = Time.time;
-            isFadingOut = false;
-            fadeOutTimer = 0f;
-        }
+    bool insideDeadZone = Mathf.Abs(mouseOffset.x) < deadZoneWidth / 2f &&
+                        Mathf.Abs(mouseOffset.y) < deadZoneHeight / 2f;
 
-        float timeSinceMove = Time.time - lastMoveTime;
+    if (insideDeadZone) {
+        // Faster ease-out when snapping back
+        float t = rotationSmoothSpeed * 2.5f * Time.deltaTime;  // 4x speed multiplier
+        float smoothT = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t));
 
-        float slowDownT = Mathf.Clamp01(timeSinceMove / slowdownDelay);
-        float easeOutT = 1f - Mathf.Pow(1f - slowDownT, easingPowerOut);
+        currentRotationOffset = Vector2.Lerp(currentRotationOffset, Vector2.zero, smoothT);
+    } else {
+        float xDistOutside = 0f;
+        if (Mathf.Abs(mouseOffset.x) > deadZoneWidth / 2f)
+            xDistOutside = (Mathf.Abs(mouseOffset.x) - deadZoneWidth / 2f) / (screenCenter.x - deadZoneWidth / 2f);
 
-        float speedT = Mathf.Clamp01(mouseMoveDist / maxMouseDelta);
-        float easeInT = Mathf.Pow(speedT, easingPowerIn);
+        float yDistOutside = 0f;
+        if (Mathf.Abs(mouseOffset.y) > deadZoneHeight / 2f)
+            yDistOutside = (Mathf.Abs(mouseOffset.y) - deadZoneHeight / 2f) / (screenCenter.y - deadZoneHeight / 2f);
 
-        float lerpSpeed = Mathf.Lerp(minSmoothSpeed, maxSmoothSpeed, easeInT) * (1f - easeOutT);
+        xDistOutside = Mathf.Clamp01(xDistOutside);
+        yDistOutside = Mathf.Clamp01(yDistOutside);
 
-        if (!isMoving && lerpSpeed < stopThreshold) {
-            if (!isFadingOut) {
-                isFadingOut = true;
-                fadeOutTimer = 0f;
-                lerpSpeedBeforeFade = lerpSpeed;
-            } else {
-                fadeOutTimer += Time.deltaTime;
-                float fadeT = Mathf.Clamp01(fadeOutTimer / fadeOutDuration);
-                float smoothFadeT = fadeT * fadeT * (3f - 2f * fadeT);
-                lerpSpeed = Mathf.Lerp(lerpSpeedBeforeFade, 0f, smoothFadeT);
-            }
-        } else {
-            isFadingOut = false;
-            fadeOutTimer = 0f;
-        }
+        Vector2 normalizedOffset = new Vector2(
+            Mathf.Clamp(mouseOffset.x / screenCenter.x, -1f, 1f),
+            Mathf.Clamp(mouseOffset.y / screenCenter.y, -1f, 1f)
+        );
 
-        float lookDistance = 10f;
-        Vector3 worldPoint = mainCamera.ScreenToWorldPoint(new Vector3(currMousePos.x, currMousePos.y, lookDistance));
-        Vector3 direction = worldPoint - transform.position;
+        if (invertX) normalizedOffset.x = -1f;
+        if (invertY) normalizedOffset.y= -1f;
 
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        float targetYaw = normalizedOffset.x * maxYaw;
+        float targetPitch = -normalizedOffset.y * maxPitch;
 
-        Quaternion offset = Quaternion.Inverse(originalRotation) * targetRotation;
-        Vector3 offsetEuler = offset.eulerAngles;
-        offsetEuler.x = NormalizeAngle(offsetEuler.x);
-        offsetEuler.y = NormalizeAngle(offsetEuler.y);
+        Vector2 targetRotationOffset = new Vector2(targetYaw, targetPitch);
 
-        // Clamp rotation strictly within boundaries (no multiplier)
-        offsetEuler.x = Mathf.Clamp(offsetEuler.x, minX, maxX);
-        offsetEuler.y = Mathf.Clamp(offsetEuler.y, minY, maxY);
-        offsetEuler.z = 0f;
+        float easeFactor = Mathf.Max(xDistOutside, yDistOutside);
 
-        Quaternion clampedOffset = Quaternion.Euler(offsetEuler);
-        Quaternion finalTargetRotation = originalRotation * clampedOffset;
-
-        if (lerpSpeed > 0f) {
-            transform.rotation = Quaternion.Slerp(transform.rotation, finalTargetRotation, lerpSpeed * Time.deltaTime);
-        }
-
-        prevMousePos = currMousePos;
+        currentRotationOffset = Vector2.Lerp(
+            currentRotationOffset,
+            targetRotationOffset,
+            rotationSmoothSpeed * Time.deltaTime * easeFactor
+        );
     }
 
-    private float NormalizeAngle(float angle) {
-        if (angle > 180f) angle -= 360f;
-        return angle;
+    Quaternion offsetRotation = Quaternion.Euler(currentRotationOffset.y, currentRotationOffset.x, 0f);
+    transform.rotation = originalRotation * offsetRotation;
     }
+
 }
